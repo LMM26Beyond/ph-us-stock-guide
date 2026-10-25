@@ -45,14 +45,14 @@ Liquid stocks with the weakest scores: falling trend and lagging the market. If 
 
 | Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| MRC | MRC Allied, Inc. | ₱0.65 | 10 | -19% | -35% | 40 | – | 0.5 | – | -500% | bullish marubozu |
+| MRC | MRC Allied, Inc. | ₱0.65 | 10 | -19% | -35% | 40 | – | 0.5 | – | n/m | bullish marubozu |
 | PLUS | DigiPlus Interactive Corp. | ₱7.30 | 16 | -28% | -69% | 39 | 2.4 | 0.7 | +29% | +17% | bullish engulfing |
 | DMC | DMCI Holdings, Inc. | ₱7.22 | 19 | -4% | -37% | 40 | 5.6 | 0.8 | +14% | +25% | bullish engulfing |
 | CEB | Cebu Air, Inc. | ₱23.50 | 20 | -19% | -27% | 53 | loss | 1.5 | -26% | -166% | bearish engulfing, hanging man |
 | SCC | Semirara Mining and Power Corpor | ₱11.60 | 21 | -47% | -66% | 33 | 3.8 | 0.8 | +21% | +2% |  |
 | CREIT | Citicore Energy REIT Corp. | ₱2.84 | 24 | -16% | -23% | 36 | 13.2 | 4.0 | +30% | -0% | hammer |
 | CNPF | Century Pacific Food, Inc. | ₱28.55 | 25 | -8% | -22% | 25 | 13.6 | 2.5 | +18% | +6% | bullish harami |
-| TUBIG | Tubig Pilipinas Holdings Inc. | ₱0.06 | 25 | +125% | -68% | 87 | – | 1997.0 | – | -500% |  |
+| TUBIG | Tubig Pilipinas Holdings Inc. | ₱0.06 | 25 | +125% | -68% | 87 | – | n/m | – | n/m |  |
 
 ## Signals that have worked here
 
