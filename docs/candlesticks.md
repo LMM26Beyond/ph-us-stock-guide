@@ -78,7 +78,7 @@ Indicators smooth the candles into a trend or a reading of strength.
 | **Moving averages (SMA 50, 200)** | Average close over the last 50 or 200 days | Price above a rising 200-day average is an uptrend. **Golden cross**: the 50-day crosses above the 200-day. **Death cross**: crosses below. |
 | **MACD** | 12-day minus 26-day exponential average, with a 9-day signal line | Histogram above zero = momentum up. Crosses of the signal line are studied as signals. |
 | **RSI (14)** | 0–100 gauge of recent gains versus losses | Above 70 overbought, below 30 oversold. The signal studied is the *exit*: RSI climbing back above 30, or falling back below 70. Over 80 counts against a stock in the score. |
-| **ATR (14)** | Average daily range, including gaps | Sets stop-loss distances: 3 × ATR below the price. |
+| **ATR (14)** | Average daily range, including gaps | Measures how erratic a stock is. Buy candidates must have an ATR of at most 5% of the price. |
 | **Bollinger bands** | 20-day average ± 2 standard deviations | Computed for reference. |
 | **52-week high / low** | Highest high and lowest low of the last year | A close above the 52-week high is a **breakout**; below the low, a **breakdown**. |
 | **Volume surge** | Volume more than 2× its 20-day average with a move over 2% | Big moves on heavy volume show conviction. |
@@ -109,6 +109,9 @@ momentum effects are more persistent. So the app checks rather than assumes:
    passed step 2.
 5. The report also tests the score itself on past month-ends: did the
    top-scored fifth of stocks beat the bottom fifth over the next month?
+6. Finally, the back-test replays the full buy and sell rules month by
+   month with real trading costs and board lots, and compares the result
+   with holding the index.
 
 ## 7. Rules of thumb
 
@@ -118,7 +121,9 @@ momentum effects are more persistent. So the app checks rather than assumes:
   higher.
 - Patterns on thinly traded stocks are noise. The app ignores stocks that
   trade less than ₱5 million (or $5 million) a day.
-- Always know your exit before you buy. The app gives a stop 3 × ATR below
-  the price, and a trailing stop for holdings that rises with the price.
+- Always know your exit before you buy. The app's tested rule: hold while
+  the score stays at 60 or more, and sell when it falls below at a month-end.
+  Tight stop-losses (3 × ATR) did worse in the back-test (`reports/backtest_*.md`),
+  because they sold good stocks on normal dips.
 - None of this is financial advice. Check news and fundamentals, and size
   each position so a stop-out is affordable.

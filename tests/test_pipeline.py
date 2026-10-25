@@ -44,6 +44,7 @@ def test_analyze_and_portfolio(data_dir, market, bench):
     text = (data_dir / "reports" / f"{market}.md").read_text()
     assert "## The market:" in text and "## Has the score worked?" in text
     assert (data_dir / "reports" / f"signals_{market}.md").exists()
+    assert "## Verdict" in (data_dir / "reports" / f"backtest_{market}.md").read_text()
     scores = pd.read_csv(data_dir / "data" / market / "scores.csv")
     assert len(scores) == len(syms) and scores["score"].between(0, 100).all()
 
