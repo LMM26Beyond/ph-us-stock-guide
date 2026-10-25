@@ -6,7 +6,7 @@ Data up to **Fri 23 Oct 2026**. Generated 25 Oct 2026.
 
 ## The market: Downtrend
 
-Most stocks fall with the market in a downtrend. Buy less, keep more cash, and only consider the very strongest names.
+Most stocks fall with the market in a downtrend. Expect bigger swings and consider buying smaller amounts.
 
 | | |
 |---|---|
@@ -22,24 +22,20 @@ PSEi before the first recorded real value is rebuilt from the AETF PSEi-tracker 
 
 ## Buy candidates
 
-Liquid stocks with a score of 70 or more, above their 200-day average, and not overextended (RSI ≤ 75, at most 30% above the 50-day average). The stop is 3 × ATR below the close; sell if a close falls below it.
+Liquid stocks with a score of 70 or more, above their 200-day average, not overextended (RSI ≤ 75, at most 30% above the 50-day average) and not too erratic (average daily range at most 5% of the price). Hold while the score stays at 60 or more; sell when it drops below at a month-end. These are the rules tested in [the back-test](backtest_ph.md).
 
-**The market is in a downtrend: treat this list as a watchlist.**
+**The market is in a downtrend.** In the back-test, buying anyway did better than waiting (waiting missed the rebounds), but expect bigger swings: consider smaller amounts.
 
-| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles | Stop |
-|---|---|---:|---:|---:|---:|---:|---|---:|
-| AEV | Aboitiz Equity Ventures, Inc. | ₱40.25 | 86 | +19% | +39% | 62 | shooting star, gravestone doji, hanging man | ₱37.06 |
-| AC | Ayala Corporation | ₱540.00 | 79 | +11% | +14% | 58 |  | ₱500.94 |
-| MEG | Megaworld Corporation | ₱2.25 | 79 | +7% | +12% | 56 |  | ₱2.13 |
-| IMI | Integrated Micro-Electronics, In | ₱5.50 | 79 | -13% | +170% | 38 |  | ₱4.18 |
-| SGP | Synergy Grid & Development Phils | ₱24.65 | 78 | -12% | +47% | 58 | hanging man | ₱21.22 |
-| ICT | International Container Terminal | ₱852.00 | 76 | -12% | +56% | 45 |  | ₱753.98 |
-| FGEN | First Gen Corporation | ₱19.70 | 75 | +3% | +29% | 44 |  | ₱16.84 |
-| TECH | Cirtek Holdings Philippines Corp | ₱1.20 | 74 | +7% | +97% | 46 | hanging man, bullish marubozu | ₱0.88 |
-| ION | Ionics, Inc. | ₱2.89 | 71 | +116% | +211% | 46 |  | ₱2.10 |
-| PNB | Philippine National Bank | ₱77.55 | 71 | +29% | +50% | 58 | hanging man, bullish engulfing, bullish marubozu | ₱71.41 |
-| AT | Atlas Consolidated Mining and De | ₱18.36 | 70 | +50% | +237% | 47 | bullish harami | ₱15.39 |
-| AP | Aboitiz Power Corporation | ₱45.95 | 70 | +4% | +10% | 50 |  | ₱43.46 |
+| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles |
+|---|---|---:|---:|---:|---:|---:|---|
+| AEV | Aboitiz Equity Ventures, Inc. | ₱40.25 | 86 | +19% | +39% | 62 | shooting star, gravestone doji, hanging man |
+| AC | Ayala Corporation | ₱540.00 | 79 | +11% | +14% | 58 |  |
+| MEG | Megaworld Corporation | ₱2.25 | 79 | +7% | +12% | 56 |  |
+| SGP | Synergy Grid & Development Phils | ₱24.65 | 78 | -12% | +47% | 58 | hanging man |
+| ICT | International Container Terminal | ₱852.00 | 76 | -12% | +56% | 45 |  |
+| FGEN | First Gen Corporation | ₱19.70 | 75 | +3% | +29% | 44 |  |
+| PNB | Philippine National Bank | ₱77.55 | 71 | +29% | +50% | 58 | hanging man, bullish engulfing, bullish marubozu |
+| AP | Aboitiz Power Corporation | ₱45.95 | 70 | +4% | +10% | 50 |  |
 
 ## Avoid
 

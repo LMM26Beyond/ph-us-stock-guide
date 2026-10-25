@@ -18,6 +18,7 @@ or sell what you own.
 | How to read candles and indicators | [docs/candlesticks.md](docs/candlesticks.md) |
 | Which signals worked, per market | `reports/signals_ph.md`, `reports/signals_us.md` |
 | Market direction, buy and avoid lists, score test | `reports/ph.md`, `reports/us.md` |
+| Back-test of the buy and sell rules with real costs vs the index | `reports/backtest_ph.md`, `reports/backtest_us.md` |
 | Hold or sell advice for your holdings | `reports/portfolio.md` (local only) |
 
 Data notes:
@@ -36,7 +37,8 @@ pip install -r requirements.txt
 
 python -m stockguide update              # download new candles (both markets)
 python -m stockguide update --market ph  # one market
-python -m stockguide analyze             # study signals, score stocks, write reports/
+python -m stockguide analyze             # study signals, score stocks, back-test, write reports/
+python -m stockguide backtest            # only the back-test
 python -m stockguide all                 # update, then analyze
 ```
 

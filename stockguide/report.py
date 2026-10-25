@@ -4,7 +4,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from . import analysis, patterns, score, storage, study
+from . import analysis, backtest, patterns, score, storage, study
 from .config import BENCHMARK, DATA_DIR, REPORTS_DIR
 
 LABEL = {"ph": "Philippines (PSE)", "us": "United States"}
@@ -44,7 +44,9 @@ def analyze(market: str) -> None:
         DATA_DIR / market / "scores.csv", index=False, float_format="%.4g")
     val = score.validate(snaps, bench)
     (REPORTS_DIR / f"{market}.md").write_text(market_report(market, bench, today, stats, val))
-    print(f"  wrote reports/{market}.md and reports/signals_{market}.md")
+    bt = backtest.run(market, (events, snaps))
+    (REPORTS_DIR / f"backtest_{market}.md").write_text(backtest.to_markdown(market, bt))
+    print(f"  wrote reports/{market}.md, signals_{market}.md and backtest_{market}.md")
 
 
 def regime(bench: pd.DataFrame, today: pd.DataFrame):
@@ -54,14 +56,14 @@ def regime(bench: pd.DataFrame, today: pd.DataFrame):
     above200, above50 = b["close"] > b["sma200"], b["close"] > b["sma50"]
     if above200 and b["sma50"] > b["sma200"] and breadth >= 0.5:
         state = "Uptrend"
-        advice = "Conditions favour buying strong stocks. Use stops."
+        advice = "Conditions favour buying strong stocks."
     elif not above200 and b["sma50"] < b["sma200"] and (np.isnan(breadth) or breadth < 0.5):
         state = "Downtrend"
-        advice = ("Most stocks fall with the market in a downtrend. Buy less, keep more cash, "
-                  "and only consider the very strongest names.")
+        advice = ("Most stocks fall with the market in a downtrend. Expect bigger swings and "
+                  "consider buying smaller amounts.")
     else:
         state = "Mixed"
-        advice = "No clear direction. Buy smaller positions and only the strongest setups."
+        advice = "No clear direction."
     return state, advice, breadth
 
 
@@ -91,15 +93,19 @@ def market_report(market, bench, today, stats, val) -> str:
               "PSEi-tracker ETF, scaled to index points.", ""]
 
     liq = today[today["liquid"]]
-    buys = liq[(liq["score"] >= 70) & (liq["close"] > liq["sma200"]) & (liq["rsi14"] <= 75)
-               & (liq["close"] <= 1.3 * liq["sma50"])].sort_values("score", ascending=False).head(20)
+    rules = backtest.Rules()
+    buys = backtest.candidates(liq, rules).head(20)
     L += ["## Buy candidates", "",
-          "Liquid stocks with a score of 70 or more, above their 200-day average, and not "
-          "overextended (RSI ≤ 75, at most 30% above the 50-day average). The stop is 3 × ATR "
-          "below the close; sell if a close falls below it.", ""]
+          f"Liquid stocks with a score of {rules.min_score:.0f} or more, above their 200-day "
+          "average, not overextended (RSI ≤ 75, at most 30% above the 50-day average) and not "
+          f"too erratic (average daily range at most {100 * rules.max_atr_pct:.0f}% of the price). "
+          f"Hold while the score stays at {rules.sell_below:.0f} or more; sell when it drops "
+          f"below at a month-end. These are the rules tested in [the back-test](backtest_{market}.md).", ""]
     if state == "Downtrend":
-        L += ["**The market is in a downtrend: treat this list as a watchlist.**", ""]
-    L += table(buys, cur, stop=True) if len(buys) else ["None today.", ""]
+        L += ["**The market is in a downtrend.** In the back-test, buying anyway did better than "
+              "waiting (waiting missed the rebounds), but expect bigger swings: consider "
+              "smaller amounts.", ""]
+    L += table(buys, cur) if len(buys) else ["None today.", ""]
     avoid = liq[liq["score"] <= 25].sort_values("score").head(20)
     L += ["## Avoid", "",
           "Liquid stocks with the weakest scores: falling trend and lagging the market. "
@@ -120,18 +126,12 @@ def market_report(market, bench, today, stats, val) -> str:
     return "\n".join(L) + "\n"
 
 
-def table(df, cur, stop=False) -> list:
-    head = "| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles |"
-    sep = "|---|---|---:|---:|---:|---:|---:|---|"
-    if stop:
-        head += " Stop |"
-        sep += "---:|"
-    out = [head, sep]
+def table(df, cur) -> list:
+    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles |",
+           "|---|---|---:|---:|---:|---:|---:|---|"]
     for r in df.itertuples():
         line = (f"| {r.symbol} | {r.name[:32]} | {cur}{r.close:,.2f} | {r.score:.0f} | {pct(r.ret3m, 0)} | "
                 f"{pct(r.ret12m, 0)} | {r.rsi14:.0f} | {r.patterns.replace('_', ' ') or ''} |")
-        if stop:
-            line += f" {cur}{r.close - 3 * r.atr14:,.2f} |"
         out.append(line)
     return out + [""]
 
@@ -158,40 +158,41 @@ def portfolio(path) -> str | None:
         pf = pd.read_csv(path, dtype={"ticker": str, "market": str})
     except FileNotFoundError:
         return None
+    sell_below = backtest.Rules().sell_below
     L = ["# Your holdings", "", f"Generated {date.today():%d %b %Y}. Not financial advice.", "",
-         "| Stock | Shares | Bought | Now | Gain | Score | Trailing stop | Action | Why |",
-         "|---|---:|---:|---:|---:|---:|---:|---|---|"]
+         "| Stock | Shares | Bought | Now | Gain | Score | Action | Why |",
+         "|---|---:|---:|---:|---:|---:|---|---|"]
     for h in pf.itertuples():
         m, t = h.market.strip().lower(), h.ticker.strip().upper()
         f = analysis.stock_frame(m, t)
         if f is None:
-            L.append(f"| {t} | {h.shares} | | | | | | ? | no price data for {m.upper()}:{t} |")
+            L.append(f"| {t} | {h.shares} | | | | | ? | no price data for {m.upper()}:{t} |")
             continue
         last = f.iloc[-1]
         sc_path = DATA_DIR / m / "scores.csv"
         sc = pd.read_csv(sc_path).set_index("symbol")["score"] if sc_path.exists() else pd.Series(dtype=float)
         s = sc.get(t, np.nan)
-        since = f[f.index >= pd.Timestamp(h.buy_date)] if isinstance(h.buy_date, str) and h.buy_date else f.tail(60)
-        peak = since["close"].max() if len(since) else last["close"]
-        stop = peak - 3 * last["atr14"]
         gain = last["close"] / h.buy_price - 1
-        action, why = advise(last, s, stop)
+        action, why = advise(last, s, sell_below)
         cur = CUR[m]
         L.append(f"| {m.upper()}:{t} | {h.shares:,} | {cur}{h.buy_price:,.2f} | {cur}{last['close']:,.2f} | "
-                 f"{pct(gain)} | {'–' if np.isnan(s) else f'{s:.0f}'} | {cur}{stop:,.2f} | **{action}** | {why} |")
-    L += ["", "The trailing stop is the highest close since you bought, minus 3 × ATR "
-          "(average daily range). It rises with the price and never falls."]
+                 f"{pct(gain)} | {'–' if np.isnan(s) else f'{s:.0f}'} | **{action}** | {why} |")
+    L += ["", f"The rule tested in the back-test: hold while the score is {sell_below:.0f} or more, "
+          "sell when it is lower at a month-end. Tight stop-losses did worse in the back-test, "
+          "because they sold good stocks on normal dips."]
     return "\n".join(L) + "\n"
 
 
-def advise(last, s, stop):
-    c = last["close"]
-    if c < stop:
-        return "SELL", "closed below the trailing stop: the uptrend has likely ended"
-    if c < last["sma200"] and last["sma50"] < last["sma200"] and (np.isnan(s) or s < 35):
-        return "SELL", "in a downtrend (below a falling 200-day average) and weak vs other stocks"
+def advise(last, s, sell_below):
+    if np.isnan(s):
+        return "?", "no score (too little recent trading); check it yourself"
+    if s < sell_below:
+        why = "score below the hold line: trend and momentum have weakened"
+        if last["close"] < last["sma200"]:
+            why += "; below its 200-day average"
+        return "SELL", why
+    if s < sell_below + 10:
+        return "HOLD, watch", "close to the hold line; sell if it drops below at the month-end"
     if last["rsi14"] > 80:
-        return "HOLD, tighten stop", "very overbought (RSI > 80); a pullback is common, so consider selling part"
-    if not np.isnan(s) and s < 45:
-        return "HOLD, watch", "weakening; sell if it closes below the stop"
-    return "HOLD", "trend intact"
+        return "HOLD", "strong but very overbought (RSI > 80); a pullback is common"
+    return "HOLD", "trend and momentum intact"

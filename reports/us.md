@@ -6,7 +6,7 @@ Data up to **Fri 23 Oct 2026**. Generated 25 Oct 2026.
 
 ## The market: Mixed
 
-No clear direction. Buy smaller positions and only the strongest setups.
+No clear direction.
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ No clear direction. Buy smaller positions and only the strongest setups.
 
 ## Buy candidates
 
-Liquid stocks with a score of 70 or more, above their 200-day average, and not overextended (RSI ≤ 75, at most 30% above the 50-day average). The stop is 3 × ATR below the close; sell if a close falls below it.
+Liquid stocks with a score of 70 or more, above their 200-day average, not overextended (RSI ≤ 75, at most 30% above the 50-day average) and not too erratic (average daily range at most 5% of the price). Hold while the score stays at 60 or more; sell when it drops below at a month-end. These are the rules tested in [the back-test](backtest_us.md).
 
-| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles | Stop |
-|---|---|---:|---:|---:|---:|---:|---|---:|
-| AGL | agilon health, inc. Common Stock | $89.71 | 90 | -9% | +281% | 55 |  | $74.61 |
-| VSXY | Victorias Secret & Co. Common St | $90.82 | 89 | +6% | +192% | 57 |  | $77.68 |
-| XHG | XChange TEC.INC - American Depos | $3.79 | 89 | +291% | +279% | 71 | hanging man | $2.22 |
-| LFST | LifeStance Health Group, Inc. -  | $12.93 | 89 | +19% | +153% | 62 |  | $11.64 |
-| RNG | RingCentral, Inc. Class A Common | $83.39 | 89 | +55% | +190% | 61 | evening star | $69.15 |
-| PLSE | Pulse Biosciences, Inc - Common  | $53.02 | 89 | +62% | +207% | 58 |  | $42.55 |
-| KFRC | Kforce, Inc. Common Stock | $58.50 | 88 | +1% | +108% | 71 | bullish marubozu, bullish engulfing | $52.83 |
-| HNGE | Hinge Health, Inc. Class A Commo | $111.52 | 88 | +48% | +128% | 69 | dark cloud cover | $98.28 |
-| FTRE | Fortrea Holdings Inc. - Common S | $23.63 | 88 | +23% | +125% | 70 | bearish harami | $20.11 |
-| ANF | Abercrombie & Fitch Company Comm | $155.82 | 88 | +57% | +128% | 62 |  | $138.95 |
-| FET | Forum Energy Technologies, Inc.  | $87.17 | 88 | +54% | +197% | 57 | bullish marubozu | $73.98 |
-| CLDT | Chatham Lodging Trust (REIT) Com | $14.03 | 88 | +2% | +115% | 58 |  | $12.79 |
-| HALO | Halozyme Therapeutics, Inc. - Co | $125.63 | 88 | +54% | +91% | 74 |  | $115.70 |
-| SN | SharkNinja, Inc. Ordinary Shares | $196.38 | 88 | +28% | +115% | 63 | bearish harami | $177.50 |
-| BB | BlackBerry Limited Common Stock | $8.92 | 88 | +6% | +98% | 53 |  | $7.21 |
-| VSTS | Vestis Corporation Common Stock | $14.75 | 88 | -4% | +193% | 61 |  | $13.12 |
-| NRIX | Nurix Therapeutics, Inc. - Commo | $25.34 | 88 | +8% | +138% | 58 | bearish harami | $22.01 |
-| FROG | JFrog Ltd. - Ordinary shares | $100.62 | 88 | +24% | +111% | 57 | bullish engulfing, bearish harami | $82.46 |
-| GKOS | Glaukos Corporation Common Stock | $178.88 | 87 | +18% | +133% | 63 |  | $158.42 |
-| FNKO | Funko, Inc. - Class A Common Sto | $6.83 | 87 | +12% | +136% | 63 | bearish harami, bullish marubozu | $5.93 |
+| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles |
+|---|---|---:|---:|---:|---:|---:|---|
+| LFST | LifeStance Health Group, Inc. -  | $12.93 | 89 | +19% | +153% | 62 |  |
+| VSXY | Victorias Secret & Co. Common St | $90.82 | 89 | +6% | +192% | 57 |  |
+| ANF | Abercrombie & Fitch Company Comm | $155.82 | 88 | +57% | +128% | 62 |  |
+| KFRC | Kforce, Inc. Common Stock | $58.50 | 88 | +1% | +108% | 71 | bullish marubozu, bullish engulfing |
+| SN | SharkNinja, Inc. Ordinary Shares | $196.38 | 88 | +28% | +115% | 63 | bearish harami |
+| FTRE | Fortrea Holdings Inc. - Common S | $23.63 | 88 | +23% | +125% | 70 | bearish harami |
+| HALO | Halozyme Therapeutics, Inc. - Co | $125.63 | 88 | +54% | +91% | 74 |  |
+| NRIX | Nurix Therapeutics, Inc. - Commo | $25.34 | 88 | +8% | +138% | 58 | bearish harami |
+| CLDT | Chatham Lodging Trust (REIT) Com | $14.03 | 88 | +2% | +115% | 58 |  |
+| VSTS | Vestis Corporation Common Stock | $14.75 | 88 | -4% | +193% | 61 |  |
+| HNGE | Hinge Health, Inc. Class A Commo | $111.52 | 88 | +48% | +128% | 69 | dark cloud cover |
+| MYE | Myers Industries, Inc. Common St | $32.13 | 87 | -2% | +89% | 55 |  |
+| BVS | Bioventus Inc. - Class A Common  | $14.96 | 87 | +20% | +110% | 66 | bearish harami, bullish marubozu |
+| RSKD | Riskified Ltd. Class A Ordinary  | $9.15 | 87 | +74% | +90% | 71 | hanging man |
+| CNC | Centene Corporation Common Stock | $70.17 | 87 | +10% | +95% | 61 |  |
+| TBBB | BBB Foods Inc. Class A Common Sh | $58.50 | 87 | +44% | +100% | 68 |  |
+| CYRX | CryoPort, Inc. - Common Stock | $17.98 | 87 | +19% | +78% | 58 | bearish harami |
+| PACS | PACS Group, Inc. Common Stock | $47.64 | 87 | +1% | +284% | 64 | bearish harami |
+| GKOS | Glaukos Corporation Common Stock | $178.88 | 87 | +18% | +133% | 63 |  |
+| AMRX | Amneal Pharmaceuticals, Inc. - C | $20.38 | 87 | +13% | +95% | 61 | hanging man |
 
 ## Avoid
 
