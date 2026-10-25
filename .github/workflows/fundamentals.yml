@@ -1,0 +1,46 @@
+name: Fundamentals
+
+# Company financials change once a quarter; a weekly refresh is plenty.
+# Stored as fundamentals.tar.gz on the "data" release.
+on:
+  schedule:
+    - cron: "0 2 * * 6"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/fundamentals.yml"
+      - "stockguide/sources/sec.py"
+      - "stockguide/sources/pse_fundamentals.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fundamentals
+
+jobs:
+  fundamentals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Download company financials
+        run: python -m stockguide fundamentals
+
+      - name: Store
+        run: |
+          tar -czf fundamentals.tar.gz data/ph/fundamentals data/us/fundamentals.csv.gz
+          gh release view data >/dev/null 2>&1 || \
+            gh release create data --title "Price data" \
+              --notes "Daily candles used by the stock guide. Updated automatically."
+          gh release upload data fundamentals.tar.gz --clobber
