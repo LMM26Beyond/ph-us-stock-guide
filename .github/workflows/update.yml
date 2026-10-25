@@ -1,0 +1,71 @@
+name: Daily update
+
+# Weekdays at 22:30 UTC: after the US close (20:00/21:00 UTC) and well after
+# the PSE close (07:00 UTC). Candles are kept in data.tar.gz on the "data"
+# release; reports are committed to reports/.
+on:
+  schedule:
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      market:
+        description: "ph, us or all"
+        default: "all"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-update
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MARKET: ${{ inputs.market || 'all' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Restore stored candles
+        run: |
+          if gh release download data --pattern data.tar.gz; then
+            tar -xzf data.tar.gz && rm data.tar.gz
+          else
+            echo "No stored data yet: this run starts the full download."
+          fi
+
+      - name: Download new candles
+        # The first full download can take longer than one run; whatever is
+        # saved is kept and the next run carries on from there.
+        run: python -m stockguide update --market "$MARKET" --max-minutes 150
+
+      - name: Store candles
+        if: always()
+        run: |
+          [ -d data ] || exit 0
+          tar -czf data.tar.gz data
+          gh release view data >/dev/null 2>&1 || \
+            gh release create data --title "Price data" \
+              --notes "Daily candles used by the stock guide. Updated automatically."
+          gh release upload data data.tar.gz --clobber
+
+      - name: Analyse
+        run: python -m stockguide analyze --market "$MARKET"
+
+      - name: Commit reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/ ':!reports/portfolio.md'
+          git diff --cached --quiet && exit 0
+          git commit -m "Reports for $(date -u +%F)"
+          git push
