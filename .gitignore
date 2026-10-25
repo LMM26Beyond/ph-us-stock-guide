@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# Price data is large; it is stored as a release asset, not in git (see README).
+data/
+# Your real holdings stay on your machine unless you choose otherwise.
+portfolio.csv
+reports/portfolio.md
