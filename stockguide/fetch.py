@@ -142,14 +142,21 @@ def update_us_indexes() -> None:
 def update_fundamentals(markets=("ph", "us"), limit=None) -> None:
     """Company financials: PSE Edge pages for PH, SEC company facts for US."""
     from .sources import pse_fundamentals, sec
+    if "us" in markets:
+        try:
+            _us_fundamentals(sec, limit)
+        except Exception as e:  # keep going so the PH half still gets saved
+            print(f"US fundamentals failed: {e!r}")
     if "ph" in markets:
         uni = universe("ph")
         pse_fundamentals.dump(uni.head(limit) if limit else uni, DATA_DIR / "ph" / "fundamentals" / "raw")
-    if "us" in markets:
-        uni = universe("us")
-        syms = uni["symbol"].tolist()[:limit] if limit else uni["symbol"].tolist()
-        df = sec.download(syms)
-        p = DATA_DIR / "us" / "fundamentals.csv.gz"
-        p.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(p, index=False)
-        print(f"US fundamentals: {len(df):,} facts for {df['symbol'].nunique() if len(df) else 0} companies")
+
+
+def _us_fundamentals(sec, limit) -> None:
+    uni = universe("us")
+    syms = uni["symbol"].tolist()[:limit] if limit else uni["symbol"].tolist()
+    df = sec.download(syms)
+    p = DATA_DIR / "us" / "fundamentals.csv.gz"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(p, index=False)
+    print(f"US fundamentals: {len(df):,} facts for {df['symbol'].nunique() if len(df) else 0} companies")

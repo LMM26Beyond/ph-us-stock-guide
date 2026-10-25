@@ -13,11 +13,10 @@ PAGES = {
     "stock_data": "/companyPage/stockData.do?cmpy_id={c}&security_id={s}",
     "financials": "/companyPage/financial_reports_view.do?cmpy_id={c}",
     "dividends": "/companyPage/dividends_n_rights_view.do?cmpy_id={c}",
-    "information": "/companyInformation/form.do?cmpy_id={c}",
 }
 
 
-def dump(universe, out_dir: Path, pause: float = 0.3) -> None:
+def dump(universe, out_dir: Path, pause: float = 0.2) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     ok = failed = 0
     for r in universe.itertuples():

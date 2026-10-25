@@ -35,11 +35,17 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Download company financials
-        run: python -m stockguide fundamentals
+        run: |
+          mkdir -p data
+          python -m stockguide fundamentals 2>&1 | tee data/fundamentals.log
+          exit ${PIPESTATUS[0]}
 
       - name: Store
+        if: always()
         run: |
-          tar -czf fundamentals.tar.gz data/ph/fundamentals data/us/fundamentals.csv.gz
+          paths=$(ls -d data/fundamentals.log data/ph/fundamentals data/us/fundamentals.csv.gz 2>/dev/null)
+          [ -n "$paths" ] || exit 0
+          tar -czf fundamentals.tar.gz $paths
           gh release view data >/dev/null 2>&1 || \
             gh release create data --title "Price data" \
               --notes "Daily candles used by the stock guide. Updated automatically."

@@ -12,7 +12,8 @@ from .http import request
 
 TICKERS = "https://www.sec.gov/files/company_tickers.json"
 FACTS = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json"
-HEADERS = {"User-Agent": "ph-us-stock-guide research (github.com/LMM26Beyond/ph-us-stock-guide)"}
+# SEC rejects requests whose User-Agent lacks a contact e-mail address.
+HEADERS = {"User-Agent": "ph-us-stock-guide LMM26Beyond@users.noreply.github.com"}
 
 # Our name -> XBRL concepts to try, first found wins per filing.
 CONCEPTS = {
