@@ -12,7 +12,7 @@ from .pse import BASE
 PAGES = {
     "stock_data": "/companyPage/stockData.do?cmpy_id={c}&security_id={s}",
     "financials": "/companyPage/financial_reports_view.do?cmpy_id={c}",
-    "dividends": "/companyPage/dividends_n_rights_view.do?cmpy_id={c}",
+    "dividends": "/companyPage/dividends_and_rights_form.do?cmpy_id={c}",
 }
 
 
