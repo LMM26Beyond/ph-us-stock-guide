@@ -24,8 +24,8 @@ jobs:
     timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
-      # Pull-request runs only refresh the US half while the SEC download is being tested.
-      MARKET: ${{ github.event_name == 'pull_request' && 'us' || 'all' }}
+      # SEC requires a contact e-mail; kept as a repository secret, not in the code.
+      SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,14 +39,7 @@ jobs:
       - name: Download company financials
         run: |
           mkdir -p data
-          {
-            for u in https://www.sec.gov/files/company_tickers.json https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json; do
-              for ua in "ph-us-stock-guide LMM26Beyond@users.noreply.github.com" "LMM26Beyond stock research admin@example.com"; do
-                echo "SEC check: $u [$ua] -> $(curl -s -o /tmp/sec.out -w '%{http_code}' -A "$ua" "$u") $(head -c 300 /tmp/sec.out | tr -d '\n')"
-              done
-            done
-          } | tee data/fundamentals.log
-          python -m stockguide fundamentals --market "$MARKET" 2>&1 | tee -a data/fundamentals.log
+          python -m stockguide fundamentals 2>&1 | tee data/fundamentals.log
           exit ${PIPESTATUS[0]}
 
       - name: Store

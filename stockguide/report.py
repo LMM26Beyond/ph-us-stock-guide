@@ -4,7 +4,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from . import analysis, backtest, patterns, score, storage, study
+from . import analysis, backtest, fundamentals, patterns, score, storage, study
 from .config import BENCHMARK, DATA_DIR, REPORTS_DIR
 
 LABEL = {"ph": "Philippines (PSE)", "us": "United States"}
@@ -38,8 +38,10 @@ def analyze(market: str) -> None:
     bench = analysis.benchmark(market)
     today = score.latest(snaps, bench, stats)
     today["name"] = today["symbol"].map(names(market)).fillna("")
+    today = fundamentals.latest(market, today)
     cols = ["symbol", "name", "date", "close", "score", "trend", "momentum", "macd", "rsi", "candles",
-            "rsi14", "ret3m", "ret12m", "sma50", "sma200", "atr14", "value20", "liquid", "patterns"]
+            "rsi14", "ret3m", "ret12m", "sma50", "sma200", "atr14", "value20", "liquid", "patterns",
+            *fundamentals.MEASURES]
     today[cols].sort_values("score", ascending=False).to_csv(
         DATA_DIR / market / "scores.csv", index=False, float_format="%.4g")
     val = score.validate(snaps, bench)
@@ -106,6 +108,10 @@ def market_report(market, bench, today, stats, val) -> str:
               "waiting (waiting missed the rebounds), but expect bigger swings: consider "
               "smaller amounts.", ""]
     L += table(buys, cur) if len(buys) else ["None today.", ""]
+    L += ["P/E, P/B, ROE (return on equity) and profit growth come from the companies' latest "
+          "financial reports (" + ("PSE Edge" if market == "ph" else "SEC filings") + "). They are "
+          "shown for context and are not part of the score yet. A loss or a very high P/E is "
+          "worth a closer look before buying.", ""]
     avoid = liq[liq["score"] <= 25].sort_values("score").head(20)
     L += ["## Avoid", "",
           "Liquid stocks with the weakest scores: falling trend and lagging the market. "
@@ -126,12 +132,26 @@ def market_report(market, bench, today, stats, val) -> str:
     return "\n".join(L) + "\n"
 
 
+def ratio(yld) -> str:
+    """P/E or P/B from an earnings or book yield."""
+    if pd.isna(yld):
+        return "–"
+    if yld <= 0:
+        return "loss"
+    return "n/m" if yld < 0.01 else f"{1 / yld:.1f}"   # above 100: not meaningful
+
+
+def growth(g) -> str:
+    return "n/m" if pd.notna(g) and abs(g) >= 5 else pct(g, 0)
+
+
 def table(df, cur) -> list:
-    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | Recent candles |",
-           "|---|---|---:|---:|---:|---:|---:|---|"]
+    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Recent candles |",
+           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
     for r in df.itertuples():
         line = (f"| {r.symbol} | {r.name[:32]} | {cur}{r.close:,.2f} | {r.score:.0f} | {pct(r.ret3m, 0)} | "
-                f"{pct(r.ret12m, 0)} | {r.rsi14:.0f} | {r.patterns.replace('_', ' ') or ''} |")
+                f"{pct(r.ret12m, 0)} | {r.rsi14:.0f} | {ratio(r.earnings_yield)} | {ratio(r.book_yield)} | "
+                f"{pct(r.roe, 0)} | {growth(r.growth)} | {r.patterns.replace('_', ' ') or ''} |")
         out.append(line)
     return out + [""]
 

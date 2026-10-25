@@ -42,6 +42,10 @@ jobs:
           else
             echo "No stored data yet: this run starts the full download."
           fi
+          # Company financials, refreshed weekly by the Fundamentals workflow.
+          if gh release download data --pattern fundamentals.tar.gz; then
+            tar -xzf fundamentals.tar.gz && rm fundamentals.tar.gz
+          fi
 
       - name: Download new candles
         # The first full download can take longer than one run; whatever is
@@ -52,7 +56,7 @@ jobs:
         if: always()
         run: |
           [ -d data ] || exit 0
-          tar -czf data.tar.gz data
+          tar -czf data.tar.gz --exclude=data/ph/fundamentals --exclude=data/us/fundamentals.csv.gz --exclude=data/fundamentals.log data
           gh release view data >/dev/null 2>&1 || \
             gh release create data --title "Price data" \
               --notes "Daily candles used by the stock guide. Updated automatically."

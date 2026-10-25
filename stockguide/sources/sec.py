@@ -4,6 +4,7 @@ Free, official, and every value carries the date it was filed, so the
 back-test can use only what was public at the time. SEC asks for a
 User-Agent with contact details and at most 10 requests a second.
 """
+import os
 import time
 
 import pandas as pd
@@ -12,8 +13,16 @@ from .http import request
 
 TICKERS = "https://www.sec.gov/files/company_tickers.json"
 FACTS = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json"
-# SEC rejects requests whose User-Agent lacks a contact e-mail address.
-HEADERS = {"User-Agent": "ph-us-stock-guide LMM26Beyond@users.noreply.github.com"}
+
+
+def headers() -> dict:
+    """SEC rejects requests without a real contact e-mail in the User-Agent. It is read
+    from SEC_CONTACT_EMAIL (a repository secret in GitHub Actions) so it is never
+    written into this public repository."""
+    email = os.environ.get("SEC_CONTACT_EMAIL", "").strip()
+    if "@" not in email:
+        raise RuntimeError("set SEC_CONTACT_EMAIL to your e-mail address to download SEC data")
+    return {"User-Agent": f"ph-us-stock-guide {email}"}
 
 # Our name -> XBRL concepts to try, first found wins per filing.
 CONCEPTS = {
@@ -35,13 +44,13 @@ CONCEPTS = {
 
 def ciks() -> dict:
     """Ticker -> CIK for every company with SEC filings."""
-    data = request("GET", TICKERS, headers=HEADERS).json()
+    data = request("GET", TICKERS, headers=headers()).json()
     return {v["ticker"].upper(): int(v["cik_str"]) for v in data.values()}
 
 
 def facts(cik: int) -> pd.DataFrame:
     """Selected facts for one company as rows: item, concept, start, end, value, form, fp, filed."""
-    j = request("GET", FACTS.format(cik=cik), headers=HEADERS).json().get("facts", {})
+    j = request("GET", FACTS.format(cik=cik), headers=headers()).json().get("facts", {})
     rows = []
     for item, names in CONCEPTS.items():
         for name in names:
