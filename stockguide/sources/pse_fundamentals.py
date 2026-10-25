@@ -16,8 +16,9 @@ from .pse import BASE
 PAGES = {
     "stock_data": "/companyPage/stockData.do?cmpy_id={c}&security_id={s}",
     "financials": "/companyPage/financial_reports_view.do?cmpy_id={c}",
-    "dividends": "/companyPage/dividends_and_rights_form.do?cmpy_id={c}",
 }
+# The dividends page loads its table with this request.
+DIVIDENDS = "/companyPage/dividends_and_rights_list.ax?DividendsOrRights=Dividends"
 
 
 def dump(universe, out_dir: Path, pause: float = 0.2) -> None:
@@ -34,6 +35,14 @@ def dump(universe, out_dir: Path, pause: float = 0.2) -> None:
                 (out_dir / f"{r.symbol}_{name}.error").write_text(f"{url}\n{e}")
                 failed += 1
             time.sleep(pause)
+        try:
+            text = request("POST", BASE + DIVIDENDS, data={"cmpy_id": r.cmpy_id}, tries=2).text
+            (out_dir / f"{r.symbol}_dividends.html").write_text(text)
+            ok += 1
+        except Exception as e:
+            (out_dir / f"{r.symbol}_dividends.error").write_text(f"dividends\n{e}")
+            failed += 1
+        time.sleep(pause)
     print(f"PSE fundamentals: {ok} pages saved, {failed} failed")
 
 
