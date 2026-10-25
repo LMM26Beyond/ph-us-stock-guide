@@ -82,3 +82,18 @@ def test_us_attach_uses_only_filed_figures():
     assert out["earnings_yield"].iloc[1] == pytest.approx(100 / 200)
     assert out["earnings_yield"].iloc[2] == pytest.approx(150 / 200)
     assert out["growth"].iloc[2] == pytest.approx(0.5)
+
+
+def test_parse_dividends():
+    from stockguide.sources.pse_fundamentals import parse_dividends
+    row = "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>x</td><td>x</td><td>x</td></tr>"
+    page = "<table class=\"list\"><caption>Dividend Information</caption>" + "".join([
+        row.format("COMMON", "Cash", "Php 1.10 per share", "Sep 11, 2026"),
+        row.format("COMMON", "Cash", "P1,000.50", "Mar 12, 2026"),
+        row.format("COMMON", "Cash", "Php9.00", "Jan 02, 2025"),        # older than a year
+        row.format("COMMON", "Stock", "10%", "Jun 01, 2026"),
+        row.format("COMMON", "Cash", "US$0.05", "Jun 01, 2026"),
+        row.format("ACPB3", "Cash", "Php30.269", "Jun 26, 2026"),       # preferred share
+    ]) + "</table>"
+    assert parse_dividends(page, pd.Timestamp("2026-10-23")) == pytest.approx(1001.60)
+    assert parse_dividends("<html>no table</html>", pd.Timestamp("2026-10-23")) is None

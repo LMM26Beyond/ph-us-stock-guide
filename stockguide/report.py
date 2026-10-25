@@ -108,8 +108,9 @@ def market_report(market, bench, today, stats, val) -> str:
               "waiting (waiting missed the rebounds), but expect bigger swings: consider "
               "smaller amounts.", ""]
     L += table(buys, cur) if len(buys) else ["None today.", ""]
-    L += ["P/E, P/B, ROE (return on equity) and profit growth come from the companies' latest "
-          "financial reports (" + ("PSE Edge" if market == "ph" else "SEC filings") + "). They are "
+    L += ["P/E, P/B, ROE (return on equity), profit growth and dividend yield come from the companies' "
+          "latest reports (" + ("PSE Edge; dividend yield is cash dividends with an ex-date in the last "
+          "12 months divided by the price" if market == "ph" else "SEC filings") + "). They are "
           "shown for context and are not part of the score yet. A loss or a very high P/E is "
           "worth a closer look before buying.", ""]
     avoid = liq[liq["score"] <= 25].sort_values("score").head(20)
@@ -146,12 +147,12 @@ def growth(g) -> str:
 
 
 def table(df, cur) -> list:
-    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Recent candles |",
-           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
+    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |",
+           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
     for r in df.itertuples():
         line = (f"| {r.symbol} | {r.name[:32]} | {cur}{r.close:,.2f} | {r.score:.0f} | {pct(r.ret3m, 0)} | "
                 f"{pct(r.ret12m, 0)} | {r.rsi14:.0f} | {ratio(r.earnings_yield)} | {ratio(r.book_yield)} | "
-                f"{pct(r.roe, 0)} | {growth(r.growth)} | {r.patterns.replace('_', ' ') or ''} |")
+                f"{pct(r.roe, 0)} | {growth(r.growth)} | {"–" if pd.isna(r.div_yield) else f"{100 * r.div_yield:.1f}%"} | {r.patterns.replace('_', ' ') or ''} |")
         out.append(line)
     return out + [""]
 

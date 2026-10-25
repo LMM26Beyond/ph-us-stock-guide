@@ -107,3 +107,29 @@ def parse_stock_data(text: str) -> dict:
         return float(m.group(1).replace(",", "")) if m else None
     return {"market_cap": field("Market Capitalization"), "shares": field("Outstanding Shares"),
             "price": field("Last Traded Price")}
+
+
+def parse_dividends(text: str, asof: pd.Timestamp, days: int = 365) -> float | None:
+    """Cash dividends per common share with an ex-date in the last year, in pesos.
+
+    Rates are typed by hand ("Php1.10", "P46.00 per share"); rows in another
+    currency or given as a percentage are skipped. None when the page has no table."""
+    if "Dividend Information" not in text:
+        return None
+    total = 0.0
+    for row in re.findall(r"<tr>(.*?)</tr>", text, re.S):
+        cells = [html.unescape(re.sub(r"<[^>]+>|\s+", " ", c)).strip()
+                 for c in re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)]
+        if len(cells) < 4 or cells[0].upper() != "COMMON" or cells[1].lower() != "cash":
+            continue
+        rate = cells[2].lower()
+        if re.search(r"us|dollar|cad|\$|%", rate):
+            continue
+        num = re.search(r"\d[\d,]*\.?\d*", rate)
+        try:
+            ex = pd.Timestamp(cells[3])
+        except ValueError:
+            continue
+        if num and asof - pd.Timedelta(days=days) < ex <= asof:
+            total += float(num.group().replace(",", ""))
+    return total

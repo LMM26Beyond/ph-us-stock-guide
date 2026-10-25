@@ -26,33 +26,33 @@ Liquid stocks with a score of 70 or more, above their 200-day average, not overe
 
 **The market is in a downtrend.** In the back-test, buying anyway did better than waiting (waiting missed the rebounds), but expect bigger swings: consider smaller amounts.
 
-| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Recent candles |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| AEV | Aboitiz Equity Ventures, Inc. | ₱40.25 | 86 | +19% | +39% | 62 | 9.5 | 0.7 | +8% | +63% | shooting star, gravestone doji, hanging man |
-| AC | Ayala Corporation | ₱540.00 | 79 | +11% | +14% | 58 | 5.5 | 0.6 | +11% | -2% |  |
-| MEG | Megaworld Corporation | ₱2.25 | 79 | +7% | +12% | 56 | 3.4 | 0.3 | +7% | +2% |  |
-| SGP | Synergy Grid & Development Phils | ₱24.65 | 78 | -12% | +47% | 58 | 3.8 | 0.9 | +23% | +144% | hanging man |
-| ICT | International Container Terminal | ₱852.00 | 76 | -12% | +56% | 45 | – | – | – | – |  |
-| FGEN | First Gen Corporation | ₱19.70 | 75 | +3% | +29% | 44 | – | 0.4 | – | -9% |  |
-| PNB | Philippine National Bank | ₱77.55 | 71 | +29% | +50% | 58 | 4.3 | 0.5 | +11% | +17% | hanging man, bullish engulfing, bullish marubozu |
-| AP | Aboitiz Power Corporation | ₱45.95 | 70 | +4% | +10% | 50 | 13.3 | 1.6 | +12% | +45% |  |
+| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| AEV | Aboitiz Equity Ventures, Inc. | ₱40.25 | 86 | +19% | +39% | 62 | 9.5 | 0.7 | +8% | +63% | 3.8% | shooting star, gravestone doji, hanging man |
+| AC | Ayala Corporation | ₱540.00 | 79 | +11% | +14% | 58 | 5.5 | 0.6 | +11% | -2% | 1.8% |  |
+| MEG | Megaworld Corporation | ₱2.25 | 79 | +7% | +12% | 56 | 3.4 | 0.3 | +7% | +2% | 5.2% |  |
+| SGP | Synergy Grid & Development Phils | ₱24.65 | 78 | -12% | +47% | 58 | 3.8 | 0.9 | +23% | +144% | 4.2% | hanging man |
+| ICT | International Container Terminal | ₱852.00 | 76 | -12% | +56% | 45 | – | – | – | – | 2.1% |  |
+| FGEN | First Gen Corporation | ₱19.70 | 75 | +3% | +29% | 44 | – | 0.4 | – | -9% | 4.1% |  |
+| PNB | Philippine National Bank | ₱77.55 | 71 | +29% | +50% | 58 | 4.3 | 0.5 | +11% | +17% | 5.7% | hanging man, bullish engulfing, bullish marubozu |
+| AP | Aboitiz Power Corporation | ₱45.95 | 70 | +4% | +10% | 50 | 13.3 | 1.6 | +12% | +45% | 5.0% |  |
 
-P/E, P/B, ROE (return on equity) and profit growth come from the companies' latest financial reports (PSE Edge). They are shown for context and are not part of the score yet. A loss or a very high P/E is worth a closer look before buying.
+P/E, P/B, ROE (return on equity), profit growth and dividend yield come from the companies' latest reports (PSE Edge; dividend yield is cash dividends with an ex-date in the last 12 months divided by the price). They are shown for context and are not part of the score yet. A loss or a very high P/E is worth a closer look before buying.
 
 ## Avoid
 
 Liquid stocks with the weakest scores: falling trend and lagging the market. If you own one, check it in the portfolio section.
 
-| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Recent candles |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| MRC | MRC Allied, Inc. | ₱0.65 | 10 | -19% | -35% | 40 | – | 0.5 | – | n/m | bullish marubozu |
-| PLUS | DigiPlus Interactive Corp. | ₱7.30 | 16 | -28% | -69% | 39 | 2.4 | 0.7 | +29% | +17% | bullish engulfing |
-| DMC | DMCI Holdings, Inc. | ₱7.22 | 19 | -4% | -37% | 40 | 5.6 | 0.8 | +14% | +25% | bullish engulfing |
-| CEB | Cebu Air, Inc. | ₱23.50 | 20 | -19% | -27% | 53 | loss | 1.5 | -26% | -166% | bearish engulfing, hanging man |
-| SCC | Semirara Mining and Power Corpor | ₱11.60 | 21 | -47% | -66% | 33 | 3.8 | 0.8 | +21% | +2% |  |
-| CREIT | Citicore Energy REIT Corp. | ₱2.84 | 24 | -16% | -23% | 36 | 13.2 | 4.0 | +30% | -0% | hammer |
-| CNPF | Century Pacific Food, Inc. | ₱28.55 | 25 | -8% | -22% | 25 | 13.6 | 2.5 | +18% | +6% | bullish harami |
-| TUBIG | Tubig Pilipinas Holdings Inc. | ₱0.06 | 25 | +125% | -68% | 87 | – | n/m | – | n/m |  |
+| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| MRC | MRC Allied, Inc. | ₱0.65 | 10 | -19% | -35% | 40 | – | 0.5 | – | n/m | 0.0% | bullish marubozu |
+| PLUS | DigiPlus Interactive Corp. | ₱7.30 | 16 | -28% | -69% | 39 | 2.4 | 0.7 | +29% | +17% | 11.4% | bullish engulfing |
+| DMC | DMCI Holdings, Inc. | ₱7.22 | 19 | -4% | -37% | 40 | 5.6 | 0.8 | +14% | +25% | 10.8% | bullish engulfing |
+| CEB | Cebu Air, Inc. | ₱23.50 | 20 | -19% | -27% | 53 | loss | 1.5 | -26% | -166% | 0.0% | bearish engulfing, hanging man |
+| SCC | Semirara Mining and Power Corpor | ₱11.60 | 21 | -47% | -66% | 33 | 3.8 | 0.8 | +21% | +2% | 10.8% |  |
+| CREIT | Citicore Energy REIT Corp. | ₱2.84 | 24 | -16% | -23% | 36 | 13.2 | 4.0 | +30% | -0% | 7.1% | hammer |
+| CNPF | Century Pacific Food, Inc. | ₱28.55 | 25 | -8% | -22% | 25 | 13.6 | 2.5 | +18% | +6% | 0.0% | bullish harami |
+| TUBIG | Tubig Pilipinas Holdings Inc. | ₱0.06 | 25 | +125% | -68% | 87 | – | n/m | – | n/m | 0.0% |  |
 
 ## Signals that have worked here
 

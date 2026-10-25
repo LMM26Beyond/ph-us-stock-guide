@@ -8,7 +8,7 @@ back-test never sees a number before the market did.
   roe              net income / equity
   debt_ratio       liabilities / assets
   growth           net income growth over the previous fiscal year
-  div_yield        last fiscal year's dividends per share / price
+  div_yield        dividends per share over the last year / price
 """
 import numpy as np
 import pandas as pd
@@ -107,10 +107,11 @@ def load_ph() -> dict:
     return {}
 
 
-def ph_snapshot(raw_dir=None) -> pd.DataFrame:
+def ph_snapshot(raw_dir=None, asof=None) -> pd.DataFrame:
     """Today's measures for every PSE company from its saved PSE Edge pages."""
-    from .sources.pse_fundamentals import parse_financials, parse_stock_data
+    from .sources.pse_fundamentals import parse_dividends, parse_financials, parse_stock_data
     raw_dir = raw_dir or DATA_DIR / "ph" / "fundamentals" / "raw"
+    asof = pd.Timestamp(asof) if asof is not None else pd.Timestamp.today().normalize()
     rows = []
     for f in sorted(raw_dir.glob("*_financials.html")):
         sym = f.name[: -len("_financials.html")]
@@ -118,7 +119,13 @@ def ph_snapshot(raw_dir=None) -> pd.DataFrame:
         sd = raw_dir / f"{sym}_stock_data.html"
         mk = parse_stock_data(sd.read_text(errors="replace")) if sd.exists() else {}
         fin = check_scale(fin, mk.get("shares"))
-        rows.append({"symbol": sym, **ph_measures(fin, mk.get("market_cap"))})
+        row = {"symbol": sym, **ph_measures(fin, mk.get("market_cap"))}
+        dv = raw_dir / f"{sym}_dividends.html"
+        dps = parse_dividends(dv.read_text(errors="replace"), asof) if dv.exists() else None
+        price = mk.get("price") or (mk["market_cap"] / mk["shares"] if mk.get("market_cap") and mk.get("shares") else None)
+        if dps is not None and price:
+            row["div_yield"] = dps / price
+        rows.append(row)
     return pd.DataFrame(rows)
 
 
@@ -184,7 +191,7 @@ def ph_measures(fin: dict, mcap) -> dict:
 def latest(market: str, today: pd.DataFrame) -> pd.DataFrame:
     """Add today's measures to the latest-score rows (symbol, date, close)."""
     if market == "ph":
-        snap = ph_snapshot() if (DATA_DIR / "ph" / "fundamentals" / "raw").exists() else pd.DataFrame()
+        snap = ph_snapshot(asof=today["date"].max()) if (DATA_DIR / "ph" / "fundamentals" / "raw").exists() else pd.DataFrame()
         if snap.empty:
             return today.assign(**{m: np.nan for m in MEASURES})
         return today.drop(columns=[m for m in MEASURES if m in today]).merge(
