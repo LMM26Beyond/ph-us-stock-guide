@@ -82,6 +82,10 @@ class Rules:
     min_roe: float | None = None
     min_growth: float | None = None
     max_pe: float | None = None
+    # Position size: "equal" splits the money evenly across the slots; "volatility" scales
+    # each stock's amount by vol_target / (ATR / price), between half and double the even share.
+    sizing: str = "equal"
+    vol_target: float = 0.025
 
 
 def monthly_scores(snaps: pd.DataFrame, bench: pd.DataFrame) -> pd.DataFrame:
@@ -185,11 +189,11 @@ def simulate(market: str, scores: pd.DataFrame, regime: pd.Series, px: dict,
             held_value = sum(q["shares"] * last_close.at[day, s] for s, q in pos.items()
                              if not pd.isna(last_close.at[day, s]))
             target = (cash + held_value) / rules.slots
-            for sym in pending_buy:
+            for sym, atr_pct in pending_buy:
                 p = opens.at[day, sym] if sym in opens else np.nan
                 if pd.isna(p) or sym in pos or len(pos) >= rules.slots:
                     continue
-                budget = min(target, cash)
+                budget = min(target * size_factor(atr_pct, rules), cash)
                 lot = board_lot(p) if lots else 1
                 shares = int(budget / (p * (1 + costs.commission * (1 + costs.vat) + costs.fees + costs.slippage)) / lot) * lot
                 if shares <= 0:
@@ -224,11 +228,19 @@ def simulate(market: str, scores: pd.DataFrame, regime: pd.Series, px: dict,
                 if free > 0:
                     cand = candidates(g.reset_index(), rules)
                     cand = cand[~cand["symbol"].isin(pos)]
-                    pending_buy = cand["symbol"].head(free).tolist()
+                    cand = cand.head(free)
+                    pending_buy = list(zip(cand["symbol"], cand["atr14"] / cand["close"]))
 
         equity[day] = cash + sum(q["shares"] * last_close.at[day, s] for s, q in pos.items()
                                  if not pd.isna(last_close.at[day, s]))
     return pd.Series(equity, dtype=float), pd.DataFrame(trades)
+
+
+def size_factor(atr_pct: float, rules: Rules) -> float:
+    """Multiple of the even share to put in one stock."""
+    if rules.sizing != "volatility" or not atr_pct or pd.isna(atr_pct):
+        return 1.0
+    return float(np.clip(rules.vol_target / atr_pct, 0.5, 2.0))
 
 
 def stats(eq: pd.Series, trades: pd.DataFrame | None = None) -> dict:
@@ -256,6 +268,11 @@ VARIANTS = {
     "Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit)":
         {"stops": True, "regime_filter": True, "sell_below": 50, "max_atr_pct": 1.0},
 }
+# How much to put in each stock.
+SIZING_VARIANTS = {
+    "Current rules, smaller amounts in more volatile stocks": {"sizing": "volatility", "vol_target": 0.02},
+    "Current rules, half as many stocks": {"slots": 0.5},   # share of the market's slots
+}
 # Tried in the US only, where SEC filings give the figures known on each past date.
 FUNDAMENTAL_VARIANTS = {
     "Current rules + only profitable companies": {"profitable": True},
@@ -269,7 +286,7 @@ def run(market: str, events_snaps=None) -> dict:
     _, snaps = events_snaps or analysis.run(market, progress=False)
     bench = analysis.benchmark(market)
     scores = monthly_scores(snaps, bench)
-    variants = dict(VARIANTS)
+    variants = VARIANTS | SIZING_VARIANTS
     if market == "us" and (DATA_DIR / "us" / "fundamentals.csv.gz").exists():
         scores = fundamentals.attach(scores, "us")
         variants |= FUNDAMENTAL_VARIANTS
@@ -280,6 +297,8 @@ def run(market: str, events_snaps=None) -> dict:
     cap = CAPITAL[market]
     results = {}
     for name, kw in variants.items():
+        if isinstance(kw.get("slots"), float):
+            kw = kw | {"slots": int(SLOTS[market] * kw["slots"])}
         rules = replace(Rules(slots=SLOTS[market]), **kw)
         eq, tr = simulate(market, scores, regime, px, rules, cap, start)
         results[name] = (eq, tr)
@@ -333,6 +352,22 @@ def to_markdown(market: str, out: dict) -> str:
                        (f"From {TUNED_UNTIL + pd.Timedelta(days=1):%b %Y} (test)", eq0.index > TUNED_UNTIL)):
         a, b = stats(eq0[sel]).get("cagr"), stats(bench_eq[sel]).get("cagr")
         L.append(f"| {label} | {pct(a)} a year | {pct(b)} a year |")
+
+    L += ["", "## Position size", "",
+          f"The current rules put an equal amount in each of up to {rules.slots} stocks. Two "
+          "alternatives:", "",
+          "| Strategy | Yearly return | Worst drop | Tuned period | Test period |", "|---|---:|---:|---:|---:|"]
+    for name in ["Current rules", *SIZING_VARIANTS]:
+        eq = res[name][0]
+        s = stats(eq)
+        L.append(f"| {name} | {pct(s.get('cagr'))} | {pct(s.get('max_dd'))} | "
+                 f"{pct(stats(eq[eq.index <= TUNED_UNTIL]).get('cagr'))} | "
+                 f"{pct(stats(eq[eq.index > TUNED_UNTIL]).get('cagr'))} |")
+    L += ["", "\"Smaller amounts in more volatile stocks\" scales each stock's amount by 2% divided "
+          "by its average daily range as a share of the price, from half to double the equal "
+          "amount. It gives smaller drops for a lower return: a choice for a cautious investor, "
+          "not a free improvement. Holding fewer stocks made the swings bigger without "
+          "raising the return in the tuned period, so keep the full number of stocks."]
 
     fund = [n for n in res if n in FUNDAMENTAL_VARIANTS]
     if fund:

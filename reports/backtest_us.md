@@ -10,6 +10,8 @@ Costs per trade: no commission, 0.003% regulatory fees and 0.05% slippage each w
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Current rules | +18.9% | +373.7% | -43.1% | 0.71 | 491 | 42% | +18.8% |
 | Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.2% | -1.5% | -42.5% | 0.10 | 1890 | 35% | +0.3% |
+| Current rules, smaller amounts in more volatile stocks | +11.2% | +159.4% | -31.8% | 0.61 | 516 | 41% | +17.5% |
+| Current rules, half as many stocks | +17.0% | +310.8% | -47.6% | 0.65 | 238 | 44% | +16.7% |
 | Current rules + only profitable companies | +11.2% | +159.7% | -46.3% | 0.51 | 513 | 39% | +8.8% |
 | Current rules + only ROE of 15% or more | +12.3% | +182.3% | -38.8% | 0.56 | 537 | 40% | +9.2% |
 | Current rules + only P/E of 25 or less | +11.1% | +156.5% | -40.6% | 0.54 | 544 | 43% | +7.1% |
@@ -25,6 +27,18 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 |---|---:|---:|
 | To Dec 2022 (tuned) | +14.1% a year | +8.0% a year |
 | From Jan 2023 (test) | +26.9% a year | +19.9% a year |
+
+## Position size
+
+The current rules put an equal amount in each of up to 40 stocks. Two alternatives:
+
+| Strategy | Yearly return | Worst drop | Tuned period | Test period |
+|---|---:|---:|---:|---:|
+| Current rules | +18.9% | -43.1% | +14.1% | +26.9% |
+| Current rules, smaller amounts in more volatile stocks | +11.2% | -31.8% | +7.4% | +17.2% |
+| Current rules, half as many stocks | +17.0% | -47.6% | +10.1% | +28.3% |
+
+"Smaller amounts in more volatile stocks" scales each stock's amount by 2% divided by its average daily range as a share of the price, from half to double the equal amount. It gives smaller drops for a lower return: a choice for a cautious investor, not a free improvement. Holding fewer stocks made the swings bigger without raising the return in the tuned period, so keep the full number of stocks.
 
 ## Fundamentals filters
 
