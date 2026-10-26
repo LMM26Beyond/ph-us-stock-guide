@@ -73,6 +73,16 @@ Manila): it downloads new candles, rebuilds the reports and commits them to
 `data` release, so they are not in git history. You can also start it by
 hand from the Actions tab (Daily update → Run workflow).
 
+### Alerts
+
+After each daily update, changes since the last run are posted as a comment on
+the open **Stock alerts** issue (label `alerts`), which GitHub e-mails to the
+repository owner: the market trend changing (uptrend, mixed, downtrend), stocks
+joining or leaving the buy list, and a reminder on the month's last weekday,
+when the tested rules buy and sell. Days without changes post nothing. Close
+the issue or unsubscribe from it to stop the e-mails; a new one is opened on
+the next change if none is open.
+
 To get the data locally: `gh release download data --pattern data.tar.gz && tar -xzf data.tar.gz`.
 
 ## Tests

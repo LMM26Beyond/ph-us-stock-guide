@@ -4,7 +4,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from . import analysis, backtest, fundamentals, patterns, score, storage, study
+from . import alerts, analysis, backtest, fundamentals, patterns, score, storage, study
 from .config import BENCHMARK, DATA_DIR, REPORTS_DIR
 
 LABEL = {"ph": "Philippines (PSE)", "us": "United States"}
@@ -46,6 +46,8 @@ def analyze(market: str) -> None:
         DATA_DIR / market / "scores.csv", index=False, float_format="%.4g")
     val = score.validate(snaps, bench)
     (REPORTS_DIR / f"{market}.md").write_text(market_report(market, bench, today, stats, val))
+    for line in alerts.run(market, bench.index[-1], regime(bench, today)[0], today):
+        print(f"  alert: {line}")
     bt = backtest.run(market, (events, snaps))
     (REPORTS_DIR / f"backtest_{market}.md").write_text(backtest.to_markdown(market, bt))
     print(f"  wrote reports/{market}.md, signals_{market}.md and backtest_{market}.md")

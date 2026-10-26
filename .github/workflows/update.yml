@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: daily-update
@@ -56,7 +57,7 @@ jobs:
         if: always()
         run: |
           [ -d data ] || exit 0
-          tar -czf data.tar.gz --exclude=data/ph/fundamentals --exclude=data/us/fundamentals.csv.gz --exclude=data/fundamentals.log data
+          tar -czf data.tar.gz --exclude=data/ph/fundamentals --exclude=data/us/fundamentals.csv.gz --exclude=data/fundamentals.log --exclude="data/alerts_*" data
           gh release view data >/dev/null 2>&1 || \
             gh release create data --title "Price data" \
               --notes "Daily candles used by the stock guide. Updated automatically."
@@ -73,3 +74,17 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Reports for $(date -u +%F)"
           git push
+
+      - name: Post alerts
+        # Changes since the last run go to the open "Stock alerts" issue, so
+        # GitHub notifies the repository owner by e-mail and in the app.
+        run: |
+          ls data/alerts_*.md >/dev/null 2>&1 || exit 0
+          gh label create alerts --color FBCA04 --description "Daily stock alerts" 2>/dev/null || true
+          n=$(gh issue list --label alerts --state open --json number --jq '.[0].number')
+          if [ -z "$n" ]; then
+            n=$(gh issue create --label alerts --title "Stock alerts" \
+              --body "Changes in the market trend and the buy lists, posted after each daily update. Unsubscribe here to stop the e-mails." | grep -o '[0-9]*$')
+          fi
+          { echo "@${{ github.repository_owner }} changes in today's reports:"; echo; cat data/alerts_*.md; } > alert.md
+          gh issue comment "$n" --body-file alert.md

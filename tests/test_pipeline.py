@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from stockguide import backtest, fundamentals, report, storage
+from stockguide import alerts, backtest, fundamentals, report, storage
 
 
 def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
@@ -22,9 +22,10 @@ def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
 
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
-    for mod in (storage, report, fundamentals, backtest):
+    for mod in (storage, report, fundamentals, backtest, alerts):
         monkeypatch.setattr(mod, "DATA_DIR", tmp_path / "data")
-    monkeypatch.setattr(report, "REPORTS_DIR", tmp_path / "reports")
+    for mod in (report, alerts):
+        monkeypatch.setattr(mod, "REPORTS_DIR", tmp_path / "reports")
     return tmp_path
 
 
@@ -45,6 +46,7 @@ def test_analyze_and_portfolio(data_dir, market, bench):
     assert "## The market:" in text and "## Has the score worked?" in text
     assert (data_dir / "reports" / f"signals_{market}.md").exists()
     bt_text = (data_dir / "reports" / f"backtest_{market}.md").read_text()
+    assert (data_dir / "reports" / f"alerts_state_{market}.json").exists()
     assert "## Verdict" in bt_text and "## Position size" in bt_text
     scores = pd.read_csv(data_dir / "data" / market / "scores.csv")
     assert len(scores) == len(syms) and scores["score"].between(0, 100).all()
