@@ -73,6 +73,16 @@ Manila): it downloads new candles, rebuilds the reports and commits them to
 `data` release, so they are not in git history. You can also start it by
 hand from the Actions tab (Daily update → Run workflow).
 
+### Dashboard
+
+The daily update also publishes a web dashboard to GitHub Pages, at
+`https://lmm26beyond.github.io/ph-us-stock-guide/`: the market trend with the
+index chart, the buy and avoid lists with six-month price lines, the latest
+changes, and the back-test against the index. Turn Pages on once under
+Settings → Pages → Source: **GitHub Actions**. To see it locally:
+`python -m stockguide dashboard`, then `python -m http.server -d site` and open
+http://localhost:8000.
+
 ### Alerts
 
 After each daily update, changes since the last run are posted as a comment on

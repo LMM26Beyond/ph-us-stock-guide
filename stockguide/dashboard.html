@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock Guide</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f6f4; --surface: #fcfcfb; --border: #e3e2de;
+  --text: #0b0b0b; --text-2: #52514e; --muted: #85837d;
+  --s1: #2a78d6; --s2: #eb6834; --grid: #ecebe7; --focus: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #2e2e2c;
+    --text: #f0efec; --text-2: #c3c2b7; --muted: #8f8d85;
+    --s1: #3987e5; --s2: #d95926; --grid: #262624; --focus: #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #2e2e2c;
+  --text: #f0efec; --text-2: #c3c2b7; --muted: #8f8d85;
+  --s1: #3987e5; --s2: #d95926; --grid: #262624; --focus: #3987e5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 17px; margin: 0 0 8px; }
+.sub { color: var(--text-2); font-size: 13px; }
+.tabs { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.tabs button { border: 0; background: var(--surface); color: var(--text-2); padding: 8px 16px; font: inherit; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--s1); color: #fff; }
+.tabs button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 12px 0; }
+.tile .label { color: var(--text-2); font-size: 12px; }
+.tile .value { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.state { font-size: 20px; font-weight: 700; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.legend { display: flex; gap: 16px; font-size: 13px; color: var(--text-2); margin: 4px 0 8px; flex-wrap: wrap; }
+.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 8px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.12); white-space: nowrap; display: none; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+th { color: var(--text-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+td.l, th.l { text-align: left; }
+td.name { color: var(--text-2); max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 600px) { .name { display: none; } }
+.note { color: var(--text-2); font-size: 13px; margin: 8px 0 0; }
+details summary { cursor: pointer; font-weight: 600; }
+ul.alerts { margin: 0; padding-left: 20px; }
+footer { color: var(--muted); font-size: 12px; margin: 24px 0; }
+a { color: var(--s1); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Stock Guide</h1>
+      <div class="sub" id="asof">Loading…</div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Market">
+      <button role="tab" id="tab-ph" aria-selected="true" data-m="ph">PSE</button>
+      <button role="tab" id="tab-us" aria-selected="false" data-m="us">US</button>
+    </div>
+  </header>
+  <div id="app"></div>
+  <footer>
+    Automated technical analysis of past prices, not licensed financial advice. Signals are
+    probabilities, not certainties. Full reports, methods and back-test details are in the
+    <a href="https://github.com/LMM26Beyond/ph-us-stock-guide/tree/main/reports">reports folder</a>.
+  </footer>
+</main>
+<script>
+const CUR = { ph: "₱", us: "$" };
+const INDEX = { PSEI: "PSEi", SPX: "S&P 500" };
+const data = {};
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pct = (x, d = 1) => x == null ? "–" : (x > 0 ? "+" : "") + (100 * x).toFixed(d) + "%";
+const plain = (x, d = 1) => x == null ? "–" : (100 * x).toFixed(d) + "%";
+const num = (x, d = 2) => x == null ? "–" : x.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtDate = s => new Date(s + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+function lineChart(el, dates, series, opts = {}) {
+  // series: [{name, values, color}]; one shared y-axis.
+  // Drawn at the container's real width so text stays at its true size on a phone.
+  const W = Math.max(300, el.clientWidth || 900), H = W < 600 ? 200 : 260, m = { t: 10, r: 64, b: 24, l: 52 };
+  const n = dates.length, all = series.flatMap(s => s.values).filter(v => v != null);
+  let lo = Math.min(...all), hi = Math.max(...all);
+  const pad = (hi - lo) * 0.05 || 1; lo -= pad; hi += pad;
+  const x = i => m.l + (W - m.l - m.r) * i / Math.max(n - 1, 1);
+  const y = v => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+  const ticks = 4, fy = opts.fmt || (v => num(v, 0));
+  let g = "";
+  for (let k = 0; k <= ticks; k++) {
+    const v = lo + (hi - lo) * k / ticks;
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/>` +
+         `<text x="${m.l - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${fy(v)}</text>`;
+  }
+  const years = [];
+  dates.forEach((d, i) => { if (i === 0 || d.slice(0, 4) !== dates[i - 1].slice(0, 4)) years.push(i); });
+  if (years.length > 1 && x(years[1]) - x(years[0]) < 60) years.shift();   // partial first year
+  const step = Math.ceil(years.length / Math.max(2, Math.floor((W - m.l - m.r) / 70)));
+  years.filter((_, k) => k % step === 0).forEach(i =>
+    g += `<text x="${x(i)}" y="${H - 6}" font-size="11" fill="var(--muted)">${dates[i].slice(0, 4)}</text>`);
+  for (const s of series) {
+    let d = "", pen = false;
+    s.values.forEach((v, i) => { if (v == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
+    g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round"/>`;
+    const li = s.values.length - 1 - [...s.values].reverse().findIndex(v => v != null);
+    g += `<text x="${x(li) + 6}" y="${y(s.values[li]) + 4}" font-size="11" fill="var(--text-2)">${esc(s.short || s.name)}</text>`;
+  }
+  g += `<line class="cross" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/>`;
+  series.forEach((s, k) => g += `<circle class="dot${k}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2" visibility="hidden"/>`);
+  el.innerHTML = `<div class="legend">${series.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}</div>` +
+    `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(opts.label || "")}">${g}<rect x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg><div class="tip"></div>`;
+  const svg = $("svg", el), tip = $(".tip", el), cross = $(".cross", el);
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(n - 1, Math.round((px - m.l) / (W - m.l - m.r) * (n - 1))));
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    series.forEach((s, k) => { const c = $(".dot" + k, el), v = s.values[i];
+      if (v == null) c.setAttribute("visibility", "hidden");
+      else { c.setAttribute("cx", x(i)); c.setAttribute("cy", y(v)); c.setAttribute("visibility", "visible"); } });
+    tip.innerHTML = `<b>${fmtDate(dates[i])}</b><br>` + series.map(s =>
+      `<span style="color:${s.color}">●</span> ${esc(s.name)}: ${s.values[i] == null ? "–" : fy(s.values[i])}`).join("<br>");
+    tip.style.display = "block";
+    const left = (ev.clientX - r.left) + 12;
+    tip.style.left = Math.min(left, r.width - tip.offsetWidth - 4) + "px"; tip.style.top = "36px";
+  };
+  svg.addEventListener("pointermove", move);
+  svg.addEventListener("pointerleave", () => { tip.style.display = "none"; cross.setAttribute("visibility", "hidden");
+    series.forEach((_, k) => $(".dot" + k, el).setAttribute("visibility", "hidden")); });
+}
+
+function spark(values) {
+  const v = values.filter(x => x != null); if (v.length < 2) return "";
+  const lo = Math.min(...v), hi = Math.max(...v), W = 90, H = 24;
+  const d = v.map((p, i) => (i ? "L" : "M") + (W * i / (v.length - 1)).toFixed(1) + "," + (H - 2 - (H - 4) * (p - lo) / ((hi - lo) || 1)).toFixed(1)).join("");
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="six-month price line"><path d="${d}" fill="none" stroke="var(--s1)" stroke-width="1.5"/></svg>`;
+}
+
+function table(rows, m) {
+  if (!rows.length) return `<p class="note">None today.</p>`;
+  const cur = CUR[m], lots = m === "ph";
+  const head = `<tr><th class="l">Stock</th><th class="l name">Name</th><th>Close</th>${lots ? "<th>Min. buy</th>" : ""}<th>Score</th><th>3 mo</th><th>12 mo</th><th>RSI</th><th>P/E</th><th>ROE</th><th>Div yield</th><th class="l">6 months</th></tr>`;
+  const body = rows.map(r => `<tr><td class="l"><b>${esc(r.symbol)}</b></td><td class="l name" title="${esc(r.name)}">${esc(r.name)}</td>` +
+    `<td>${cur}${num(r.close)}</td>${lots ? `<td>${cur}${num(r.min_buy, 0)}</td>` : ""}<td>${r.score ?? "–"}</td>` +
+    `<td>${pct(r.ret3m, 0)}</td><td>${pct(r.ret12m, 0)}</td><td>${r.rsi ?? "–"}</td>` +
+    `<td>${r.loss ? "loss" : r.pe == null ? "–" : r.pe > 100 ? "n/m" : num(r.pe, 1)}</td><td>${pct(r.roe, 0)}</td><td>${plain(r.div_yield)}</td>` +
+    `<td class="l">${spark(r.spark)}</td></tr>`).join("");
+  return `<div class="scroll"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
+let current = null;
+addEventListener("resize", () => { clearTimeout(window._rt); window._rt = setTimeout(() => current && charts(current), 150); });
+
+function render(m) {
+  current = data[m] ? m : null;
+  const d = data[m], app = $("#app");
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.m === m));
+  try { localStorage.setItem("market", m); } catch (e) {}
+  if (!d) { app.innerHTML = `<div class="card">No data for this market yet.</div>`; $("#asof").textContent = ""; return; }
+  const cur = CUR[m], iname = INDEX[d.index_name] || d.index_name, part = (m === "ph" ? 100000 : 10000);
+  $("#asof").textContent = `Data up to ${fmtDate(d.date)}`;
+  const bs = d.backtest.rules_stats, is = d.backtest.index_stats;
+  app.innerHTML = `
+  <section class="card">
+    <h2>The market</h2>
+    <div class="state">${esc(d.state)}</div>
+    <p class="note">${esc(d.advice)}</p>
+    <div class="tiles">
+      <div class="tile"><div class="label">${esc(iname)}</div><div class="value">${num(d.index.close)}</div></div>
+      <div class="tile"><div class="label">vs 200-day average</div><div class="value">${pct(d.index.vs200)}</div></div>
+      <div class="tile"><div class="label">3 months / 12 months</div><div class="value">${pct(d.index.ret3m, 0)} / ${pct(d.index.ret12m, 0)}</div></div>
+      <div class="tile"><div class="label">Stocks above their 200-day average</div><div class="value">${plain(d.breadth, 0)}</div></div>
+    </div>
+    <div class="chart" id="idx"></div>
+  </section>
+  ${d.alerts && d.alerts.length ? `<section class="card"><h2>Latest changes</h2><ul class="alerts">${d.alerts.map(a => `<li>${esc(a).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")}</li>`).join("")}</ul></section>` : ""}
+  <section class="card">
+    <h2>Buy candidates</h2>
+    ${table(d.buys, m)}
+    <p class="note"><b>How much to buy:</b> split the money for ${m === "ph" ? "PSE" : "US"} stocks into ${d.slots} equal parts, one per pick
+      (with ${cur}${num(part, 0)}, ${cur}${num(part / d.slots, 0)} a stock). Hold while the score stays at 60 or more; sell when it drops below at a month-end.
+      ${m === "ph" ? "<i>Min. buy</i> is the cost of one board lot. " : ""}P/E, ROE and dividend yield are for context only: as buy filters they lowered returns in the back-test.</p>
+  </section>
+  <section class="card">
+    <details><summary>Avoid (${d.avoid.length})</summary>
+    <p class="note">Liquid stocks with the weakest scores: falling trend and lagging the market.</p>
+    ${table(d.avoid, m)}</details>
+  </section>
+  <section class="card">
+    <h2>Back-test: following these rules vs holding the index</h2>
+    <div class="tiles">
+      <div class="tile"><div class="label">Rules, a year (after costs)</div><div class="value">${pct(bs.cagr)}</div></div>
+      <div class="tile"><div class="label">${esc(iname)}, a year</div><div class="value">${pct(is.cagr)}</div></div>
+      <div class="tile"><div class="label">Rules, worst drop</div><div class="value">${pct(bs.max_dd, 0)}</div></div>
+      <div class="tile"><div class="label">${esc(iname)}, worst drop</div><div class="value">${pct(is.max_dd, 0)}</div></div>
+    </div>
+    <div class="chart" id="bt"></div>
+    <p class="note">Growth of 1 invested at the start, monthly rebalancing, real trading costs${m === "ph" ? " and board lots" : ""}.
+      Delisted stocks are missing from the data, which flatters the rules. A past result does not promise a future one.</p>
+  </section>`;
+  charts(m);
+}
+
+function charts(m) {
+  const d = data[m], iname = INDEX[d.index_name] || d.index_name;
+  lineChart($("#idx"), d.index_chart.dates, [
+    { name: iname, short: iname, values: d.index_chart.close, color: "var(--s1)" },
+    { name: "200-day average", short: "200-day", values: d.index_chart.sma200, color: "var(--s2)" }],
+    { label: `${iname} over three years with its 200-day average` });
+  lineChart($("#bt"), d.backtest.dates, [
+    { name: "Current rules", short: "Rules", values: d.backtest.rules, color: "var(--s1)" },
+    { name: `Hold the ${iname}`, short: iname, values: d.backtest.index, color: "var(--s2)" }],
+    { label: "Back-test growth of 1", fmt: v => v.toFixed(1) + "×" });
+}
+
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => render(b.dataset.m)));
+Promise.all(["ph", "us"].map(m => fetch(`dashboard_${m}.json`, { cache: "no-cache" })
+  .then(r => r.ok ? r.json() : null).catch(() => null).then(j => { if (j) data[m] = j; })))
+  .then(() => {
+    let m = "ph";
+    try { m = localStorage.getItem("market") || m; } catch (e) {}
+    render(data[m] ? m : (data.ph ? "ph" : "us"));
+  });
+</script>
+</body>
+</html>

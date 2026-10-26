@@ -4,7 +4,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from . import alerts, analysis, backtest, fundamentals, patterns, score, storage, study
+from . import alerts, analysis, backtest, dashboard, fundamentals, patterns, score, storage, study
 from .config import BENCHMARK, DATA_DIR, REPORTS_DIR
 
 LABEL = {"ph": "Philippines (PSE)", "us": "United States"}
@@ -46,11 +46,22 @@ def analyze(market: str) -> None:
         DATA_DIR / market / "scores.csv", index=False, float_format="%.4g")
     val = score.validate(snaps, bench)
     (REPORTS_DIR / f"{market}.md").write_text(market_report(market, bench, today, stats, val))
-    for line in alerts.run(market, bench.index[-1], regime(bench, today)[0], today):
+    reg = regime(bench, today)
+    new_alerts = alerts.run(market, bench.index[-1], reg[0], today)
+    for line in new_alerts:
         print(f"  alert: {line}")
     bt = backtest.run(market, (events, snaps))
     (REPORTS_DIR / f"backtest_{market}.md").write_text(backtest.to_markdown(market, bt))
+    buys, avoid = buy_and_avoid(today)
+    dashboard.write(market, bench, today, reg, buys, avoid, bt, new_alerts)
     print(f"  wrote reports/{market}.md, signals_{market}.md and backtest_{market}.md")
+
+
+def buy_and_avoid(today: pd.DataFrame):
+    """The report's buy list (top 20 candidates) and avoid list (20 weakest liquid stocks)."""
+    liq = today[today["liquid"]]
+    buys = backtest.candidates(liq, backtest.Rules()).head(20)
+    return buys, liq[liq["score"] <= 25].sort_values("score").head(20)
 
 
 def regime(bench: pd.DataFrame, today: pd.DataFrame):
@@ -96,9 +107,8 @@ def market_report(market, bench, today, stats, val) -> str:
         L += ["PSEi before the first recorded real value is rebuilt from the AETF "
               "PSEi-tracker ETF, scaled to index points.", ""]
 
-    liq = today[today["liquid"]]
     rules = backtest.Rules()
-    buys = backtest.candidates(liq, rules).head(20)
+    buys, avoid = buy_and_avoid(today)
     L += ["## Buy candidates", "",
           f"Liquid stocks with a score of {rules.min_score:.0f} or more, above their 200-day "
           "average, not overextended (RSI ≤ 75, at most 30% above the 50-day average) and not "
@@ -124,7 +134,6 @@ def market_report(market, bench, today, stats, val) -> str:
           "12 months divided by the price" if market == "ph" else "SEC filings") + "). They are "
           "shown for context and are not part of the score yet. A loss or a very high P/E is "
           "worth a closer look before buying.", ""]
-    avoid = liq[liq["score"] <= 25].sort_values("score").head(20)
     L += ["## Avoid", "",
           "Liquid stocks with the weakest scores: falling trend and lagging the market. "
           "If you own one, check it in the portfolio section.", ""]

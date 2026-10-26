@@ -6,3 +6,5 @@ data/
 # Your real holdings stay on your machine unless you choose otherwise.
 portfolio.csv
 reports/portfolio.md
+# Built dashboard (published to GitHub Pages by the daily update).
+site/

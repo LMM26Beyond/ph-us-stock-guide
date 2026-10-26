@@ -3,11 +3,13 @@
 This only checks that the pipeline runs and writes its reports; the prices
 are synthetic, so the numbers in the reports mean nothing.
 """
+import json
+
 import numpy as np
 import pandas as pd
 import pytest
 
-from stockguide import alerts, backtest, fundamentals, report, storage
+from stockguide import alerts, backtest, dashboard, fundamentals, report, storage
 
 
 def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
@@ -24,7 +26,7 @@ def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
 def data_dir(tmp_path, monkeypatch):
     for mod in (storage, report, fundamentals, backtest, alerts):
         monkeypatch.setattr(mod, "DATA_DIR", tmp_path / "data")
-    for mod in (report, alerts):
+    for mod in (report, alerts, dashboard):
         monkeypatch.setattr(mod, "REPORTS_DIR", tmp_path / "reports")
     return tmp_path
 
@@ -47,6 +49,10 @@ def test_analyze_and_portfolio(data_dir, market, bench):
     assert (data_dir / "reports" / f"signals_{market}.md").exists()
     bt_text = (data_dir / "reports" / f"backtest_{market}.md").read_text()
     assert (data_dir / "reports" / f"alerts_state_{market}.json").exists()
+    dash = json.loads((data_dir / "reports" / f"dashboard_{market}.json").read_text())
+    assert dash["market"] == market and dash["index_chart"]["close"] and dash["backtest"]["rules"]
+    site = dashboard.build(data_dir / "site")
+    assert (site / "index.html").exists() and (site / f"dashboard_{market}.json").exists()
     assert "## Verdict" in bt_text and "## Position size" in bt_text
     scores = pd.read_csv(data_dir / "data" / market / "scores.csv")
     assert len(scores) == len(syms) and scores["score"].between(0, 100).all()

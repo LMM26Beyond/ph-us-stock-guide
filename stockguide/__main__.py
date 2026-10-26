@@ -5,18 +5,19 @@
   fundamentals  download company financials (PSE Edge, SEC)
   backtest   only the back-test (reports/backtest_<market>.md)
   portfolio  hold or sell advice for portfolio.csv
+  dashboard  put the web dashboard and its data together in site/
   all        update, then analyze
 """
 import argparse
 
-from . import backtest, fetch, report
+from . import backtest, dashboard, fetch, report
 from .config import MARKETS, REPORTS_DIR
 
 
 def main():
     ap = argparse.ArgumentParser(prog="stockguide", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["update", "fundamentals", "analyze", "backtest", "portfolio", "all"])
+    ap.add_argument("command", choices=["update", "fundamentals", "analyze", "backtest", "portfolio", "dashboard", "all"])
     ap.add_argument("--market", choices=[*MARKETS, "all"], default="all")
     ap.add_argument("--limit", type=int, help="only the first N symbols (for testing)")
     ap.add_argument("--max-minutes", type=float, help="stop downloading after this long; re-run to continue")
@@ -37,6 +38,8 @@ def main():
         for m in markets:
             (REPORTS_DIR / f"backtest_{m}.md").write_text(backtest.to_markdown(m, backtest.run(m)))
             print(f"wrote reports/backtest_{m}.md")
+    if a.command == "dashboard":
+        print(f"wrote {dashboard.build()}")
     if a.command in ("portfolio", "analyze", "all"):
         text = report.portfolio(a.file)
         if text:

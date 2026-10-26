@@ -75,6 +75,13 @@ jobs:
           git commit -m "Reports for $(date -u +%F)"
           git push
 
+      - name: Build dashboard
+        run: python -m stockguide dashboard
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
       - name: Post alerts
         # Changes since the last run go to the open "Stock alerts" issue, so
         # GitHub notifies the repository owner by e-mail and in the app.
@@ -88,3 +95,20 @@ jobs:
           fi
           { echo "@${{ github.repository_owner }} changes in today's reports:"; echo; cat data/alerts_*.md; } > alert.md
           gh issue comment "$n" --body-file alert.md
+
+  # Publishes the dashboard to GitHub Pages. Needs Pages turned on once
+  # (Settings > Pages > Source: GitHub Actions); until then this job fails
+  # without failing the run.
+  dashboard:
+    needs: update
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
