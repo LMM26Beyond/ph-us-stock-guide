@@ -1,0 +1,54 @@
+name: Fundamentals
+
+# Company financials change once a quarter; a weekly refresh is plenty.
+# Stored as fundamentals.tar.gz on the "data" release.
+on:
+  schedule:
+    - cron: "0 2 * * 6"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/fundamentals.yml"
+      - "stockguide/sources/sec.py"
+      - "stockguide/sources/pse_fundamentals.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fundamentals
+
+jobs:
+  fundamentals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      # SEC requires a contact e-mail; kept as a repository secret, not in the code.
+      SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Download company financials
+        run: |
+          mkdir -p data
+          python -m stockguide fundamentals 2>&1 | tee data/fundamentals.log
+          exit ${PIPESTATUS[0]}
+
+      - name: Store
+        if: always()
+        run: |
+          paths=$(ls -d data/fundamentals.log data/ph/fundamentals data/us/fundamentals.csv.gz 2>/dev/null || true)
+          [ -n "$paths" ] || exit 0
+          tar -czf fundamentals.tar.gz $paths
+          gh release view data >/dev/null 2>&1 || \
+            gh release create data --title "Price data" \
+              --notes "Daily candles used by the stock guide. Updated automatically."
+          gh release upload data fundamentals.tar.gz --clobber

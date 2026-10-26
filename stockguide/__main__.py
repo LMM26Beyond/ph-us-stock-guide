@@ -2,6 +2,7 @@
 
   update     download new daily candles (PH, US or both)
   analyze    study the signals, score the stocks, back-test the rules, write reports/
+  fundamentals  download company financials (PSE Edge, SEC)
   backtest   only the back-test (reports/backtest_<market>.md)
   portfolio  hold or sell advice for portfolio.csv
   all        update, then analyze
@@ -15,7 +16,7 @@ from .config import MARKETS, REPORTS_DIR
 def main():
     ap = argparse.ArgumentParser(prog="stockguide", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["update", "analyze", "backtest", "portfolio", "all"])
+    ap.add_argument("command", choices=["update", "fundamentals", "analyze", "backtest", "portfolio", "all"])
     ap.add_argument("--market", choices=[*MARKETS, "all"], default="all")
     ap.add_argument("--limit", type=int, help="only the first N symbols (for testing)")
     ap.add_argument("--max-minutes", type=float, help="stop downloading after this long; re-run to continue")
@@ -26,6 +27,8 @@ def main():
     if a.command in ("update", "all"):
         for m in markets:
             (fetch.update_ph if m == "ph" else fetch.update_us)(limit=a.limit, max_minutes=a.max_minutes)
+    if a.command == "fundamentals":
+        fetch.update_fundamentals(markets, limit=a.limit)
     if a.command in ("analyze", "all"):
         for m in markets:
             report.analyze(m)
