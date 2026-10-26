@@ -1,0 +1,14 @@
+{
+ "date": "2026-10-26",
+ "regime": "Downtrend",
+ "buys": [
+  "AEV",
+  "SGP",
+  "MEG",
+  "PNB",
+  "ICT",
+  "FGEN",
+  "FPH"
+ ],
+ "before": null
+}
