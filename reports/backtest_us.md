@@ -10,6 +10,9 @@ Costs per trade: no commission, 0.003% regulatory fees and 0.05% slippage each w
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Current rules | +18.9% | +373.7% | -43.1% | 0.71 | 491 | 42% | +18.8% |
 | Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.2% | -1.5% | -42.5% | 0.10 | 1890 | 35% | +0.3% |
+| Current rules + only profitable companies | +11.2% | +159.7% | -46.3% | 0.51 | 513 | 39% | +8.8% |
+| Current rules + only ROE of 15% or more | +12.3% | +182.3% | -38.8% | 0.56 | 537 | 40% | +9.2% |
+| Current rules + only P/E of 25 or less | +11.1% | +156.5% | -40.6% | 0.54 | 544 | 43% | +7.1% |
 | Hold the index | +12.9% | +196.0% | -33.9% | 0.74 | – | – | – |
 
 "Hold the index" is the S&P 500 with no costs and no dividends; the stock prices also exclude dividends, so the comparison is like for like.
@@ -22,6 +25,19 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 |---|---:|---:|
 | To Dec 2022 (tuned) | +14.1% a year | +8.0% a year |
 | From Jan 2023 (test) | +26.9% a year | +19.9% a year |
+
+## Fundamentals filters
+
+The same rules, but buying only companies that pass a test on their latest SEC filings as of each month-end (a company without the figure is skipped).
+
+| Strategy | Tuned period | Test period |
+|---|---:|---:|
+| Current rules | +14.1% a year | +26.9% a year |
+| Current rules + only profitable companies | +1.6% a year | +26.5% a year |
+| Current rules + only ROE of 15% or more | +3.5% a year | +26.1% a year |
+| Current rules + only P/E of 25 or less | +4.6% a year | +21.0% a year |
+
+No filter beat the current rules in both periods. Strong momentum stocks are often young or fast-growing companies with losses or high P/Es, and the filters screen out exactly those. So the report shows P/E, P/B, ROE and growth as context only.
 
 ## Year by year
 

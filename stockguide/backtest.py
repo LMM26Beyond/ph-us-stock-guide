@@ -20,8 +20,8 @@ from dataclasses import dataclass, replace
 import numpy as np
 import pandas as pd
 
-from . import analysis, score, storage
-from .config import BENCHMARK
+from . import analysis, fundamentals, score, storage
+from .config import BENCHMARK, DATA_DIR
 
 SLOTS = {"ph": 10, "us": 40}
 # The rules were chosen on data up to this date; later years test them.
@@ -76,6 +76,12 @@ class Rules:
     min_value: float = 0.0     # extra liquidity floor (20-day traded value)
     min_price: float = 0.0
     max_atr_pct: float = 0.05  # skip stocks whose daily range (ATR / close) is above this
+    # Fundamentals filters (US only: PSE Edge has no history). None = not used; a stock
+    # without the figure is skipped when a filter is on.
+    profitable: bool = False   # positive trailing net income
+    min_roe: float | None = None
+    min_growth: float | None = None
+    max_pe: float | None = None
 
 
 def monthly_scores(snaps: pd.DataFrame, bench: pd.DataFrame) -> pd.DataFrame:
@@ -125,7 +131,22 @@ def candidates(g: pd.DataFrame, rules: Rules) -> pd.DataFrame:
     return g[g["liquid"] & (g["score"] >= rules.min_score) & (g["close"] > g["sma200"])
              & (g["rsi14"] <= 75) & (g["close"] <= 1.3 * g["sma50"])
              & (g["value20"] >= rules.min_value) & (g["close"] >= rules.min_price)
-             & (g["atr14"] <= rules.max_atr_pct * g["close"])].sort_values("score", ascending=False)
+             & (g["atr14"] <= rules.max_atr_pct * g["close"]) & _fundamentals_ok(g, rules)
+             ].sort_values("score", ascending=False)
+
+
+def _fundamentals_ok(g: pd.DataFrame, rules: Rules) -> pd.Series:
+    ok = pd.Series(True, index=g.index)
+    col = lambda c: g[c] if c in g else pd.Series(np.nan, index=g.index)
+    if rules.profitable:
+        ok &= col("earnings_yield") > 0
+    if rules.min_roe is not None:
+        ok &= col("roe") >= rules.min_roe
+    if rules.min_growth is not None:
+        ok &= col("growth") >= rules.min_growth
+    if rules.max_pe is not None:
+        ok &= col("earnings_yield") >= 1 / rules.max_pe
+    return ok
 
 
 def simulate(market: str, scores: pd.DataFrame, regime: pd.Series, px: dict,
@@ -235,6 +256,12 @@ VARIANTS = {
     "Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit)":
         {"stops": True, "regime_filter": True, "sell_below": 50, "max_atr_pct": 1.0},
 }
+# Tried in the US only, where SEC filings give the figures known on each past date.
+FUNDAMENTAL_VARIANTS = {
+    "Current rules + only profitable companies": {"profitable": True},
+    "Current rules + only ROE of 15% or more": {"min_roe": 0.15},
+    "Current rules + only P/E of 25 or less": {"max_pe": 25},
+}
 
 
 def run(market: str, events_snaps=None) -> dict:
@@ -242,13 +269,17 @@ def run(market: str, events_snaps=None) -> dict:
     _, snaps = events_snaps or analysis.run(market, progress=False)
     bench = analysis.benchmark(market)
     scores = monthly_scores(snaps, bench)
+    variants = dict(VARIANTS)
+    if market == "us" and (DATA_DIR / "us" / "fundamentals.csv.gz").exists():
+        scores = fundamentals.attach(scores, "us")
+        variants |= FUNDAMENTAL_VARIANTS
     regime = regimes(scores, bench)
     held = scores.loc[scores["liquid"], "symbol"].unique()
     px = panels(market, held)
     start = max(scores["date"].min(), bench["sma200"].first_valid_index())
     cap = CAPITAL[market]
     results = {}
-    for name, kw in VARIANTS.items():
+    for name, kw in variants.items():
         rules = replace(Rules(slots=SLOTS[market]), **kw)
         eq, tr = simulate(market, scores, regime, px, rules, cap, start)
         results[name] = (eq, tr)
@@ -302,6 +333,29 @@ def to_markdown(market: str, out: dict) -> str:
                        (f"From {TUNED_UNTIL + pd.Timedelta(days=1):%b %Y} (test)", eq0.index > TUNED_UNTIL)):
         a, b = stats(eq0[sel]).get("cagr"), stats(bench_eq[sel]).get("cagr")
         L.append(f"| {label} | {pct(a)} a year | {pct(b)} a year |")
+
+    fund = [n for n in res if n in FUNDAMENTAL_VARIANTS]
+    if fund:
+        L += ["", "## Fundamentals filters", "",
+              "The same rules, but buying only companies that pass a test on their latest SEC "
+              "filings as of each month-end (a company without the figure is skipped).", "",
+              "| Strategy | Tuned period | Test period |", "|---|---:|---:|"]
+        period = {}
+        for name in ["Current rules", *fund]:
+            eq = res[name][0]
+            period[name] = (stats(eq[eq.index <= TUNED_UNTIL]).get("cagr", np.nan),
+                            stats(eq[eq.index > TUNED_UNTIL]).get("cagr", np.nan))
+            L.append(f"| {name} | {pct(period[name][0])} a year | {pct(period[name][1])} a year |")
+        base = period["Current rules"]
+        better = [n for n in fund if period[n][0] > base[0] and period[n][1] > base[1]]
+        if better:
+            L += ["", "Beat the current rules in both periods: " + ", ".join(better) + ". "
+                  "Worth considering as an extra check before buying."]
+        else:
+            L += ["", "No filter beat the current rules in both periods. Strong momentum stocks are "
+                  "often young or fast-growing companies with losses or high P/Es, and the filters "
+                  "screen out exactly those. So the report shows P/E, P/B, ROE and growth as "
+                  "context only."]
 
     L += ["", "## Year by year", "", f"| Year | Current rules | {bname} | Difference |", "|---|---:|---:|---:|"]
     for y in sorted(set(eq0.index.year)):
