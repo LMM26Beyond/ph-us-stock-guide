@@ -93,7 +93,7 @@ jobs:
             n=$(gh issue create --label alerts --title "Stock alerts" \
               --body "Changes in the market trend and the buy lists, posted after each daily update. Unsubscribe here to stop the e-mails." | grep -o '[0-9]*$')
           fi
-          { echo "@${{ github.repository_owner }} changes in today's reports:"; echo; cat data/alerts_*.md; } > alert.md
+          { echo "@${{ github.repository_owner }} changes in today's reports:"; echo; for f in data/alerts_*.md; do cat "$f"; echo; done; } > alert.md
           gh issue comment "$n" --body-file alert.md
 
   # Publishes the dashboard to GitHub Pages. Needs Pages turned on once
