@@ -44,11 +44,26 @@ def test_analyze_and_portfolio(data_dir, market, bench):
     text = (data_dir / "reports" / f"{market}.md").read_text()
     assert "## The market:" in text and "## Has the score worked?" in text
     assert (data_dir / "reports" / f"signals_{market}.md").exists()
-    assert "## Verdict" in (data_dir / "reports" / f"backtest_{market}.md").read_text()
+    bt_text = (data_dir / "reports" / f"backtest_{market}.md").read_text()
+    assert "## Verdict" in bt_text and "## Position size" in bt_text
     scores = pd.read_csv(data_dir / "data" / market / "scores.csv")
     assert len(scores) == len(syms) and scores["score"].between(0, 100).all()
 
     pf = data_dir / "portfolio.csv"
-    pf.write_text(f"market,ticker,shares,buy_price,buy_date\n{market},S01,100,50,2018-03-01\n{market},NOPE,5,10,\n")
+    pf.write_text(f"market,ticker,shares,buy_price,buy_date\n{market},S01,100,50,2018-03-01\n{market},NOPE,5,10,\n"
+                  f"{market},CASH,100000,,\n")
     out = report.portfolio(pf)
-    assert "S01" in out and "no price data" in out
+    assert "S01" in out and "no price data" in out and "CASH" not in out
+    assert f"## What to buy with your {market.upper()} cash" in out
+
+
+def test_buy_plan_board_lots(data_dir):
+    (data_dir / "data" / "ph").mkdir(parents=True)
+    row = lambda sym, close: dict(symbol=sym, close=close, liquid=True, score=90, rsi14=60, value20=1e8,
+                                  sma200=0.9 * close, sma50=close, atr14=0.02 * close)
+    pd.DataFrame([row("A", 1.2), row("B", 1200.0), row("C", 30.0)]).to_csv(data_dir / "data" / "ph" / "scores.csv", index=False)
+    out = "\n".join(report.buy_plan("ph", 100_000, 0.0, {"C"}))
+    # 10 parts of P10,000: A at P1.20 trades in lots of 1,000; B at P1,200 in lots of 5; C is held.
+    assert "| A | ₱1.20 | 90 | 8,000 |" in out
+    assert "| B | ₱1,200.00 | 90 | 5 |" in out
+    assert "| C |" not in out

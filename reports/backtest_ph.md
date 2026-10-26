@@ -10,6 +10,8 @@ Costs per trade: 0.25% commission (min ₱20) + 12% VAT, 0.015% PSE and SCCP fee
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Current rules | +7.0% | +127.4% | -45.7% | 0.43 | 215 | 33% | +4.1% |
 | Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -1.1% | -12.6% | -47.4% | 0.00 | 486 | 32% | -0.5% |
+| Current rules, smaller amounts in more volatile stocks | +5.0% | +80.1% | -33.9% | 0.38 | 222 | 35% | +3.8% |
+| Current rules, half as many stocks | +0.1% | +1.5% | -59.6% | 0.14 | 109 | 35% | +1.1% |
 | Hold the index | -1.5% | -16.7% | -47.9% | -0.00 | – | – | – |
 
 "Hold the index" is the PSEi with no costs and no dividends; the stock prices also exclude dividends, so the comparison is like for like.
@@ -22,6 +24,18 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 |---|---:|---:|
 | To Dec 2022 (tuned) | +5.0% a year | -1.8% a year |
 | From Jan 2023 (test) | +11.0% a year | -0.8% a year |
+
+## Position size
+
+The current rules put an equal amount in each of up to 10 stocks. Two alternatives:
+
+| Strategy | Yearly return | Worst drop | Tuned period | Test period |
+|---|---:|---:|---:|---:|
+| Current rules | +7.0% | -45.7% | +5.0% | +11.0% |
+| Current rules, smaller amounts in more volatile stocks | +5.0% | -33.9% | +3.1% | +9.1% |
+| Current rules, half as many stocks | +0.1% | -59.6% | -5.8% | +14.2% |
+
+"Smaller amounts in more volatile stocks" scales each stock's amount by 2% divided by its average daily range as a share of the price, from half to double the equal amount. It gives smaller drops for a lower return: a choice for a cautious investor, not a free improvement. Holding fewer stocks made the swings bigger without raising the return in the tuned period, so keep the full number of stocks.
 
 ## Year by year
 

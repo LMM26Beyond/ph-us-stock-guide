@@ -45,6 +45,8 @@ Liquid stocks with a score of 70 or more, above their 200-day average, not overe
 | GKOS | Glaukos Corporation Common Stock | $178.88 | 87 | +18% | +133% | 63 | loss | 15.5 | -28% | -28% | – |  |
 | AMRX | Amneal Pharmaceuticals, Inc. - C | $20.38 | 87 | +13% | +95% | 61 | 90.3 | n/m | +218% | +162% | – | hanging man |
 
+**How much to buy.** Split the money you set aside for US stocks into 40 equal parts and put one part in each pick, working down the list as you have free parts: with $10,000 that is $250 a stock. Holding fewer stocks made the swings bigger without raising the return in [the back-test](backtest_us.md). Run the portfolio command with your cash in portfolio.csv to get share counts.
+
 P/E, P/B, ROE (return on equity), profit growth and dividend yield come from the companies' latest reports (SEC filings). They are shown for context and are not part of the score yet. A loss or a very high P/E is worth a closer look before buying.
 
 ## Avoid

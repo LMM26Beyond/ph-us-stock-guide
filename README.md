@@ -54,7 +54,13 @@ Copy `portfolio.example.csv` to `portfolio.csv` and fill it in:
 market,ticker,shares,buy_price,buy_date
 ph,JFC,100,250.00,2025-03-14
 us,AAPL,10,190.50,2025-06-02
+ph,CASH,50000,,
 ```
+
+A `CASH` row is money you have ready to invest in that market (put the amount
+under `shares`). The report then lists which buy candidates to buy and how many
+shares, splitting your money into equal parts (10 for PSE, 40 for US, as in
+the back-test) and rounding PSE orders to whole board lots.
 
 Then run `python -m stockguide portfolio`. `portfolio.csv` and
 `reports/portfolio.md` are kept out of git, because this repository is public.

@@ -108,6 +108,15 @@ def market_report(market, bench, today, stats, val) -> str:
               "waiting (waiting missed the rebounds), but expect bigger swings: consider "
               "smaller amounts.", ""]
     L += table(buys, cur) if len(buys) else ["None today.", ""]
+    example = 100_000 if market == "ph" else 10_000
+    L += ["**How much to buy.** Split the money you set aside for "
+          f"{'PSE' if market == 'ph' else 'US'} stocks into {backtest.SLOTS[market]} equal parts and put "
+          f"one part in each pick, working down the list as you have free parts: with {cur}{example:,} "
+          f"that is {cur}{example // backtest.SLOTS[market]:,} a stock. Holding fewer stocks made the swings "
+          "bigger without raising the return in [the back-test](backtest_" + market + ".md)."
+          + (" *Min. buy* is the cost of one PSE board lot, the smallest amount you can buy."
+             if market == "ph" else "")
+          + " Run the portfolio command with your cash in portfolio.csv to get share counts.", ""]
     L += ["P/E, P/B, ROE (return on equity), profit growth and dividend yield come from the companies' "
           "latest reports (" + ("PSE Edge; dividend yield is cash dividends with an ex-date in the last "
           "12 months divided by the price" if market == "ph" else "SEC filings") + "). They are "
@@ -147,10 +156,12 @@ def growth(g) -> str:
 
 
 def table(df, cur) -> list:
-    out = ["| Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |",
-           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
+    lots = cur == CUR["ph"]   # PSE shares trade in board lots
+    out = ["| Stock | Name | Close |" + (" Min. buy |" if lots else "") + " Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |",
+           "|---|---|---:|" + ("---:|" if lots else "") + "---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
     for r in df.itertuples():
-        line = (f"| {r.symbol} | {r.name[:32]} | {cur}{r.close:,.2f} | {r.score:.0f} | {pct(r.ret3m, 0)} | "
+        min_buy = f" {cur}{backtest.board_lot(r.close) * r.close:,.0f} |" if lots else ""
+        line = (f"| {r.symbol} | {r.name[:32]} | {cur}{r.close:,.2f} |{min_buy} {r.score:.0f} | {pct(r.ret3m, 0)} | "
                 f"{pct(r.ret12m, 0)} | {r.rsi14:.0f} | {ratio(r.earnings_yield)} | {ratio(r.book_yield)} | "
                 f"{pct(r.roe, 0)} | {growth(r.growth)} | {"–" if pd.isna(r.div_yield) else f"{100 * r.div_yield:.1f}%"} | {r.patterns.replace('_', ' ') or ''} |")
         out.append(line)
@@ -180,6 +191,10 @@ def portfolio(path) -> str | None:
     except FileNotFoundError:
         return None
     sell_below = backtest.Rules().sell_below
+    is_cash = pf["ticker"].str.strip().str.upper() == "CASH"
+    cash = pf[is_cash].groupby(pf["market"].str.strip().str.lower())["shares"].sum()
+    pf = pf[~is_cash]
+    held_value, held = {}, {}
     L = ["# Your holdings", "", f"Generated {date.today():%d %b %Y}. Not financial advice.", "",
          "| Stock | Shares | Bought | Now | Gain | Score | Action | Why |",
          "|---|---:|---:|---:|---:|---:|---|---|"]
@@ -195,13 +210,51 @@ def portfolio(path) -> str | None:
         s = sc.get(t, np.nan)
         gain = last["close"] / h.buy_price - 1
         action, why = advise(last, s, sell_below)
+        held_value[m] = held_value.get(m, 0) + h.shares * last["close"]
+        held.setdefault(m, set()).add(t)
         cur = CUR[m]
         L.append(f"| {m.upper()}:{t} | {h.shares:,} | {cur}{h.buy_price:,.2f} | {cur}{last['close']:,.2f} | "
                  f"{pct(gain)} | {'–' if np.isnan(s) else f'{s:.0f}'} | **{action}** | {why} |")
     L += ["", f"The rule tested in the back-test: hold while the score is {sell_below:.0f} or more, "
           "sell when it is lower at a month-end. Tight stop-losses did worse in the back-test, "
           "because they sold good stocks on normal dips."]
+    for m, c in cash.items():
+        L += buy_plan(m, float(c), held_value.get(m, 0.0), held.get(m, set()))
     return "\n".join(L) + "\n"
+
+
+def buy_plan(market: str, cash: float, held_value: float, held: set) -> list:
+    """Today's buy candidates sized to the user's money: equal parts, whole board lots."""
+    cur, slots = CUR[market], backtest.SLOTS[market]
+    part = (cash + held_value) / slots
+    free = slots - len(held)
+    L = ["", f"## What to buy with your {market.upper()} cash", "",
+         f"Cash {cur}{cash:,.0f} plus holdings {cur}{held_value:,.0f}, split into {slots} equal "
+         f"parts of {cur}{part:,.0f}. You hold {len(held)}, so {max(free, 0)} parts are free.", ""]
+    sc_path = DATA_DIR / market / "scores.csv"
+    if free <= 0 or not sc_path.exists():
+        return L + ["Nothing to buy: all parts are used, or there are no scores yet (run analyze)."]
+    sc = pd.read_csv(sc_path)
+    cand = backtest.candidates(sc[sc["liquid"]], backtest.Rules())
+    cand = cand[~cand["symbol"].isin(held)]
+    costs = backtest.COSTS[market]
+    rows, left = [], cash
+    for r in cand.itertuples():
+        if len(rows) >= free:
+            break
+        lot = backtest.board_lot(r.close) if market == "ph" else 1
+        budget = min(part, left)
+        shares = int(budget / (r.close * (1 + costs.commission * (1 + costs.vat) + costs.fees)) / lot) * lot
+        if shares <= 0:
+            continue   # one board lot costs more than a part
+        value = shares * r.close
+        cost = value + max(value * costs.commission, costs.min_commission) * (1 + costs.vat) + value * costs.fees
+        left -= cost
+        rows.append(f"| {r.symbol} | {cur}{r.close:,.2f} | {r.score:.0f} | {shares:,} | {cur}{cost:,.0f} |")
+    if not rows:
+        return L + ["No buy candidate fits a part today."]
+    return L + ["| Stock | Price | Score | Shares | Cost with fees |", "|---|---:|---:|---:|---:|", *rows, "",
+                f"Cash left: {cur}{left:,.0f}. Prices are the last close; the next open will differ a little."]
 
 
 def advise(last, s, sell_below):
