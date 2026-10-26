@@ -12,7 +12,7 @@ import pandas as pd
 from . import backtest, storage
 from .config import BENCHMARK, REPORTS_DIR, ROOT
 
-PAGE = Path(__file__).with_name("dashboard.html")
+WEB = Path(__file__).with_name("web")   # the page, app manifest and icons
 SPARK_DAYS = 126   # about six months
 
 
@@ -73,7 +73,8 @@ def build(out_dir: Path | None = None) -> Path:
     """Put the page and the latest data together for publishing."""
     out = out_dir or ROOT / "site"
     out.mkdir(parents=True, exist_ok=True)
-    shutil.copy(PAGE, out / "index.html")
+    for f in WEB.iterdir():
+        shutil.copy(f, out / f.name)
     for p in REPORTS_DIR.glob("dashboard_*.json"):
         shutil.copy(p, out / p.name)
     return out
