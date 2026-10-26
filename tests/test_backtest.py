@@ -36,3 +36,12 @@ def test_simulate_buys_in_lots_and_sells_on_score():
     assert list(trades["symbol"]) == ["AAA"] and trades["why"].iloc[0] == "score"
     # Flat prices: the only change in equity is trading costs.
     assert 97_000 < eq.iloc[-1] < 100_000
+
+
+def test_fundamentals_filters():
+    g = pd.DataFrame({"earnings_yield": [0.05, -0.02, float("nan"), 0.02], "roe": [0.2, 0.3, 0.2, 0.05]})
+    ok = lambda **kw: b._fundamentals_ok(g, b.Rules(**kw)).tolist()
+    assert ok() == [True] * 4
+    assert ok(profitable=True) == [True, False, False, True]
+    assert ok(min_roe=0.15) == [True, True, True, False]
+    assert ok(max_pe=25) == [True, False, False, False]   # P/E 20 passes, 50 does not

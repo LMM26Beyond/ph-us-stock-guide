@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from stockguide import report, storage
+from stockguide import backtest, fundamentals, report, storage
 
 
 def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
@@ -22,7 +22,7 @@ def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
 
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
-    for mod in (storage, report):
+    for mod in (storage, report, fundamentals, backtest):
         monkeypatch.setattr(mod, "DATA_DIR", tmp_path / "data")
     monkeypatch.setattr(report, "REPORTS_DIR", tmp_path / "reports")
     return tmp_path
