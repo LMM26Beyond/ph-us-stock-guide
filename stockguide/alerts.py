@@ -56,13 +56,14 @@ def run(market: str, day: pd.Timestamp, state: str, today: pd.DataFrame) -> list
     """Compare with the last run, save today's state, and write the alert text if anything changed."""
     path = REPORTS_DIR / f"alerts_state_{market}.json"
     prev = json.loads(path.read_text()) if path.exists() else None
+    out = DATA_DIR / f"alerts_{market}.md"
     if prev and prev.get("date") == f"{day:%Y-%m-%d}":
-        prev = prev.get("before")   # a re-run on the same data compares with the run before it
+        # Already alerted on this day's data (a re-run): post nothing twice.
+        out.unlink(missing_ok=True)
+        return []
     L = changes(market, day, state, today, prev)
     REPORTS_DIR.mkdir(exist_ok=True)
-    path.write_text(json.dumps({"date": f"{day:%Y-%m-%d}", "regime": state, "buys": buy_list(today),
-                                "before": prev and {k: prev[k] for k in ("date", "regime", "buys")}}, indent=1))
-    out = DATA_DIR / f"alerts_{market}.md"
+    path.write_text(json.dumps({"date": f"{day:%Y-%m-%d}", "regime": state, "buys": buy_list(today)}, indent=1))
     if L:
         label = "PSE" if market == "ph" else "US"
         out.write_text(f"### {label}, data of {day:%a %d %b %Y}\n\n" + "\n".join(f"- {x}" for x in L) + "\n")

@@ -32,8 +32,9 @@ def test_first_run_then_changes(dirs):
     assert "below the 60 hold line: B (55)" in text
     assert "still scoring 60+: C (65)" in text
     assert (dirs / "data" / "alerts_ph.md").exists()
-    # Same data again: compares with the run before, so the alert repeats rather than vanishing.
-    assert alerts.run("ph", day2, "Downtrend", frame({"A": 80, "B": 55, "C": 65, "D": 90})) == out
+    # Same data again (a re-run): nothing is posted twice.
+    assert alerts.run("ph", day2, "Downtrend", frame({"A": 80, "B": 55, "C": 65, "D": 90})) == []
+    assert not (dirs / "data" / "alerts_ph.md").exists()
     # Next day with no change: no alert file.
     assert alerts.run("ph", pd.Timestamp("2026-10-23"), "Downtrend", frame({"A": 80, "B": 55, "C": 65, "D": 90})) == []
     assert not (dirs / "data" / "alerts_ph.md").exists()
