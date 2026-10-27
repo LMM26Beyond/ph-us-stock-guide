@@ -12,7 +12,10 @@ over the next HORIZON trading days:
   on data they were not built from (a single stock has too few cases).
 
 validate() checks the method honestly: track records built only from data up
-to SPLIT, judged on what happened after it.
+to SPLIT, judged on what happened after it. If the calls failed that test in a
+market (Leans up did not rise more often than usual, or Leans down did not rise
+less often), reliable() is False and every call there is "No clear edge"; the
+track records are still shown.
 """
 import json
 
@@ -93,6 +96,13 @@ def validate(ev: pd.DataFrame) -> dict:
     return res
 
 
+def reliable(v: dict) -> bool:
+    """Did the calls point the right way on new data?"""
+    if not v or v["up"]["rose"] is None or v["down"]["rose"] is None:
+        return False
+    return v["up"]["rose"] > v["all_up"] > v["down"]["rose"]
+
+
 def _num(x, d=4):
     return None if x is None or pd.isna(x) else round(float(x), d)
 
@@ -117,6 +127,7 @@ def write(market: str, events: pd.DataFrame, bench: pd.DataFrame, today: pd.Data
     t = tables(ev)
     state = trend(bench).iloc[-1]
     val = validate(ev)
+    ok = reliable(val)
     out = DATA_DIR / "web"
     (out / "stocks" / market).mkdir(parents=True, exist_ok=True)
     # Every PSE stock; US stocks only when liquid (thousands of thinly traded ones otherwise).
@@ -130,6 +141,9 @@ def write(market: str, events: pd.DataFrame, bench: pd.DataFrame, today: pd.Data
         found = found[[p for p in PATTERNS if p in found.columns]]
         recent = list(dict.fromkeys(p for _, row in found.tail(RECENT)[::-1].iterrows() for p in row.index[row]))
         o = stock_outlook(r.symbol, recent, state, t)
+        if o["call"] and not ok:
+            o["call"] = "No clear edge"
+        o["reliable"] = ok
         tail = df.tail(CANDLES)
         idx, cols = np.nonzero(found.to_numpy())
         page = {
@@ -145,7 +159,7 @@ def write(market: str, events: pd.DataFrame, bench: pd.DataFrame, today: pd.Data
         rows.append([r.symbol, r.name, _num(r.close), o["call"], o.get("chance"), o.get("usual"),
                      [p["name"] for p in o["patterns"]], bool(r.liquid)])
     summary = {"market": market, "date": f"{bench.index[-1]:%Y-%m-%d}", "trend": state, "horizon": HORIZON,
-               "lean": LEAN, "validation": val, "stocks": rows}
+               "lean": LEAN, "validation": val, "reliable": ok, "stocks": rows}
     (out / f"outlook_{market}.json").write_text(json.dumps(summary, separators=(",", ":")))
     return summary
 
@@ -172,6 +186,9 @@ def to_markdown(market: str, s: dict) -> str:
         for k, name in (("up", "Leans up"), ("down", "Leans down"), ("none", "No clear edge")):
             L.append(f"| {name} | {v[k]['cases']:,} | {rose(v[k]['expected'])} | {rose(v[k]['rose'])} |")
         L.append("")
+        if not reliable(v):
+            L += ["**The calls failed this test in this market, so they are switched off:** every stock "
+                  "shows *No clear edge*, with the track records for reference.", ""]
     counts = pd.Series([r[3] for r in s["stocks"] if r[3]]).value_counts()
     L += ["## Today", "", ", ".join(f"{name}: {counts.get(name, 0)}" for name in
                                     ("Leans up", "Leans down", "No clear edge")) + " stocks.", "",
