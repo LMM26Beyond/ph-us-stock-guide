@@ -1,6 +1,6 @@
 # Philippines (PSE) — market guide
 
-Data up to **Mon 26 Oct 2026**. Generated 26 Oct 2026.
+Data up to **Tue 27 Oct 2026**. Generated 27 Oct 2026.
 
 > This is an automated technical analysis of past prices, not licensed financial advice. Signals are probabilities, not certainties. Check the company news and fundamentals and size every position so a stop-out is affordable.
 
@@ -10,11 +10,11 @@ Most stocks fall with the market in a downtrend. Expect bigger swings and consid
 
 | | |
 |---|---|
-| PSEi | 5,641.18 |
-| vs 50-day average | -3.9% |
-| vs 200-day average | -5.8% |
-| 1 month / 3 months / 12 months | -3.4% / -9.4% / -3.5% |
-| RSI (14) | 36 |
+| PSEi | 5,700.06 |
+| vs 50-day average | -2.8% |
+| vs 200-day average | -4.8% |
+| 1 month / 3 months / 12 months | -1.2% / -8.8% / -2.8% |
+| RSI (14) | 44 |
 | Candles (last 3 days) | bullish marubozu |
 | Stocks above their 200-day average | 29% |
 
