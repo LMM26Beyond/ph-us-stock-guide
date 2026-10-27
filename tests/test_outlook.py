@@ -36,3 +36,10 @@ def test_calls_follow_the_market_record():
     assert outlook.stock_outlook("S1", ["hammer"], "Downtrend", t)["patterns"][0]["trend_used"] == "all"
     v = outlook.validate(ev)
     assert v["up"]["rose"] == 1.0 and v["down"]["rose"] == 0.0
+
+
+def test_reliable():
+    v = lambda up, down, all_up: {"up": {"rose": up}, "down": {"rose": down}, "all_up": all_up}
+    assert outlook.reliable(v(0.50, 0.40, 0.46))
+    assert not outlook.reliable(v(0.63, 0.59, 0.51))   # Leans down rose more than usual
+    assert not outlook.reliable({})

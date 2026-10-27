@@ -286,10 +286,13 @@ function outlookCard(m) {
     <form class="search" id="lookup"><input id="lookup-in" list="syms" autocomplete="off" aria-label="Stock symbol"
       placeholder="Look up any ${m === "ph" ? "PSE" : "liquid US"} stock, e.g. ${m === "ph" ? "AC" : "AAPL"}"><button class="btn">Open</button></form>
     <datalist id="syms">${o.stocks.map(r => `<option value="${esc(r[0])}">${esc(r[1])}</option>`).join("")}</datalist>
+    ${o.reliable === false ? `<p class="note"><b>Calls are switched off for ${m === "ph" ? "PSE" : "US"} stocks.</b> Tested on data they weren't
+      built from, stocks called <i>Leans up</i> rose ${rate(o.validation.up && o.validation.up.rose)} of the time and <i>Leans down</i>
+      ${rate(o.validation.down && o.validation.down.rose)}, against ${rate(o.validation.all_up)} usual: candle patterns don't reliably predict the next ${o.horizon} days here. Stock pages still show the candles, patterns and their track records.</p>` : `
     <div class="cols">
       <div><h2><span class="call up">Leans up</span></h2>${outlookRows(ups, m)}</div>
       <div><h2><span class="call down">Leans down</span></h2>${outlookRows(downs, m)}</div>
-    </div>
+    </div>`}
     <p class="note">Candle patterns from each stock's last 3 candles. <b>Chance up</b> is how often stocks closed higher ${o.horizon} trading days
       after the same patterns when the market was in a <b>${esc(o.trend.toLowerCase())}</b>, as it is now; <b>usual</b> is the chance on any day in that trend.
       A gap of ${Math.round(100 * o.lean)} points or more gets a call. Lists show actively traded stocks; search finds the rest.
@@ -359,6 +362,7 @@ function renderStock(p) {
   let out;
   if (o.call) {
     out = `<div class="big-call ${callCls(o.call)}">${esc(o.call)}</div>
+      ${o.reliable === false ? `<p class="note"><b>Calls are switched off in this market:</b> they failed the test on new data, so the numbers below are for reference only.</p>` : ""}
       <p class="note">Chance of closing higher in ${p.horizon} trading days: <b>${rate(o.chance)}</b>, against a usual ${rate(o.usual)}
       when the market is in a ${esc(trend)}. Average move after these patterns: <b>${pct(o.avg)}</b>.</p>
       <div class="scroll"><table><thead><tr><th class="l">Pattern (last 3 candles)</th><th class="l">Textbook</th>
