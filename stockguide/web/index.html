@@ -93,6 +93,33 @@ ul.alerts { margin: 0; padding-left: 20px; }
 ul.alerts li::marker { color: var(--s1); }
 footer { color: var(--muted); font-size: 12px; margin: 24px 4px; padding-bottom: env(safe-area-inset-bottom); }
 a { color: var(--s1); }
+/* Candle outlook */
+.sym-btn { all: unset; cursor: pointer; font-weight: 700; color: var(--s1); border-radius: 4px; }
+.sym-btn:hover { text-decoration: underline; } .sym-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.search { display: flex; gap: 8px; margin: 4px 0 14px; }
+.search input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--edge); background: rgba(0,0,0,.25);
+  color: var(--text); font: 600 14px/1.2 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+.search input::placeholder { text-transform: none; color: var(--muted); font-weight: 400; }
+.search input:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.btn { border: 1px solid var(--edge); background: var(--glass-strong); color: var(--text); padding: 9px 16px; border-radius: 12px;
+  font: 600 13px/1 "Space Grotesk", system-ui, sans-serif; letter-spacing: .06em; cursor: pointer; }
+.btn:hover { border-color: var(--s1); } .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.call { display: inline-block; padding: 2px 8px; border-radius: 8px; font: 600 12px/1.5 "Space Grotesk", system-ui, sans-serif; white-space: nowrap; }
+.call.up { color: var(--up); background: rgba(61, 255, 168, .10); border: 1px solid rgba(61, 255, 168, .35); }
+.call.down { color: var(--down); background: rgba(255, 92, 122, .10); border: 1px solid rgba(255, 92, 122, .35); }
+.call.none { color: var(--text-2); background: var(--glass); border: 1px solid var(--edge); }
+.pats { color: var(--text-2); font-family: "Space Grotesk", system-ui, sans-serif; white-space: normal; text-align: left; }
+.sheet { position: fixed; inset: 0; z-index: 20; display: none; overflow-y: auto; padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top)); background: rgba(3, 6, 18, .55);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sheet.open { display: block; }
+.sheet .panel { max-width: 1000px; margin: 0 auto; padding: 18px; background: rgba(14, 22, 52, .72); }
+.sheet .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.sheet h3 { margin: 0; font-size: 24px; letter-spacing: .03em; }
+.big-call { font-size: 26px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.big-call::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: currentColor; box-shadow: 0 0 14px currentColor; }
+.big-call.up { color: var(--up); } .big-call.down { color: var(--down); } .big-call.none { color: var(--text-2); }
 </style>
 </head>
 <body>
@@ -110,6 +137,7 @@ a { color: var(--s1); }
     </div>
   </header>
   <div id="app"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title"><div class="panel glass" id="sheet-body"></div></div>
   <footer>
     Automated technical analysis of past prices, not licensed financial advice. Signals are
     probabilities, not certainties. Full reports, methods and back-test details are in the
@@ -194,7 +222,7 @@ function table(rows, m) {
   if (!rows.length) return `<p class="note">None today.</p>`;
   const cur = CUR[m], lots = m === "ph";
   const head = `<tr><th class="l">Stock</th><th class="l name">Name</th><th>Close</th>${lots ? "<th>Min. buy</th>" : ""}<th>Score</th><th>3 mo</th><th>12 mo</th><th>RSI</th><th>P/E</th><th>ROE</th><th>Div yield</th><th class="l">6 months</th></tr>`;
-  const body = rows.map(r => `<tr><td class="l sym">${esc(r.symbol)}</td><td class="l name" title="${esc(r.name)}">${esc(r.name)}</td>` +
+  const body = rows.map(r => `<tr><td class="l sym">${symBtn(m, r.symbol)}</td><td class="l name" title="${esc(r.name)}">${esc(r.name)}</td>` +
     `<td>${cur}${num(r.close)}</td>${lots ? `<td>${cur}${num(r.min_buy, 0)}</td>` : ""}<td><span class="score">${r.score ?? "–"}</span></td>` +
     `<td>${pct(r.ret3m, 0)}</td><td>${pct(r.ret12m, 0)}</td><td>${r.rsi ?? "–"}</td>` +
     `<td>${r.loss ? "loss" : r.pe == null ? "–" : r.pe > 100 ? "n/m" : num(r.pe, 1)}</td><td>${pct(r.roe, 0)}</td><td>${plain(r.div_yield)}</td>` +
@@ -202,8 +230,206 @@ function table(rows, m) {
   return `<div class="scroll"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
 
+
+const symBtn = (m, sym) => `<button class="sym-btn" data-open="${esc(m)}/${esc(sym)}">${esc(sym)}</button>`;
+const PAT = {
+  hammer: "Long lower shadow after a fall: buyers pushed back from the low.",
+  inverted_hammer: "Long upper shadow after a fall: a first try higher.",
+  bullish_engulfing: "A green body that swallows the previous red one, after a fall.",
+  piercing_line: "After a red day, opens lower but closes above the middle of it.",
+  bullish_harami: "A small body inside the previous long red one: selling slows.",
+  morning_star: "Long red day, small day, then a strong green day: a turn up.",
+  three_white_soldiers: "Three strong green days in a row after a fall.",
+  bullish_marubozu: "A long green body with almost no shadows: buyers in control all day.",
+  dragonfly_doji: "Opens and closes at the high after a fall, with a long lower shadow.",
+  hanging_man: "Hammer shape after a rise: sellers showed up during the day.",
+  shooting_star: "Long upper shadow after a rise: the push higher failed.",
+  bearish_engulfing: "A red body that swallows the previous green one, after a rise.",
+  dark_cloud_cover: "After a green day, opens higher but closes below the middle of it.",
+  bearish_harami: "A small body inside the previous long green one: buying slows.",
+  evening_star: "Long green day, small day, then a strong red day: a turn down.",
+  three_black_crows: "Three strong red days in a row after a rise.",
+  bearish_marubozu: "A long red body with almost no shadows: sellers in control all day.",
+  gravestone_doji: "Opens and closes at the low after a rise, with a long upper shadow.",
+};
+const patName = n => n.replace(/_/g, " ").replace(/^./, c => c.toUpperCase());
+const callCls = c => c === "Leans up" ? "up" : c === "Leans down" ? "down" : "none";
+const callTag = c => c ? `<span class="call ${callCls(c)}">${esc(c)}</span>` : "";
+
+const outlook = {};
+const rate = x => x == null ? "–" : (100 * x).toFixed(0) + "%";
+
+function outlookRows(rows, m) {
+  if (!rows.length) return `<p class="note">None today.</p>`;
+  return `<div class="scroll"><table><thead><tr><th class="l">Stock</th><th>Close</th><th>Chance up</th><th>Usual</th><th class="l">Patterns</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td class="l sym">${symBtn(m, r[0])}</td><td>${CUR[m]}${num(r[2])}</td><td>${rate(r[4])}</td><td>${rate(r[5])}</td>` +
+      `<td class="pats">${r[6].map(patName).join(", ")}</td></tr>`).join("") + `</tbody></table></div>`;
+}
+
+function validationNote(o) {
+  const v = o.validation;
+  if (!v || !v.up) return "";
+  return `<b>Tested on data it wasn't built from</b> (${v.from.slice(0, 4)} to ${v.to.slice(0, 4)}, ${v.cases.toLocaleString()} cases):
+    stocks called <i>Leans up</i> closed higher ${o.horizon} days later ${rate(v.up.rose)} of the time and <i>Leans down</i> ${rate(v.down.rose)},
+    against ${rate(v.all_up)} for every day with a pattern.`;
+}
+
+function outlookCard(m) {
+  const o = outlook[m];
+  if (!o) return "";
+  const edge = r => (r[4] ?? 0) - (r[5] ?? 0);
+  const liquid = o.stocks.filter(r => r[7]);   // thinly traded stocks only through the search
+  const ups = liquid.filter(r => r[3] === "Leans up").sort((a, b) => edge(b) - edge(a)).slice(0, 10);
+  const downs = liquid.filter(r => r[3] === "Leans down").sort((a, b) => edge(a) - edge(b)).slice(0, 10);
+  return `<section class="card glass">
+    <h2>Candle outlook: next ${o.horizon} trading days</h2>
+    <form class="search" id="lookup"><input id="lookup-in" list="syms" autocomplete="off" aria-label="Stock symbol"
+      placeholder="Look up any ${m === "ph" ? "PSE" : "liquid US"} stock, e.g. ${m === "ph" ? "AC" : "AAPL"}"><button class="btn">Open</button></form>
+    <datalist id="syms">${o.stocks.map(r => `<option value="${esc(r[0])}">${esc(r[1])}</option>`).join("")}</datalist>
+    <div class="cols">
+      <div><h2><span class="call up">Leans up</span></h2>${outlookRows(ups, m)}</div>
+      <div><h2><span class="call down">Leans down</span></h2>${outlookRows(downs, m)}</div>
+    </div>
+    <p class="note">Candle patterns from each stock's last 3 candles. <b>Chance up</b> is how often stocks closed higher ${o.horizon} trading days
+      after the same patterns when the market was in a <b>${esc(o.trend.toLowerCase())}</b>, as it is now; <b>usual</b> is the chance on any day in that trend.
+      A gap of ${Math.round(100 * o.lean)} points or more gets a call. Lists show actively traded stocks; search finds the rest.
+      ${validationNote(o)} Tap a stock for its candle chart.</p>
+  </section>`;
+}
+
+function candleChart(el, p) {
+  const W = Math.max(300, el.clientWidth || 900), H = W < 600 ? 240 : 320, m = { t: 18, r: 58, b: 24, l: 6 };
+  // Fewer, wider candles on a phone.
+  const all = p.candles, cut = W < 600 ? Math.max(0, all.d.length - 60) : 0, n = all.d.length - cut;
+  const C = Object.fromEntries(Object.entries(all).map(([k, v]) => [k, v.slice(cut)]));
+  const marks = p.marks.filter(k => k.i >= cut).map(k => ({ ...k, i: k.i - cut }));
+  let lo = Math.min(...C.l.filter(v => v != null)), hi = Math.max(...C.h.filter(v => v != null));
+  const pad = (hi - lo) * 0.08 || 1; lo -= pad; hi += pad;
+  const slot = (W - m.l - m.r) / n, bw = Math.max(1, slot * 0.62);
+  const x = i => m.l + slot * (i + 0.5), y = v => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+  const dp = hi < 10 ? 3 : hi < 1000 ? 2 : 0;
+  let g = "";
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4;
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/>` +
+         `<text x="${W - m.r + 6}" y="${y(v) + 4}" font-size="11" fill="var(--muted)">${num(v, dp)}</text>`;
+  }
+  C.d.forEach((d, i) => { if (i > 2 && d.slice(5, 7) !== C.d[i - 1].slice(5, 7))
+    g += `<text x="${x(i)}" y="${H - 6}" font-size="11" fill="var(--muted)" text-anchor="middle">${new Date(d + "T00:00:00").toLocaleDateString("en-GB", { month: "short" })}</text>`; });
+  for (let i = 0; i < n; i++) {
+    const o = C.o[i], h = C.h[i], l = C.l[i], c = C.c[i];
+    if (c == null) continue;
+    const col = c >= o ? "var(--up)" : "var(--down)", top = y(Math.max(o, c)), bot = y(Math.min(o, c));
+    g += `<line x1="${x(i)}" x2="${x(i)}" y1="${y(h)}" y2="${y(l)}" stroke="${col}" stroke-width="1"/>` +
+         `<rect x="${x(i) - bw / 2}" y="${top}" width="${bw}" height="${Math.max(1, bot - top)}" fill="${col}" fill-opacity="${c >= o ? .85 : .95}" rx="${Math.min(1.5, bw / 4)}"/>`;
+  }
+  const byDay = {};
+  marks.forEach(k => (byDay[k.i] = byDay[k.i] || []).push(k));
+  Object.entries(byDay).forEach(([key, ks]) => {
+    const i = Number(key);
+    let upN = 0, dnN = 0;
+    ks.forEach(k => {
+      if (k.dir > 0) { const yy = y(C.l[i]) + 10 + 11 * upN++;
+        g += `<path d="M${x(i)},${yy - 6} l5,8 h-10 z" fill="var(--up)" style="filter: drop-shadow(0 0 4px var(--up))"/>`; }
+      else { const yy = y(C.h[i]) - 10 - 11 * dnN++;
+        g += `<path d="M${x(i)},${yy + 6} l5,-8 h-10 z" fill="var(--down)" style="filter: drop-shadow(0 0 4px var(--down))"/>`; }
+    });
+  });
+  g += `<line class="cross" y1="${m.t}" y2="${H - m.b}" stroke="var(--muted)" stroke-dasharray="3 3" visibility="hidden"/>`;
+  el.innerHTML = `<div class="legend"><span style="color:var(--up)">▲ bullish pattern</span><span style="color:var(--down)">▼ bearish pattern</span><span>Last ${n} trading days</span></div>` +
+    `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Daily candles for ${esc(p.symbol)}">${g}<rect x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg><div class="tip"></div>`;
+  const svg = $("svg", el), tip = $(".tip", el), cross = $(".cross", el);
+  svg.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(n - 1, Math.floor((px - m.l) / slot)));
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    const ks = byDay[i] || [];
+    tip.innerHTML = `<b>${fmtDate(C.d[i])}</b><br>Open ${num(C.o[i], dp)} · High ${num(C.h[i], dp)}<br>Low ${num(C.l[i], dp)} · Close ${num(C.c[i], dp)}` +
+      ks.map(k => `<br><span style="color:${k.dir > 0 ? "var(--up)" : "var(--down)"}">${k.dir > 0 ? "▲" : "▼"} ${patName(k.name)}</span>`).join("");
+    tip.style.display = "block";
+    tip.style.left = Math.max(4, Math.min((ev.clientX - r.left) + 12, r.width - tip.offsetWidth - 4)) + "px"; tip.style.top = "36px";
+  });
+  svg.addEventListener("pointerleave", () => { tip.style.display = "none"; cross.setAttribute("visibility", "hidden"); });
+}
+
+let page = null;
+function renderStock(p) {
+  const o = p.outlook, cur = CUR[p.market], trend = p.trend.toLowerCase();
+  const last = p.candles.c.length - 1, close = p.candles.c[last], prev = p.candles.c[last - 1];
+  let out;
+  if (o.call) {
+    out = `<div class="big-call ${callCls(o.call)}">${esc(o.call)}</div>
+      <p class="note">Chance of closing higher in ${p.horizon} trading days: <b>${rate(o.chance)}</b>, against a usual ${rate(o.usual)}
+      when the market is in a ${esc(trend)}. Average move after these patterns: <b>${pct(o.avg)}</b>.</p>
+      <div class="scroll"><table><thead><tr><th class="l">Pattern (last 3 candles)</th><th class="l">Textbook</th>
+        <th>All stocks, ${esc(trend)}</th><th>Rose after</th><th>This stock</th><th>Rose after</th></tr></thead><tbody>` +
+      o.patterns.map(r => `<tr><td class="l pats"><b style="color:var(--text)">${patName(r.name)}</b><br>${esc(PAT[r.name] || "")}</td>
+        <td class="l">${r.dir > 0 ? '<span style="color:var(--up)">▲ up</span>' : '<span style="color:var(--down)">▼ down</span>'}</td>
+        <td>${r.n_mkt.toLocaleString()}${r.trend_used === "all" ? "*" : ""}</td><td>${rate(r.chance)}</td>
+        <td>${r.n_stock}</td><td>${r.n_stock ? rate(r.up_stock) : "–"}</td></tr>`).join("") + `</tbody></table></div>
+      <p class="note">The call uses the record across all stocks in the same market trend. This stock's own record is shown for
+      reference: with so few cases it is mostly luck, and mixing it in made the calls worse in testing.
+      ${o.patterns.some(r => r.trend_used === "all") ? "* Too few cases in this trend, so all market trends are counted. " : ""}
+      Textbook direction and real results often differ: several patterns worked the opposite way in this market.</p>`;
+  } else {
+    out = `<div class="big-call none">No pattern today</div>
+      <p class="note">No candle pattern formed in the last 3 candles, so there is no outlook today. The markers on the chart show older patterns.</p>`;
+  }
+  const v = outlook[p.market] ? validationNote(outlook[p.market]) : "";
+  $("#sheet-body").innerHTML = `
+    <div class="top"><div><h3 id="sheet-title">${esc(p.symbol)}</h3>
+      <div class="sub">${esc(p.name)} · ${cur}${num(close)} (${pct(close / prev - 1)}) · ${fmtDate(p.date)}${p.score != null ? ` · score ${p.score}` : ""}</div></div>
+      <button class="btn" id="sheet-close">Close</button></div>
+    <div class="chart" id="cc"></div>
+    <h2 style="margin-top:16px">Outlook: next ${p.horizon} trading days</h2>
+    ${out}
+    ${p.liquid ? "" : `<p class="note"><b>Thinly traded:</b> fewer than ₱5 million a day changes hands, so prices can jump and orders may not fill.</p>`}
+    <p class="note">${v} A chance, not a promise: check the trend score and the company's news too.</p>`;
+  $("#sheet-close").addEventListener("click", closeStock);
+  candleChart($("#cc"), p);
+}
+
+function openStock(m, sym) {
+  const sheet = $("#sheet");
+  sheet.classList.add("open"); document.body.style.overflow = "hidden";
+  $("#sheet-body").innerHTML = `<div class="top"><h3 id="sheet-title">${esc(sym)}</h3><button class="btn" id="sheet-close">Close</button></div><p class="note">Loading…</p>`;
+  $("#sheet-close").addEventListener("click", closeStock);
+  page = null;
+  fetch(`stocks/${m}/${encodeURIComponent(sym)}.json?t=${Date.now()}`, { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(p => { page = p; renderStock(p); $("#sheet-close").focus(); })
+    .catch(e => { $("#sheet-body").querySelector(".note").textContent = e === 404
+      ? `No candle page for ${sym}. ${m === "us" ? "US pages cover stocks trading at least $5 million a day." : "Check the symbol."}`
+      : "Can't reach the server. This app needs an internet connection."; });
+}
+
+function closeStock() {
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  $("#sheet").classList.remove("open"); document.body.style.overflow = ""; page = null;
+}
+
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1)).match(/^(ph|us)\/(.+)$/);
+  if (h) openStock(h[1], h[2].toUpperCase()); else if ($("#sheet").classList.contains("open")) closeStock();
+}
+addEventListener("hashchange", route);
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-open]");
+  if (b) { location.hash = b.dataset.open; return; }
+  if (ev.target.id === "sheet") closeStock();
+});
+document.addEventListener("submit", ev => {
+  if (ev.target.id !== "lookup") return;
+  ev.preventDefault();
+  const sym = $("#lookup-in").value.trim().toUpperCase();
+  if (sym && current) location.hash = `${current}/${sym}`;
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && $("#sheet").classList.contains("open")) closeStock(); });
+
 let current = null;
-addEventListener("resize", () => { clearTimeout(window._rt); window._rt = setTimeout(() => current && charts(current), 150); });
+addEventListener("resize", () => { clearTimeout(window._rt); window._rt = setTimeout(() => {
+  if (current) charts(current);
+  if (page) candleChart($("#cc"), page); }, 150); });
 
 function render(m) {
   current = data[m] ? m : null;
@@ -240,6 +466,7 @@ function render(m) {
     <p class="note">Liquid stocks with the weakest scores: falling trend and lagging the market.</p>
     ${table(d.avoid, m)}</details>
   </section>
+  ${outlookCard(m)}
   <section class="card glass">
     <h2>Back-test: following these rules vs holding the index</h2>
     <div class="tiles">
@@ -274,20 +501,22 @@ if ("serviceWorker" in navigator)   // remove any worker an earlier version inst
 document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => render(b.dataset.m)));
 
 function load() {
-  return Promise.all(["ph", "us"].map(m => fetch(`dashboard_${m}.json?t=${Date.now()}`, { cache: "no-store" })
-    .then(r => r.ok ? r.json() : null).catch(() => null).then(j => { if (j) data[m] = j; else delete data[m]; })))
+  const get = (f, store, m) => fetch(`${f}_${m}.json?t=${Date.now()}`, { cache: "no-store" })
+    .then(r => r.ok ? r.json() : null).catch(() => null).then(j => { if (j) store[m] = j; else delete store[m]; });
+  return Promise.all(["ph", "us"].flatMap(m => [get("dashboard", data, m), get("outlook", outlook, m)]))
     .then(() => {
       if (!data.ph && !data.us) {
         $("#app").innerHTML = `<div class="card glass">Can't reach the server. This app needs an internet connection; check it and reopen.</div>`;
         $("#asof").textContent = "Offline";
         return;
       }
-      const stamp = JSON.stringify([data.ph && data.ph.date, data.us && data.us.date]);
+      const stamp = JSON.stringify([data.ph && data.ph.date, data.us && data.us.date, outlook.ph && outlook.ph.date, outlook.us && outlook.us.date]);
       if (current && stamp === load.stamp) return;   // nothing new: keep the page as it is
       load.stamp = stamp;
       let m = current || "ph";
       if (!current) try { m = localStorage.getItem("market") || m; } catch (e) {}
       render(data[m] ? m : (data.ph ? "ph" : "us"));
+      if (location.hash && !$("#sheet").classList.contains("open")) route();
     });
 }
 load();

@@ -57,7 +57,7 @@ jobs:
         if: always()
         run: |
           [ -d data ] || exit 0
-          tar -czf data.tar.gz --exclude=data/ph/fundamentals --exclude=data/us/fundamentals.csv.gz --exclude=data/fundamentals.log --exclude="data/alerts_*" data
+          tar -czf data.tar.gz --exclude=data/ph/fundamentals --exclude=data/us/fundamentals.csv.gz --exclude=data/fundamentals.log --exclude="data/alerts_*" --exclude=data/web data
           gh release view data >/dev/null 2>&1 || \
             gh release create data --title "Price data" \
               --notes "Daily candles used by the stock guide. Updated automatically."

@@ -2,7 +2,8 @@
 
 For each stock it computes indicators and candlestick patterns, then keeps:
 - events: every pattern or indicator signal, with what the stock did over the
-  next 5, 10 and 20 trading days compared with the market index (excess return);
+  next 5, 10 and 20 trading days compared with the market index (excess return),
+  plus its own 10-day return (r10, used by the candle outlook);
 - snapshots: indicator values on each month-end and on the latest day, used to
   score stocks today and to test the score on past months.
 """
@@ -80,6 +81,7 @@ def run(market: str, symbols: list[str] | None = None, progress: bool = True):
             fwd = c.shift(-n) / c - 1
             # Clip absurd moves (bad ticks, reverse splits) so they cannot dominate averages.
             ex[n] = (fwd - bfwd[n].reindex(f.index)).clip(-0.5, 0.5)
+        r10 = (c.shift(-10) / c - 1).clip(-0.5, 0.5)
         names = [k for k in DIRECTION]
         hits = f[names] & liquid.to_numpy()[:, None]
         rows, cols = np.nonzero(hits.to_numpy())
@@ -87,11 +89,13 @@ def run(market: str, symbols: list[str] | None = None, progress: bool = True):
             e = pd.DataFrame({"symbol": sym, "date": f.index[rows], "event": np.array(names)[cols]})
             for n in HORIZONS:
                 e[f"ex{n}"] = ex[n].to_numpy()[rows]
+            e["r10"] = r10.to_numpy()[rows]
             events.append(e)
         # Baseline: every liquid day, for comparison.
         base = pd.DataFrame({"symbol": sym, "date": f.index[liquid.to_numpy()], "event": "_all_days"})
         for n in HORIZONS:
             base[f"ex{n}"] = ex[n][liquid].to_numpy()
+        base["r10"] = r10[liquid].to_numpy()
         events.append(base.iloc[::5])  # every 5th day is plenty for a baseline
         month_end = f.index.to_series().groupby(f.index.to_period("M")).max()
         keep = f.loc[sorted(set(month_end) | {f.index[-1]}), SNAPSHOT_COLS].copy()

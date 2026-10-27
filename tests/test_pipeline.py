@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from stockguide import alerts, backtest, dashboard, fundamentals, report, storage
+from stockguide import alerts, backtest, dashboard, fundamentals, outlook, report, storage
 
 
 def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
@@ -24,7 +24,7 @@ def walk(rng, days, start=100.0, drift=0.0003, vol=0.02):
 
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
-    for mod in (storage, report, fundamentals, backtest, alerts):
+    for mod in (storage, report, fundamentals, backtest, alerts, outlook, dashboard):
         monkeypatch.setattr(mod, "DATA_DIR", tmp_path / "data")
     for mod in (report, alerts, dashboard):
         monkeypatch.setattr(mod, "REPORTS_DIR", tmp_path / "reports")
@@ -53,6 +53,11 @@ def test_analyze_and_portfolio(data_dir, market, bench):
     assert dash["market"] == market and dash["index_chart"]["close"] and dash["backtest"]["rules"]
     site = dashboard.build(data_dir / "site")
     assert (site / "index.html").exists() and (site / f"dashboard_{market}.json").exists()
+    ol = json.loads((site / f"outlook_{market}.json").read_text())
+    assert ol["trend"] in ("Uptrend", "Downtrend", "Mixed")
+    page = json.loads((site / "stocks" / market / f"{ol['stocks'][0][0]}.json").read_text())
+    assert len(page["candles"]["c"]) == outlook.CANDLES and "outlook" in page
+    assert "# Candle outlook" in (data_dir / "reports" / f"outlook_{market}.md").read_text()
     assert "## Verdict" in bt_text and "## Position size" in bt_text
     scores = pd.read_csv(data_dir / "data" / market / "scores.csv")
     assert len(scores) == len(syms) and scores["score"].between(0, 100).all()

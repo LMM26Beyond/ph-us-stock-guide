@@ -4,7 +4,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from . import alerts, analysis, backtest, dashboard, fundamentals, patterns, score, storage, study
+from . import alerts, analysis, backtest, dashboard, fundamentals, outlook, patterns, score, storage, study
 from .config import BENCHMARK, DATA_DIR, REPORTS_DIR
 
 LABEL = {"ph": "Philippines (PSE)", "us": "United States"}
@@ -52,9 +52,11 @@ def analyze(market: str) -> None:
         print(f"  alert: {line}")
     bt = backtest.run(market, (events, snaps))
     (REPORTS_DIR / f"backtest_{market}.md").write_text(backtest.to_markdown(market, bt))
+    ol = outlook.write(market, events, bench, today)
+    (REPORTS_DIR / f"outlook_{market}.md").write_text(outlook.to_markdown(market, ol))
     buys, avoid = buy_and_avoid(today)
     dashboard.write(market, bench, today, reg, buys, avoid, bt, new_alerts)
-    print(f"  wrote reports/{market}.md, signals_{market}.md and backtest_{market}.md")
+    print(f"  wrote reports/{market}.md, signals_{market}.md, backtest_{market}.md and outlook_{market}.md")
 
 
 def buy_and_avoid(today: pd.DataFrame):

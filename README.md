@@ -86,6 +86,19 @@ Settings → Pages → Source: **GitHub Actions**. To see it locally:
 `python -m stockguide dashboard`, then `python -m http.server -d site` and open
 http://localhost:8000.
 
+### Candle outlook
+
+The app's **Candle outlook** card lists stocks whose last 3 candles formed a
+pattern, and tapping any stock (or searching for it) opens its last 120 daily
+candles with the patterns marked. For the next 10 trading days it gives the
+chance of closing higher: how often stocks did after the same patterns while
+the market was in the same trend as today (uptrend, mixed or downtrend),
+against the usual chance in that trend. A gap of 3 points or more is called
+*Leans up* or *Leans down*. The stock's own record with each pattern is shown
+too, for reference only: mixing it in made the calls worse on new data. The
+method is tested on 2023 onward with records built from earlier years; see
+`reports/outlook_<market>.md`. US stock pages cover liquid stocks only.
+
 ### Alerts
 
 After each daily update, changes since the last run are posted as a comment on

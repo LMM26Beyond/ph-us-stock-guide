@@ -1,7 +1,7 @@
 """Data for the web dashboard (site/index.html, published to GitHub Pages).
 
-analyze() writes reports/dashboard_<market>.json; build() copies the page and
-the JSON files into site/ for the Pages deploy.
+analyze() writes reports/dashboard_<market>.json and the candle outlook pages in
+data/web/; build() copies the page and the JSON files into site/ for the Pages deploy.
 """
 import json
 import shutil
@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import backtest, storage
-from .config import BENCHMARK, REPORTS_DIR, ROOT
+from .config import BENCHMARK, DATA_DIR, REPORTS_DIR, ROOT
 
 WEB = Path(__file__).with_name("web")   # the page, app manifest and icons
 SPARK_DAYS = 126   # about six months
@@ -77,4 +77,7 @@ def build(out_dir: Path | None = None) -> Path:
         shutil.copy(f, out / f.name)
     for p in REPORTS_DIR.glob("dashboard_*.json"):
         shutil.copy(p, out / p.name)
+    web = DATA_DIR / "web"   # candle outlook: outlook_<market>.json and stocks/<market>/<symbol>.json
+    if web.exists():
+        shutil.copytree(web, out, dirs_exist_ok=True)
     return out
