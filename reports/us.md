@@ -1,22 +1,22 @@
 # United States — market guide
 
-Data up to **Wed 28 Oct 2026**. Generated 28 Oct 2026.
+Data up to **Thu 29 Oct 2026**. Generated 29 Oct 2026.
 
 > This is an automated technical analysis of past prices, not licensed financial advice. Signals are probabilities, not certainties. Check the company news and fundamentals and size every position so a stop-out is affordable.
 
-## The market: Mixed
+## The market: Uptrend
 
-No clear direction.
+Conditions favour buying strong stocks.
 
 | | |
 |---|---|
-| S&P 500 | 7,743.98 |
-| vs 50-day average | +0.6% |
-| vs 200-day average | +6.0% |
-| 1 month / 3 months / 12 months | +1.0% / +4.1% / +12.6% |
-| RSI (14) | 53 |
+| S&P 500 | 7,720.39 |
+| vs 50-day average | +0.3% |
+| vs 200-day average | +5.7% |
+| 1 month / 3 months / 12 months | +0.9% / +3.1% / +12.0% |
+| RSI (14) | 51 |
 | Candles (last 3 days) | none |
-| Stocks above their 200-day average | 50% |
+| Stocks above their 200-day average | 53% |
 
 ## Buy candidates
 
@@ -24,26 +24,26 @@ Liquid stocks with a score of 70 or more, above their 200-day average, not overe
 
 | Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HNGE | Hinge Health, Inc. Class A Commo | $115.28 | 89 | +53% | +131% | 73 | – | – | -153% | n/m | – |  |
-| GH | Guardant Health, Inc. - Common S | $182.59 | 89 | +20% | +158% | 63 | loss | loss | – | +5% | – |  |
-| LFST | LifeStance Health Group, Inc. -  | $13.39 | 89 | +25% | +162% | 68 | n/m | 3.5 | +1% | +117% | – |  |
-| VSXY | Victorias Secret & Co. Common St | $95.40 | 89 | +8% | +174% | 62 | 47.3 | 7.7 | +16% | -2% | – | dark cloud cover |
-| CRWD | CrowdStrike Holdings, Inc. - Cla | $266.66 | 89 | +44% | +101% | 59 | loss | 53.5 | -3% | n/m | – |  |
-| SN | SharkNinja, Inc. Ordinary Shares | $198.17 | 88 | +21% | +105% | 64 | 39.8 | 9.8 | +25% | +60% | 0.5% |  |
-| BVS | Bioventus Inc. - Class A Common  | $14.65 | 88 | +11% | +118% | 60 | – | – | +10% | +168% | – | bearish engulfing |
-| AMRX | Amneal Pharmaceuticals, Inc. - C | $21.14 | 88 | +14% | +106% | 65 | 93.7 | n/m | +218% | +162% | – | shooting star, bearish harami, bullish marubozu |
-| RLAY | Relay Therapeutics, Inc. - Commo | $19.69 | 88 | +1% | +167% | 61 | loss | 4.8 | -31% | +18% | – | bullish marubozu |
-| GKOS | Glaukos Corporation Common Stock | $181.43 | 88 | +8% | +140% | 65 | loss | 15.7 | -28% | -28% | – |  |
-| KNSA | Kiniksa Pharmaceuticals Internat | $95.18 | 88 | +22% | +134% | 70 | – | – | +10% | +237% | – | bullish marubozu |
-| NRIX | Nurix Therapeutics, Inc. - Commo | $27.26 | 88 | +16% | +128% | 69 | loss | 3.1 | -27% | -37% | 0.0% |  |
-| VSTS | Vestis Corporation Common Stock | $15.25 | 88 | +5% | +185% | 67 | loss | 2.3 | -5% | -292% | 0.2% |  |
-| ANF | Abercrombie & Fitch Company Comm | $161.24 | 88 | +61% | +118% | 64 | 13.5 | 5.1 | +37% | -10% | 0.0% |  |
-| NEO | NeoGenomics, Inc. - Common Stock | $17.99 | 88 | +13% | +77% | 57 | loss | 2.9 | -14% | -37% | – | inverted hammer |
-| CLDT | Chatham Lodging Trust (REIT) Com | $14.89 | 88 | +12% | +124% | 73 | 46.1 | 1.0 | +2% | +261% | 2.4% |  |
-| PACS | PACS Group, Inc. Common Stock | $49.06 | 88 | +4% | +289% | 66 | 40.6 | 7.0 | +17% | +244% | 0.4% | bearish harami |
-| PANW | Palo Alto Networks, Inc. - Commo | $394.49 | 88 | +21% | +79% | 56 | n/m | 11.7 | +1% | -73% | – | dark cloud cover |
-| BRKR | Bruker Corporation - Common Stoc | $62.00 | 87 | -4% | +60% | 59 | loss | 3.8 | -0% | -108% | 0.3% |  |
-| CBRL | Cracker Barrel Old Country Store | $70.87 | 87 | +24% | +99% | 74 | 50.0 | 3.3 | +7% | -32% | 1.4% |  |
+| VSXY | Victorias Secret & Co. Common St | $99.14 | 89 | +12% | +187% | 66 | 49.1 | 8.0 | +16% | -2% | – | dark cloud cover |
+| DFTX | Definium Therapeutics, Inc.  - C | $37.96 | 89 | -13% | +195% | 57 | loss | 5.6 | -20% | -69% | – | shooting star |
+| GH | Guardant Health, Inc. - Common S | $185.31 | 89 | +14% | +166% | 65 | loss | loss | – | +5% | – |  |
+| ILMN | Illumina, Inc. - Common Stock | $290.06 | 89 | +41% | +197% | 64 | 51.5 | 15.4 | +30% | +170% | – |  |
+| NTRA | Natera, Inc. - Common Stock | $436.00 | 89 | +63% | +130% | 70 | loss | 34.5 | -11% | -9% | – |  |
+| CRWD | CrowdStrike Holdings, Inc. - Cla | $261.15 | 89 | +37% | +91% | 56 | loss | 52.4 | -3% | n/m | – |  |
+| LFST | LifeStance Health Group, Inc. -  | $13.63 | 89 | +30% | +167% | 71 | n/m | 3.5 | +1% | +117% | – |  |
+| HNGE | Hinge Health, Inc. Class A Commo | $116.90 | 89 | +56% | +129% | 74 | – | – | -153% | n/m | – |  |
+| ECO | Okeanis Eco Tankers Corp. Common | $101.63 | 89 | +68% | +203% | 67 | – | – | – | – | – |  |
+| RLAY | Relay Therapeutics, Inc. - Commo | $19.47 | 88 | +3% | +159% | 59 | loss | 4.8 | -31% | +18% | – | bullish marubozu |
+| PANW | Palo Alto Networks, Inc. - Commo | $380.57 | 88 | +15% | +72% | 51 | n/m | 11.3 | +1% | -73% | – |  |
+| SN | SharkNinja, Inc. Ordinary Shares | $209.12 | 88 | +29% | +115% | 72 | 42.0 | 10.4 | +25% | +60% | 0.5% | bullish marubozu |
+| MTW | Manitowoc Company, Inc. (The) Co | $23.80 | 88 | +72% | +114% | 65 | n/m | 1.2 | +1% | -87% | 0.3% | bullish marubozu |
+| MCS | Marcus Corporation (The) Common  | $28.07 | 88 | -4% | +115% | 51 | 42.1 | 1.2 | +3% | +263% | – |  |
+| NRIX | Nurix Therapeutics, Inc. - Commo | $27.12 | 88 | +17% | +128% | 67 | loss | 3.1 | -27% | -37% | 0.0% |  |
+| ORKA | Oruka Therapeutics, Inc. - Commo | $96.65 | 88 | +0% | +252% | 67 | loss | 5.7 | -9% | n/m | – |  |
+| PACS | PACS Group, Inc. Common Stock | $49.68 | 88 | +8% | +300% | 67 | 41.1 | 7.1 | +17% | +244% | 0.4% | bearish harami |
+| NEO | NeoGenomics, Inc. - Common Stock | $17.93 | 88 | +17% | +81% | 56 | loss | 2.9 | -14% | -37% | – |  |
+| CYRX | CryoPort, Inc. - Common Stock | $18.29 | 88 | +21% | +102% | 59 | 11.8 | 1.9 | +16% | +168% | – | bearish engulfing |
+| KNSA | Kiniksa Pharmaceuticals Internat | $97.56 | 88 | +31% | +147% | 72 | – | – | +10% | +237% | – | bullish marubozu |
 
 **How much to buy.** Split the money you set aside for US stocks into 40 equal parts and put one part in each pick, working down the list as you have free parts: with $10,000 that is $250 a stock. Holding fewer stocks made the swings bigger without raising the return in [the back-test](backtest_us.md). Run the portfolio command with your cash in portfolio.csv to get share counts.
 
@@ -55,44 +55,44 @@ Liquid stocks with the weakest scores: falling trend and lagging the market. If 
 
 | Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| ABTC | American Bitcoin Corp. - Class A | $7.97 | 10 | +35% | -91% | 49 | loss | 1.0 | -23% | n/m | – | morning star |
-| APUS | Apimeds Pharmaceuticals US, Inc. | $3.07 | 10 | -38% | -84% | 43 | loss | 0.0 | -6% | -332% | – | bullish marubozu |
-| BIAF | bioAffinity Technologies, Inc. - | $3.14 | 10 | -67% | -92% | 35 | loss | 6.8 | -396% | -65% | – |  |
-| CCOI | Cogent Communications Holdings,  | $7.64 | 10 | -42% | -83% | 43 | loss | loss | – | +11% | 39.9% |  |
-| FMC | FMC Corporation Common Stock | $4.47 | 10 | -62% | -85% | 15 | loss | 0.3 | -137% | n/m | 40.7% | bullish harami |
-| OKLO | Oklo Inc. Class A common stock | $27.12 | 10 | -34% | -80% | 33 | loss | 1.5 | -3% | -44% | – |  |
-| SERV | Serve Robotics Inc. - Common Sto | $3.02 | 10 | -37% | -79% | 33 | loss | 0.7 | -29% | -159% | – |  |
-| SPRY | ARS Pharmaceuticals, Inc. - Comm | $3.65 | 11 | -35% | -62% | 34 | loss | 29.0 | -1369% | n/m | – |  |
-| SOUN | SoundHound AI, Inc. - Class A Co | $4.44 | 11 | -28% | -76% | 31 | loss | 0.2 | -3% | +96% | – |  |
-| GRML | Greenland Mines Ltd - Common Sto | $5.45 | 11 | -44% | -80% | 43 | loss | 15.0 | -18% | -72% | 302.8% |  |
-| FUN | Six Flags Entertainment Corporat | $7.54 | 11 | -57% | -72% | 31 | loss | 6.7 | -1394% | n/m | – |  |
-| PRIM | Primoris Services Corporation Co | $73.76 | 11 | -14% | -48% | 49 | 14.4 | 2.5 | +17% | +52% | 0.4% | bullish harami |
-| LEU | Centrus Energy Corp. Class A Com | $111.97 | 11 | -37% | -69% | 39 | 19.7 | 1.8 | +9% | +6% | – | hammer |
-| NNE | Nano Nuclear Energy Inc. - commo | $12.39 | 11 | -26% | -72% | 35 | loss | 1.1 | -7% | -295% | – | hammer |
-| CPNG | Coupang, Inc. Class A Common Sto | $14.11 | 12 | -12% | -56% | 45 | – | – | +5% | +35% | – |  |
-| BKKT | Bakkt, Inc. Class A Common Stock | $5.23 | 12 | -30% | -82% | 32 | loss | 0.7 | -30% | -130% | – |  |
-| PHAT | Phathom Pharmaceuticals, Inc. -  | $6.28 | 12 | -30% | -55% | 39 | loss | loss | – | +34% | – |  |
-| FVRR | Fiverr International Ltd. Ordina | $8.08 | 12 | -12% | -65% | 33 | 13.9 | 0.7 | +5% | +15% | – |  |
-| BILI | Bilibili Inc. - American Deposit | $12.90 | 12 | -31% | -57% | 27 | – | – | +8% | – | – |  |
-| VNET | VNET Group, Inc. - American Depo | $3.71 | 12 | -49% | -63% | 29 | – | – | -4% | -243% | – | hammer |
+| ABTC | American Bitcoin Corp. - Class A | $7.50 | 10 | +36% | -91% | 45 | loss | 0.9 | -23% | n/m | – | morning star |
+| APUS | Apimeds Pharmaceuticals US, Inc. | $3.21 | 10 | -38% | -84% | 44 | loss | 0.0 | -6% | -332% | – | bullish marubozu |
+| OKLO | Oklo Inc. Class A common stock | $26.81 | 10 | -31% | -80% | 32 | loss | 1.5 | -3% | -44% | – |  |
+| FMC | FMC Corporation Common Stock | $4.75 | 10 | -56% | -84% | 21 | loss | 0.4 | -137% | n/m | 38.3% | bullish engulfing, bullish harami |
+| SPRY | ARS Pharmaceuticals, Inc. - Comm | $3.66 | 11 | -29% | -61% | 35 | loss | 29.1 | -1369% | n/m | – | inverted hammer |
+| SOUN | SoundHound AI, Inc. - Class A Co | $4.36 | 11 | -29% | -75% | 30 | loss | 0.2 | -3% | +96% | – |  |
+| VNET | VNET Group, Inc. - American Depo | $3.37 | 11 | -53% | -67% | 26 | – | – | -4% | -243% | – | hammer |
+| BKKT | Bakkt, Inc. Class A Common Stock | $5.08 | 11 | -29% | -81% | 31 | loss | 0.6 | -30% | -130% | – | inverted hammer |
+| GRML | Greenland Mines Ltd - Common Sto | $5.14 | 11 | -47% | -80% | 42 | loss | 14.1 | -18% | -72% | 321.0% |  |
+| NNE | Nano Nuclear Energy Inc. - commo | $12.21 | 11 | -23% | -72% | 34 | loss | 1.1 | -7% | -295% | – | inverted hammer |
+| PHAT | Phathom Pharmaceuticals, Inc. -  | $6.22 | 12 | -29% | -54% | 38 | loss | loss | – | +34% | – |  |
+| GEMI | Gemini Space Station, Inc. - Cla | $3.08 | 12 | -21% | -85% | 31 | – | – | -124% | -268% | – |  |
+| NRG | NRG Energy, Inc. Common Stock | $97.54 | 12 | -27% | -44% | 45 | 23.7 | 4.2 | +18% | -23% | 1.8% |  |
+| OI | O-I Glass, Inc. Common Stock | $5.29 | 12 | -26% | -56% | 33 | loss | 0.6 | -10% | -22% | 0.9% |  |
+| BILI | Bilibili Inc. - American Deposit | $12.87 | 12 | -33% | -59% | 26 | – | – | +8% | – | – |  |
+| BTDR | Bitdeer Technologies Group - Ord | $7.58 | 12 | -28% | -69% | 36 | – | – | – | – | – |  |
+| ALNY | Alnylam Pharmaceuticals, Inc. -  | $174.00 | 12 | -15% | -63% | 24 | 74.2 | 17.2 | +23% | +213% | – |  |
+| XXI | Twenty One Capital, Inc. Class A | $5.72 | 12 | +34% | -72% | 45 | – | – | – | – | – |  |
+| INTR | Inter & Co. Inc. - Class A Commo | $4.17 | 12 | -26% | -55% | 31 | – | – | – | – | – | dragonfly doji, bullish harami |
+| BSX | Boston Scientific Corporation Co | $42.69 | 13 | -9% | -58% | 42 | – | 2.5 | – | – | – |  |
 
 ## Signals that have worked here
 
 From the history study ([full table](signals_us.md)). Only these count in the score.
 
-- **rsi oversold exit** (up): -0.11% vs the index over 10 days, right way 47% of 64,089 times — works in reverse
-- **golden cross** (up): -0.26% vs the index over 10 days, right way 47% of 15,350 times — works in reverse
-- **volume surge up** (up): -1.37% vs the index over 10 days, right way 44% of 88,853 times — works in reverse
-- **breakdown 52w low** (down): -0.23% vs the index over 10 days, right way 51% of 63,515 times — works as expected
-- **volume surge down** (down): -0.36% vs the index over 10 days, right way 53% of 81,252 times — works as expected
+- **rsi oversold exit** (up): -0.12% vs the index over 10 days, right way 47% of 64,214 times — works in reverse
+- **golden cross** (up): -0.27% vs the index over 10 days, right way 47% of 15,358 times — works in reverse
+- **volume surge up** (up): -1.37% vs the index over 10 days, right way 44% of 88,886 times — works in reverse
+- **breakdown 52w low** (down): -0.23% vs the index over 10 days, right way 51% of 63,603 times — works as expected
+- **volume surge down** (down): -0.36% vs the index over 10 days, right way 53% of 81,288 times — works as expected
 
 ## Has the score worked?
 
-Each past month-end (107 months), liquid stocks were split into five equal groups by score (without the candle part). Average return over the next month beyond the index:
+Each past month-end (108 months), liquid stocks were split into five equal groups by score (without the candle part). Average return over the next month beyond the index:
 
 | Score group | 1 (weakest) | 2 | 3 | 4 | 5 (strongest) |
 |---|---:|---:|---:|---:|---:|
-| Next month vs index | -1.05% | -0.77% | -0.46% | -0.37% | -0.25% |
+| Next month vs index | -1.03% | -0.76% | -0.43% | -0.36% | -0.26% |
 
-The strongest group beat the weakest in 58% of months (average gap +0.81% a month).
+The strongest group beat the weakest in 57% of months (average gap +0.77% a month).
 
