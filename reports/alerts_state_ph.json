@@ -1,14 +1,15 @@
 {
- "date": "2026-10-29",
+ "date": "2026-10-30",
  "regime": "Downtrend",
  "buys": [
-  "SGP",
-  "MEG",
   "PNB",
-  "AEV",
-  "FCG",
-  "ICT",
+  "MEG",
+  "AT",
+  "SGP",
   "FGEN",
-  "AC"
+  "ICT",
+  "FCG",
+  "AC",
+  "AEV"
  ]
 }
