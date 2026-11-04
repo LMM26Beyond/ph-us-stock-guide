@@ -1,26 +1,26 @@
 {
- "date": "2026-11-03",
+ "date": "2026-11-04",
  "regime": "Uptrend",
  "buys": [
   "SN",
+  "VSXY",
   "LFST",
   "HNGE",
-  "VSXY",
+  "ANF",
   "MTW",
-  "SYRE",
   "ORKA",
-  "CON",
-  "CRL",
+  "PACS",
   "CLDT",
+  "OSCR",
   "KNSA",
   "AMN",
   "BJRI",
-  "BTSG",
-  "KYMR",
-  "CBLL",
-  "ATRC",
+  "SYRE",
   "PEB",
-  "NRIX",
-  "OPRT"
+  "RAL",
+  "RVMD",
+  "KFRC",
+  "EAT",
+  "ATRC"
  ]
 }
