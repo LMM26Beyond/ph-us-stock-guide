@@ -1,13 +1,13 @@
 {
- "date": "2026-11-04",
+ "date": "2026-11-06",
  "regime": "Downtrend",
  "buys": [
   "PNB",
-  "ICT",
   "MEG",
+  "LTG",
   "AC",
-  "AEV",
   "FCG",
-  "AT"
+  "AT",
+  "APX"
  ]
 }
