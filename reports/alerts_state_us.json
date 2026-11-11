@@ -1,26 +1,26 @@
 {
- "date": "2026-11-09",
+ "date": "2026-11-10",
  "regime": "Uptrend",
  "buys": [
+  "IGR",
   "HNGE",
   "VSXY",
-  "IGR",
-  "CON",
-  "SYRE",
-  "PACS",
-  "LFST",
   "MGNI",
+  "PACS",
+  "CON",
+  "STGW",
+  "SYRE",
+  "LFST",
   "NIQ",
   "CHYM",
+  "GEO",
   "VCTR",
-  "ELVN",
-  "LTH",
-  "RLJ",
-  "ROIV",
+  "HUM",
   "AVAH",
   "AAMI",
   "GIC",
-  "TGTX",
-  "TGT"
+  "RLJ",
+  "CROX",
+  "EPC"
  ]
 }
