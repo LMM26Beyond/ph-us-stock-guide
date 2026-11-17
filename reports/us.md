@@ -1,22 +1,22 @@
 # United States — market guide
 
-Data up to **Fri 13 Nov 2026**. Generated 14 Nov 2026.
+Data up to **Mon 16 Nov 2026**. Generated 17 Nov 2026.
 
 > This is an automated technical analysis of past prices, not licensed financial advice. Signals are probabilities, not certainties. Check the company news and fundamentals and size every position so a stop-out is affordable.
 
-## The market: Uptrend
+## The market: Mixed
 
-Conditions favour buying strong stocks.
+No clear direction.
 
 | | |
 |---|---|
-| S&P 500 | 7,561.67 |
-| vs 50-day average | -1.4% |
-| vs 200-day average | +3.0% |
-| 1 month / 3 months / 12 months | -2.4% / -2.4% / +10.4% |
-| RSI (14) | 47 |
+| S&P 500 | 7,416.59 |
+| vs 50-day average | -3.2% |
+| vs 200-day average | +1.0% |
+| 1 month / 3 months / 12 months | -3.2% / -3.6% / +10.1% |
+| RSI (14) | 40 |
 | Candles (last 3 days) | none |
-| Stocks above their 200-day average | 51% |
+| Stocks above their 200-day average | 48% |
 
 ## Buy candidates
 
@@ -24,26 +24,26 @@ Liquid stocks with a score of 70 or more, above their 200-day average, not overe
 
 | Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| SN | SharkNinja, Inc. Ordinary Shares | $226.39 | 89 | +23% | +141% | 68 | 45.5 | 10.1 | +22% | +60% | 0.5% |  |
-| VSXY | Victorias Secret & Co. Common St | $106.17 | 89 | +26% | +200% | 60 | 52.6 | 8.6 | +16% | -2% | – | piercing line |
-| OPRT | Oportun Financial Corporation -  | $11.73 | 89 | +56% | +142% | 67 | 21.4 | 1.2 | +6% | +132% | – |  |
-| STGW | Stagwell Inc. - Class A Common S | $11.27 | 88 | +30% | +118% | 70 | 96.0 | 4.0 | +4% | n/m | – |  |
-| TGTX | TG Therapeutics, Inc. - Common S | $64.51 | 88 | +31% | +108% | 65 | 22.1 | 16.3 | +74% | n/m | – |  |
-| CON | Concentra Group Holdings Parent, | $42.55 | 88 | +20% | +113% | 64 | 32.3 | 10.6 | +33% | -0% | 0.6% |  |
-| MGNI | Magnite, Inc. - Common Stock | $29.29 | 88 | +21% | +106% | 72 | 29.1 | 4.4 | +15% | n/m | – |  |
-| VAC | Marriott Vacations Worldwide Cor | $116.81 | 88 | -2% | +147% | 58 | loss | 1.9 | -15% | -241% | 2.7% | bearish engulfing |
-| KNSA | Kiniksa Pharmaceuticals Internat | $96.33 | 88 | +22% | +137% | 60 | – | – | +8% | +237% | – |  |
-| LFST | LifeStance Health Group, Inc. -  | $14.08 | 88 | +12% | +119% | 60 | n/m | 3.6 | +1% | +117% | – | bearish engulfing |
-| CHYM | Chime Financial, Inc. - Class A  | $33.55 | 87 | +7% | +66% | 70 | – | – | -65% | n/m | – |  |
-| SYRE | Spyre Therapeutics, Inc. - Commo | $104.00 | 87 | -1% | +344% | 59 | loss | 9.4 | -15% | +25% | – |  |
-| AAMI | Acadian Asset Management Inc. Co | $94.98 | 87 | +2% | +113% | 55 | 41.9 | 83.4 | +199% | -6% | 0.0% |  |
-| GIC | Global Industrial Company Common | $46.63 | 87 | +21% | +73% | 62 | 24.7 | 5.0 | +20% | +18% | 2.2% | bearish harami |
-| GEO | Geo Group Inc (The) REIT | $32.53 | 87 | +4% | +118% | 62 | 16.9 | 2.7 | +16% | n/m | 0.0% | hanging man |
-| JAKK | JAKKS Pacific, Inc. - Common Sto | $35.93 | 87 | +41% | +112% | 73 | 41.9 | 1.5 | +4% | -71% | 0.2% |  |
-| HUM | Humana Inc. Common Stock | $450.00 | 87 | +17% | +87% | 64 | 45.5 | 2.9 | +6% | -2% | 0.3% | hanging man |
-| ACHC | Acadia Healthcare Company, Inc.  | $37.78 | 87 | +26% | +117% | 73 | loss | 1.7 | -55% | n/m | – | hanging man, bearish engulfing |
-| AMRX | Amneal Pharmaceuticals, Inc. - C | $21.38 | 87 | +16% | +80% | 59 | 94.8 | n/m | +218% | +162% | – |  |
-| CROX | Crocs, Inc. - Common Stock | $163.72 | 87 | +26% | +120% | 73 | loss | 5.6 | -6% | -109% | – |  |
+| SN | SharkNinja, Inc. Ordinary Shares | $223.29 | 89 | +22% | +145% | 64 | 44.9 | 10.0 | +22% | +60% | 0.5% | dark cloud cover |
+| OPRT | Oportun Financial Corporation -  | $11.43 | 89 | +54% | +137% | 62 | 20.9 | 1.2 | +6% | +132% | – |  |
+| VAC | Marriott Vacations Worldwide Cor | $117.41 | 89 | +2% | +155% | 58 | loss | 1.9 | -15% | -241% | 2.7% | bearish engulfing |
+| MGNI | Magnite, Inc. - Common Stock | $28.79 | 88 | +17% | +102% | 68 | 28.6 | 4.3 | +15% | n/m | – |  |
+| STGW | Stagwell Inc. - Class A Common S | $11.41 | 88 | +29% | +136% | 71 | 97.2 | 4.1 | +4% | n/m | – |  |
+| LFST | LifeStance Health Group, Inc. -  | $14.48 | 88 | +17% | +129% | 64 | n/m | 3.7 | +1% | +117% | – |  |
+| CON | Concentra Group Holdings Parent, | $43.44 | 88 | +24% | +120% | 67 | 33.0 | 10.8 | +33% | -0% | 0.6% |  |
+| KNSA | Kiniksa Pharmaceuticals Internat | $94.23 | 88 | +19% | +134% | 57 | – | – | +8% | +237% | – |  |
+| AMRX | Amneal Pharmaceuticals, Inc. - C | $21.23 | 88 | +17% | +84% | 57 | n/m | 13.9 | +14% | +162% | – |  |
+| JAKK | JAKKS Pacific, Inc. - Common Sto | $35.62 | 87 | +41% | +111% | 71 | 41.6 | 1.5 | +4% | -71% | 0.2% |  |
+| HUM | Humana Inc. Common Stock | $461.25 | 87 | +21% | +95% | 68 | 46.6 | 2.9 | +6% | -2% | 0.3% | hanging man |
+| CROX | Crocs, Inc. - Common Stock | $160.01 | 87 | +24% | +116% | 68 | loss | 5.4 | -6% | -109% | – |  |
+| TGTX | TG Therapeutics, Inc. - Common S | $62.76 | 87 | +25% | +103% | 59 | 21.2 | 16.6 | +78% | n/m | – | bearish engulfing |
+| CHYM | Chime Financial, Inc. - Class A  | $34.29 | 87 | +7% | +79% | 73 | – | – | -65% | n/m | – |  |
+| GEO | Geo Group Inc (The) REIT | $32.66 | 87 | +6% | +124% | 62 | 17.0 | 2.7 | +16% | n/m | 0.0% | hanging man |
+| ACHC | Acadia Healthcare Company, Inc.  | $38.70 | 87 | +41% | +141% | 75 | loss | 1.8 | -55% | n/m | – | hanging man, bearish engulfing |
+| RLJ | RLJ Lodging Trust Common Shares  | $13.04 | 86 | +17% | +74% | 65 | 69.7 | 0.9 | +1% | -58% | 4.6% |  |
+| HELE | Helen of Troy Limited - Common S | $37.65 | 86 | +31% | +97% | 72 | loss | 1.0 | -105% | n/m | – |  |
+| LILAK | Liberty Latin America Ltd. - Cla | $9.95 | 86 | +20% | +79% | 69 | – | – | -137% | +7% | – | bearish engulfing |
+| BTSG | BrightSpring Health Services, In | $71.37 | 86 | +20% | +125% | 65 | 74.5 | 6.5 | +9% | n/m | – |  |
 
 **How much to buy.** Split the money you set aside for US stocks into 40 equal parts and put one part in each pick, working down the list as you have free parts: with $10,000 that is $250 a stock. Holding fewer stocks made the swings bigger without raising the return in [the back-test](backtest_us.md). Run the portfolio command with your cash in portfolio.csv to get share counts.
 
@@ -55,36 +55,36 @@ Liquid stocks with the weakest scores: falling trend and lagging the market. If 
 
 | Stock | Name | Close | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| ABTC | American Bitcoin Corp. - Class A | $5.07 | 10 | -29% | -93% | 33 | loss | 0.5 | -19% | n/m | – |  |
-| BKKT | Bakkt, Inc. Class A Common Stock | $3.38 | 10 | -53% | -84% | 26 | loss | 0.4 | -30% | -130% | – |  |
-| BYND | Beyond Meat, Inc. - Common stock | $5.38 | 10 | -54% | -84% | 29 | 12.7 | 48.9 | +386% | +237% | – |  |
-| SAIQ | WISeSat.Space Holdings Corp. - O | $3.08 | 10 | -71% | -70% | 37 | – | – | – | – | – |  |
-| VISN | Vistance Networks, Inc.  - Commo | $4.24 | 10 | -64% | -76% | 25 | 0.4 | 0.4 | +102% | n/m | – | hammer |
-| SOUN | SoundHound AI, Inc. - Class A Co | $3.49 | 11 | -50% | -74% | 22 | loss | 0.1 | -3% | +96% | – |  |
-| RGTI | Rigetti Computing, Inc.  - Commo | $9.62 | 11 | -48% | -66% | 37 | loss | 6.0 | -40% | -8% | – | bearish marubozu |
-| STLA | Stellantis N.V. Common Shares | $3.82 | 11 | -25% | -64% | 33 | – | – | – | – | – |  |
-| QS | QuantumScape Corporation - Commo | $3.68 | 11 | -40% | -75% | 37 | loss | 0.4 | -44% | +9% | – | bearish engulfing |
-| CCOI | Cogent Communications Holdings,  | $4.01 | 11 | -63% | -78% | 30 | loss | loss | – | +11% | 76.1% |  |
-| GILT | Gilat Satellite Networks Ltd. -  | $5.59 | 11 | -50% | -58% | 26 | 19.9 | 0.8 | +4% | -17% | – |  |
-| STUB | StubHub Holdings, Inc. Class A C | $5.31 | 11 | -25% | -72% | 40 | – | – | -117% | n/m | – | bullish harami, bearish marubozu |
-| XXI | Twenty One Capital, Inc. Class A | $4.95 | 12 | +0% | -69% | 35 | – | – | – | – | – |  |
-| REAX | Real REMAX Group Inc. - Common S | $10.70 | 12 | -56% | -74% | 32 | – | 1.0 | – | – | – |  |
-| CTGO | Contango Silver & Gold Inc. Comm | $11.83 | 12 | -40% | -51% | 33 | loss | 1.2 | -11% | +5% | – |  |
-| CCB | Coastal Financial Corporation -  | $42.57 | 12 | -13% | -61% | 46 | 13.9 | 1.4 | +10% | +4% | – |  |
-| NXRT | NexPoint Residential Trust, Inc. | $15.49 | 12 | -35% | -51% | 31 | loss | 1.8 | -14% | n/m | 13.3% |  |
-| MLYS | Mineralys Therapeutics, Inc. - C | $15.33 | 12 | -41% | -68% | 32 | loss | 2.7 | -31% | +13% | – |  |
-| OXLC | Oxford Lane Capital Corp. - Clos | $5.04 | 12 | -46% | -67% | 17 | – | – | – | – | – |  |
-| CWH | Camping World Holdings, Inc. Cla | $4.34 | 12 | -30% | -61% | 43 | – | – | -177% | -132% | 17.1% | inverted hammer |
+| ABTC | American Bitcoin Corp. - Class A | $4.71 | 10 | -32% | -93% | 30 | loss | 0.5 | -19% | n/m | – |  |
+| BKKT | Bakkt, Inc. Class A Common Stock | $3.05 | 10 | -56% | -84% | 24 | loss | 0.4 | -29% | -130% | – |  |
+| BYND | Beyond Meat, Inc. - Common stock | $4.95 | 10 | -61% | -84% | 26 | 0.4 | loss | – | +237% | – |  |
+| SAIQ | WISeSat.Space Holdings Corp. - O | $3.55 | 10 | -67% | -66% | 41 | – | – | – | – | – |  |
+| OMH | Ohmyhome Limited - Class A Ordin | $3.98 | 10 | -7% | -93% | 47 | loss | 23.7 | -192% | -125% | – |  |
+| FLNC | Fluence Energy, Inc. - Class A C | $4.29 | 10 | -63% | -74% | 31 | – | – | -13% | -313% | – | hammer |
+| AEHL | Antelope Enterprise Holdings Lim | $7.60 | 10 | +34% | -94% | 45 | – | – | – | – | – | bearish marubozu |
+| VISN | Vistance Networks, Inc.  - Commo | $3.95 | 10 | -65% | -76% | 22 | 0.4 | 0.4 | +102% | n/m | – | hammer |
+| TSSI | TSS, Inc. - Common Stock | $5.69 | 11 | -40% | -63% | 33 | 10.6 | 1.9 | +18% | +153% | – | bearish marubozu |
+| CCOI | Cogent Communications Holdings,  | $3.73 | 11 | -63% | -78% | 29 | loss | loss | – | +11% | 81.8% |  |
+| QS | QuantumScape Corporation - Commo | $3.43 | 11 | -40% | -75% | 34 | loss | 0.3 | -44% | +9% | – |  |
+| STLA | Stellantis N.V. Common Shares | $3.71 | 11 | -27% | -65% | 31 | – | – | – | – | – |  |
+| MLYS | Mineralys Therapeutics, Inc. - C | $14.53 | 11 | -45% | -67% | 30 | loss | 2.6 | -31% | +13% | – |  |
+| OXLC | Oxford Lane Capital Corp. - Clos | $4.98 | 11 | -46% | -67% | 17 | – | – | – | – | – |  |
+| STUB | StubHub Holdings, Inc. Class A C | $4.89 | 11 | -31% | -74% | 35 | – | – | -113% | n/m | – | bullish harami, bearish marubozu |
+| RGTI | Rigetti Computing, Inc.  - Commo | $9.06 | 11 | -49% | -64% | 34 | loss | 5.7 | -40% | -8% | – |  |
+| SOUN | SoundHound AI, Inc. - Class A Co | $3.23 | 11 | -54% | -74% | 20 | loss | 0.1 | -2% | +96% | – |  |
+| IREN | IREN Limited - Ordinary Shares | $16.39 | 11 | -61% | -66% | 30 | loss | 1.1 | -14% | n/m | 0.0% |  |
+| BTDR | Bitdeer Technologies Group - Ord | $4.50 | 12 | -50% | -60% | 32 | – | – | – | – | – |  |
+| NXRT | NexPoint Residential Trust, Inc. | $15.16 | 12 | -35% | -52% | 29 | loss | 1.7 | -14% | n/m | 13.6% |  |
 
 ## Signals that have worked here
 
 From the history study ([full table](signals_us.md)). Only these count in the score.
 
-- **rsi oversold exit** (up): -0.09% vs the index over 10 days, right way 47% of 65,082 times — works in reverse
-- **golden cross** (up): -0.27% vs the index over 10 days, right way 47% of 15,417 times — works in reverse
-- **volume surge up** (up): -1.39% vs the index over 10 days, right way 44% of 89,272 times — works in reverse
-- **breakdown 52w low** (down): -0.26% vs the index over 10 days, right way 51% of 64,239 times — works as expected
-- **volume surge down** (down): -0.38% vs the index over 10 days, right way 53% of 81,668 times — works as expected
+- **rsi oversold exit** (up): -0.09% vs the index over 10 days, right way 47% of 65,163 times — works in reverse
+- **golden cross** (up): -0.27% vs the index over 10 days, right way 47% of 15,420 times — works in reverse
+- **volume surge up** (up): -1.39% vs the index over 10 days, right way 44% of 89,288 times — works in reverse
+- **breakdown 52w low** (down): -0.26% vs the index over 10 days, right way 51% of 64,302 times — works as expected
+- **volume surge down** (down): -0.37% vs the index over 10 days, right way 53% of 81,681 times — works as expected
 
 ## Has the score worked?
 
