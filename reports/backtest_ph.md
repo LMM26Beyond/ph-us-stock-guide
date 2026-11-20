@@ -8,11 +8,11 @@ Costs per trade: 0.25% commission (min ₱20) + 12% VAT, 0.015% PSE and SCCP fee
 
 | Strategy | Yearly return | Total | Worst drop | Sharpe | Trades | Wins | Avg trade |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Current rules | +6.7% | +119.6% | -45.7% | 0.41 | 218 | 33% | +4.1% |
-| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.4% | -5.0% | -47.4% | 0.05 | 489 | 33% | -0.4% |
-| Current rules, smaller amounts in more volatile stocks | +4.8% | +76.3% | -33.9% | 0.37 | 221 | 35% | +4.0% |
-| Current rules, half as many stocks | -0.2% | -2.8% | -59.6% | 0.12 | 109 | 35% | +1.1% |
-| Hold the index | -1.8% | -19.9% | -47.9% | -0.02 | – | – | – |
+| Current rules | +6.7% | +120.3% | -45.7% | 0.41 | 218 | 33% | +4.1% |
+| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.4% | -5.2% | -47.4% | 0.05 | 489 | 33% | -0.4% |
+| Current rules, smaller amounts in more volatile stocks | +4.8% | +76.4% | -33.9% | 0.37 | 221 | 35% | +4.0% |
+| Current rules, half as many stocks | -0.2% | -2.9% | -59.6% | 0.12 | 109 | 35% | +1.1% |
+| Hold the index | -1.9% | -20.6% | -47.9% | -0.02 | – | – | – |
 
 "Hold the index" is the PSEi with no costs and no dividends; the stock prices also exclude dividends, so the comparison is like for like.
 
@@ -23,7 +23,7 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 | Period | Current rules | PSEi |
 |---|---:|---:|
 | To Dec 2022 (tuned) | +5.0% a year | -1.8% a year |
-| From Jan 2023 (test) | +9.8% a year | -1.7% a year |
+| From Jan 2023 (test) | +9.9% a year | -2.0% a year |
 
 ## Position size
 
@@ -31,7 +31,7 @@ The current rules put an equal amount in each of up to 10 stocks. Two alternativ
 
 | Strategy | Yearly return | Worst drop | Tuned period | Test period |
 |---|---:|---:|---:|---:|
-| Current rules | +6.7% | -45.7% | +5.0% | +9.8% |
+| Current rules | +6.7% | -45.7% | +5.0% | +9.9% |
 | Current rules, smaller amounts in more volatile stocks | +4.8% | -33.9% | +3.1% | +8.3% |
 | Current rules, half as many stocks | -0.2% | -59.6% | -5.8% | +12.6% |
 
@@ -53,11 +53,11 @@ The current rules put an equal amount in each of up to 10 stocks. Two alternativ
 | 2023 | -4.0% | +1.7% | -5.7% |
 | 2024 | +41.8% | +2.8% | +39.0% |
 | 2025 | +19.6% | -4.4% | +24.0% |
-| 2026 | -10.1% | -6.6% | -3.5% |
+| 2026 | -9.8% | -7.4% | -2.4% |
 
 ## Verdict
 
-Following the current rules returned +6.7% a year against -1.8% for the PSEi, after costs. The rules beat the index. The worst drop along the way was -45.7%, so expect deep falls and size your money accordingly.
+Following the current rules returned +6.7% a year against -1.9% for the PSEi, after costs. The rules beat the index. The worst drop along the way was -45.7%, so expect deep falls and size your money accordingly.
 
 What the tuning found: tight trailing stops (3 × ATR) sold good stocks on normal dips and were the biggest drag; sitting out market downtrends missed the rebounds; and the most erratic stocks (daily range above 5% of the price) hurt more than they helped.
 

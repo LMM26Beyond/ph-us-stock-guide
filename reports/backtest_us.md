@@ -8,14 +8,14 @@ Costs per trade: no commission, 0.003% regulatory fees and 0.05% slippage each w
 
 | Strategy | Yearly return | Total | Worst drop | Sharpe | Trades | Wins | Avg trade |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Current rules | +17.1% | +318.4% | -43.1% | 0.66 | 496 | 42% | +18.8% |
-| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -1.0% | -8.6% | -43.6% | 0.07 | 1916 | 34% | +0.2% |
-| Current rules, smaller amounts in more volatile stocks | +11.2% | +160.5% | -31.3% | 0.60 | 520 | 42% | +17.3% |
-| Current rules, half as many stocks | +15.8% | +278.5% | -47.6% | 0.62 | 238 | 46% | +18.2% |
-| Current rules + only profitable companies | +10.5% | +147.4% | -44.8% | 0.49 | 522 | 40% | +9.1% |
-| Current rules + only ROE of 15% or more | +12.2% | +182.7% | -38.6% | 0.55 | 543 | 41% | +9.8% |
-| Current rules + only P/E of 25 or less | +10.4% | +145.7% | -40.6% | 0.51 | 551 | 44% | +7.6% |
-| Hold the index | +12.2% | +184.4% | -33.9% | 0.71 | – | – | – |
+| Current rules | +16.9% | +311.5% | -43.1% | 0.65 | 496 | 42% | +18.8% |
+| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -1.0% | -8.8% | -43.6% | 0.07 | 1916 | 34% | +0.2% |
+| Current rules, smaller amounts in more volatile stocks | +11.0% | +158.0% | -31.3% | 0.60 | 520 | 42% | +17.3% |
+| Current rules, half as many stocks | +15.7% | +273.5% | -47.6% | 0.62 | 238 | 46% | +18.2% |
+| Current rules + only profitable companies | +10.3% | +143.6% | -44.8% | 0.49 | 522 | 40% | +9.1% |
+| Current rules + only ROE of 15% or more | +12.0% | +179.2% | -38.6% | 0.55 | 543 | 41% | +9.8% |
+| Current rules + only P/E of 25 or less | +10.3% | +143.0% | -40.6% | 0.51 | 551 | 44% | +7.6% |
+| Hold the index | +12.0% | +178.6% | -33.9% | 0.69 | – | – | – |
 
 "Hold the index" is the S&P 500 with no costs and no dividends; the stock prices also exclude dividends, so the comparison is like for like.
 
@@ -26,7 +26,7 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 | Period | Current rules | S&P 500 |
 |---|---:|---:|
 | To Dec 2022 (tuned) | +13.7% a year | +8.0% a year |
-| From Jan 2023 (test) | +23.0% a year | +18.3% a year |
+| From Jan 2023 (test) | +22.5% a year | +17.6% a year |
 
 ## Position size
 
@@ -34,9 +34,9 @@ The current rules put an equal amount in each of up to 40 stocks. Two alternativ
 
 | Strategy | Yearly return | Worst drop | Tuned period | Test period |
 |---|---:|---:|---:|---:|
-| Current rules | +17.1% | -43.1% | +13.7% | +23.0% |
-| Current rules, smaller amounts in more volatile stocks | +11.2% | -31.3% | +7.5% | +16.8% |
-| Current rules, half as many stocks | +15.8% | -47.6% | +11.2% | +23.5% |
+| Current rules | +16.9% | -43.1% | +13.7% | +22.5% |
+| Current rules, smaller amounts in more volatile stocks | +11.0% | -31.3% | +7.5% | +16.5% |
+| Current rules, half as many stocks | +15.7% | -47.6% | +11.2% | +23.0% |
 
 "Smaller amounts in more volatile stocks" scales each stock's amount by 2% divided by its average daily range as a share of the price, from half to double the equal amount. It gives smaller drops for a lower return: a choice for a cautious investor, not a free improvement. Holding fewer stocks made the swings bigger without raising the return in the tuned period, so keep the full number of stocks.
 
@@ -46,10 +46,10 @@ The same rules, but buying only companies that pass a test on their latest SEC f
 
 | Strategy | Tuned period | Test period |
 |---|---:|---:|
-| Current rules | +13.7% a year | +23.0% a year |
-| Current rules + only profitable companies | +2.2% a year | +23.4% a year |
-| Current rules + only ROE of 15% or more | +4.3% a year | +24.4% a year |
-| Current rules + only P/E of 25 or less | +4.6% a year | +19.4% a year |
+| Current rules | +13.7% a year | +22.5% a year |
+| Current rules + only profitable companies | +2.2% a year | +22.8% a year |
+| Current rules + only ROE of 15% or more | +4.3% a year | +23.9% a year |
+| Current rules + only P/E of 25 or less | +4.6% a year | +19.0% a year |
 
 No filter beat the current rules in both periods. Strong momentum stocks are often young or fast-growing companies with losses or high P/Es, and the filters screen out exactly those. So the report shows P/E, P/B, ROE and growth as context only.
 
@@ -66,11 +66,11 @@ No filter beat the current rules in both periods. Strong momentum stocks are oft
 | 2023 | +12.5% | +24.2% | -11.7% |
 | 2024 | +56.4% | +23.3% | +33.0% |
 | 2025 | +30.6% | +16.4% | +14.2% |
-| 2026 | -6.0% | +7.0% | -13.0% |
+| 2026 | -7.6% | +4.8% | -12.4% |
 
 ## Verdict
 
-Following the current rules returned +17.1% a year against +12.2% for the S&P 500, after costs. The rules beat the index. The worst drop along the way was -43.1%, so expect deep falls and size your money accordingly.
+Following the current rules returned +16.9% a year against +12.0% for the S&P 500, after costs. The rules beat the index. The worst drop along the way was -43.1%, so expect deep falls and size your money accordingly.
 
 What the tuning found: tight trailing stops (3 × ATR) sold good stocks on normal dips and were the biggest drag; sitting out market downtrends missed the rebounds; and the most erratic stocks (daily range above 5% of the price) hurt more than they helped.
 
