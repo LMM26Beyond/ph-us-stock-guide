@@ -1,6 +1,6 @@
 # Philippines (PSE) — market guide
 
-Data up to **Fri 20 Nov 2026**. Generated 20 Nov 2026.
+Data up to **Fri 20 Nov 2026**. Generated 21 Nov 2026.
 
 > This is an automated technical analysis of past prices, not licensed financial advice. Signals are probabilities, not certainties. Check the company news and fundamentals and size every position so a stop-out is affordable.
 
@@ -10,13 +10,13 @@ Most stocks fall with the market in a downtrend. Expect bigger swings and consid
 
 | | |
 |---|---|
-| PSEi | 5,259.19 |
-| vs 50-day average | -8.3% |
-| vs 200-day average | -11.6% |
-| 1 month / 3 months / 12 months | -8.2% / -15.1% / -7.0% |
-| RSI (14) | 26 |
+| PSEi | 5,306.98 |
+| vs 50-day average | -7.5% |
+| vs 200-day average | -10.8% |
+| 1 month / 3 months / 12 months | -7.4% / -14.4% / -6.1% |
+| RSI (14) | 27 |
 | Candles (last 3 days) | none |
-| Stocks above their 200-day average | 21% |
+| Stocks above their 200-day average | 16% |
 
 PSEi before the first recorded real value is rebuilt from the AETF PSEi-tracker ETF, scaled to index points.
 
@@ -28,8 +28,8 @@ Liquid stocks with a score of 70 or more, above their 200-day average, not overe
 
 | Stock | Name | Close | Min. buy | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| AC | Ayala Corporation | ₱537.00 | ₱5,370 | 80 | +7% | +22% | 47 | 6.7 | 0.6 | +10% | -22% | 1.7% | three black crows, bearish marubozu, dark cloud cover |
-| PNB | Philippine National Bank | ₱80.30 | ₱803 | 76 | +21% | +53% | 54 | 4.4 | 0.5 | +11% | +15% | 5.5% |  |
+| PNB | Philippine National Bank | ₱79.00 | ₱790 | 77 | +19% | +54% | 49 | 4.4 | 0.5 | +11% | +15% | 5.5% |  |
+| AC | Ayala Corporation | ₱526.00 | ₱5,260 | 71 | +3% | +20% | 43 | 6.7 | 0.6 | +10% | -22% | 1.7% | three black crows, bearish marubozu |
 
 **How much to buy.** Split the money you set aside for PSE stocks into 10 equal parts and put one part in each pick, working down the list as you have free parts: with ₱100,000 that is ₱10,000 a stock. Holding fewer stocks made the swings bigger without raising the return in [the back-test](backtest_ph.md). *Min. buy* is the cost of one PSE board lot, the smallest amount you can buy. Run the portfolio command with your cash in portfolio.csv to get share counts.
 
@@ -41,26 +41,24 @@ Liquid stocks with the weakest scores: falling trend and lagging the market. If 
 
 | Stock | Name | Close | Min. buy | Score | 3 mo | 12 mo | RSI | P/E | P/B | ROE | Profit growth | Div yield | Recent candles |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| MRC | MRC Allied, Inc. | ₱0.53 | ₱530 | 8 | -24% | -47% | 15 | – | 0.5 | – | n/m | 0.0% | hammer, dragonfly doji |
-| PLUS | DigiPlus Interactive Corp. | ₱5.20 | ₱520 | 11 | -46% | -79% | 26 | 2.4 | 0.6 | +24% | -12% | 13.8% | bullish harami |
-| SCC | Semirara Mining and Power Corpor | ₱8.68 | ₱868 | 11 | -52% | -71% | 21 | 3.1 | 0.7 | +21% | +11% | 0.0% |  |
-| DITO | DITO CME Holdings Corp. | ₱0.51 | ₱510 | 13 | -30% | -37% | 29 | – | – | – | – | 0.0% |  |
-| GSMI | Ginebra San Miguel,  Inc. | ₱208.20 | ₱2,082 | 17 | -9% | -26% | 37 | 6.8 | 2.2 | +32% | +4% | 7.3% | inverted hammer |
-| MER | Manila Electric Company | ₱397.80 | ₱3,978 | 17 | -19% | -27% | 37 | 9.0 | 2.7 | +30% | +11% | 6.9% |  |
-| WLCON | Wilcon Depot, Inc. | ₱4.80 | ₱4,800 | 18 | -20% | -34% | 24 | loss | loss | – | – | 7.8% |  |
-| GLO | Globe Telecom, Inc. | ₱1,350.00 | ₱6,750 | 19 | -22% | -8% | 18 | 9.4 | 1.2 | +13% | -7% | 5.2% | dragonfly doji |
-| MWC | Manila Water Company, Inc. | ₱26.75 | ₱2,675 | 19 | -24% | -22% | 21 | 5.0 | 0.8 | +16% | -5% | 7.0% |  |
-| NIKL | Nickel Asia Corporation | ₱3.52 | ₱3,520 | 19 | -14% | +3% | 32 | 7.4 | 1.2 | +17% | +19% | 5.5% | dragonfly doji |
-| SECB | Security Bank Corporation | ₱61.85 | ₱618 | 21 | -6% | -12% | 46 | 4.0 | 0.3 | +8% | +1% | 4.8% | hammer |
-| BLOOM | Bloomberry Resorts Corporation | ₱1.70 | ₱1,700 | 22 | -34% | -46% | 27 | loss | 0.4 | -8% | -125% | 0.0% |  |
-| FB | San Miguel Food and Beverage, In | ₱43.85 | ₱4,385 | 22 | -8% | -16% | 40 | 9.6 | 2.0 | +21% | -9% | 12.3% | inverted hammer, bullish harami |
-| CNVRG | Converge Information and Communi | ₱8.36 | ₱836 | 22 | -14% | -34% | 32 | 5.7 | 0.9 | +16% | -9% | 5.4% | bearish marubozu |
-| DMC | DMCI Holdings, Inc. | ₱6.26 | ₱626 | 24 | -21% | -38% | 32 | 4.9 | 0.7 | +14% | +27% | 4.5% |  |
-| AREIT | AREIT, Inc. | ₱34.70 | ₱3,470 | 24 | -8% | -16% | 29 | – | – | – | +36% | 7.0% |  |
-| JGS | JG Summit Holdings, Inc. | ₱16.68 | ₱1,668 | 24 | -23% | -25% | 40 | loss | 0.5 | -32% | -29% | 2.6% |  |
-| MYNLD | Maynilad Water Services, Inc. | ₱15.90 | ₱1,590 | 25 | -13% | +6% | 34 | 7.6 | 1.1 | +14% | +11% | 6.8% |  |
-| ACEN | ACEN CORPORATION | ₱2.30 | ₱2,300 | 25 | -23% | -2% | 31 | 18.2 | 0.6 | +3% | +84% | 2.1% | inverted hammer |
-| ALI | Ayala Land, Inc. | ₱14.90 | ₱1,490 | 25 | -3% | -24% | 43 | 6.2 | 0.6 | +10% | -18% | 4.7% |  |
+| MRC | MRC Allied, Inc. | ₱0.52 | ₱520 | 8 | -26% | -49% | 14 | – | 0.5 | – | n/m | 0.0% | hammer, hammer, dragonfly doji |
+| PLUS | DigiPlus Interactive Corp. | ₱5.01 | ₱501 | 11 | -49% | -80% | 25 | 2.4 | 0.6 | +24% | -12% | 13.8% |  |
+| SCC | Semirara Mining and Power Corpor | ₱8.34 | ₱834 | 11 | -55% | -72% | 20 | 3.1 | 0.7 | +21% | +11% | 0.0% |  |
+| WLCON | Wilcon Depot, Inc. | ₱4.78 | ₱4,780 | 12 | -20% | -32% | 23 | loss | loss | – | – | 7.8% | hammer |
+| DMC | DMCI Holdings, Inc. | ₱6.20 | ₱620 | 14 | -22% | -38% | 30 | 4.9 | 0.7 | +14% | +27% | 4.5% |  |
+| BLOOM | Bloomberry Resorts Corporation | ₱1.70 | ₱1,700 | 16 | -33% | -45% | 27 | loss | 0.4 | -8% | -125% | 0.0% | dragonfly doji |
+| GSMI | Ginebra San Miguel,  Inc. | ₱206.00 | ₱2,060 | 18 | -12% | -26% | 33 | 6.8 | 2.2 | +32% | +4% | 7.3% | inverted hammer |
+| MWC | Manila Water Company, Inc. | ₱26.00 | ₱2,600 | 19 | -28% | -23% | 19 | 5.0 | 0.8 | +16% | -5% | 7.0% |  |
+| GLO | Globe Telecom, Inc. | ₱1,303.00 | ₱6,515 | 19 | -25% | -10% | 14 | 9.4 | 1.2 | +13% | -7% | 6.9% | dragonfly doji |
+| CNVRG | Converge Information and Communi | ₱8.18 | ₱818 | 20 | -16% | -35% | 29 | 5.7 | 0.9 | +16% | -9% | 5.4% | bearish marubozu |
+| MER | Manila Electric Company | ₱378.00 | ₱3,780 | 20 | -22% | -31% | 31 | 9.0 | 2.7 | +30% | +11% | 6.9% | bearish marubozu |
+| NIKL | Nickel Asia Corporation | ₱3.40 | ₱3,400 | 22 | -18% | -7% | 28 | 7.4 | 1.2 | +17% | +19% | 5.5% |  |
+| FB | San Miguel Food and Beverage, In | ₱43.00 | ₱4,300 | 22 | -9% | -18% | 36 | 9.6 | 2.0 | +21% | -9% | 12.3% | inverted hammer, bullish harami |
+| ACEN | ACEN CORPORATION | ₱2.28 | ₱2,280 | 23 | -23% | +1% | 30 | 18.2 | 0.6 | +3% | +84% | 2.1% | hammer |
+| ALI | Ayala Land, Inc. | ₱14.38 | ₱1,438 | 24 | -5% | -26% | 35 | 6.2 | 0.6 | +10% | -18% | 4.7% |  |
+| AREIT | AREIT, Inc. | ₱34.80 | ₱3,480 | 24 | -8% | -17% | 31 | – | – | – | +36% | 7.0% | inverted hammer |
+| MYNLD | Maynilad Water Services, Inc. | ₱15.38 | ₱1,538 | 24 | -17% | +3% | 29 | 7.6 | 1.1 | +14% | +11% | 6.8% |  |
+| JGS | JG Summit Holdings, Inc. | ₱16.86 | ₱1,686 | 24 | -22% | -24% | 43 | loss | 0.5 | -32% | -29% | 2.6% |  |
 
 ## Signals that have worked here
 
