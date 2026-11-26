@@ -1,26 +1,26 @@
 {
- "date": "2026-11-24",
+ "date": "2026-11-25",
  "regime": "Mixed",
  "buys": [
   "CBRL",
-  "AMRX",
   "KNSA",
   "TGTX",
   "CBLL",
+  "EPC",
   "ROIV",
+  "NWL",
   "ELVN",
+  "BOX",
+  "BJRI",
+  "ZIM",
   "TGT",
   "AII",
-  "ALKS",
-  "ZIM",
-  "IBEX",
+  "VSTS",
   "IPAR",
-  "DDI",
-  "BJRI",
-  "BIIB",
+  "ALKS",
+  "FLYW",
   "KNTK",
   "BAX",
-  "MSGE",
-  "CODI"
+  "MSGE"
  ]
 }
