@@ -6,33 +6,33 @@ A signal is called *working* only if it appeared at least 30 times, its result i
 
 | Signal | Expects | Count | Excess 5d | Excess 10d | Excess 20d | Right way 10d | t | Verdict |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| breakout 52w high | up | 3,581 | +0.66% | +0.84% | +1.89% | 48% | +3.7 | works as expected |
+| breakout 52w high | up | 3,582 | +0.66% | +0.84% | +1.89% | 48% | +3.7 | works as expected |
 | golden cross | up | 744 | +0.32% | +0.22% | +0.06% | 48% | +0.7 | no reliable edge |
 | inverted hammer | up | 6,052 | +0.18% | +0.13% | +0.03% | 50% | +0.7 | no reliable edge |
-| volume surge up | up | 7,730 | -0.01% | +0.04% | +0.14% | 44% | -0.6 | no reliable edge |
-| bullish harami | up | 5,733 | +0.02% | +0.02% | +0.13% | 48% | +0.1 | no reliable edge |
+| volume surge up | up | 7,731 | -0.01% | +0.04% | +0.14% | 44% | -0.6 | no reliable edge |
+| bullish harami | up | 5,734 | +0.03% | +0.02% | +0.14% | 48% | +0.1 | no reliable edge |
 | rsi oversold exit | up | 2,942 | -0.08% | -0.07% | -0.01% | 47% | -2.0 | no reliable edge |
 | bullish marubozu | up | 8,007 | -0.26% | -0.22% | -0.13% | 43% | -2.3 | works in reverse |
-| bullish engulfing | up | 5,366 | -0.38% | -0.27% | -0.45% | 44% | -2.8 | works in reverse |
-| macd cross up | up | 8,710 | -0.18% | -0.28% | -0.28% | 44% | -4.2 | works in reverse |
+| bullish engulfing | up | 5,369 | -0.38% | -0.27% | -0.45% | 44% | -2.8 | works in reverse |
+| macd cross up | up | 8,714 | -0.18% | -0.27% | -0.28% | 44% | -4.2 | works in reverse |
 | piercing line | up | 530 | -0.18% | -0.34% | -0.55% | 47% | -2.0 | no reliable edge |
-| hammer | up | 4,805 | -0.48% | -0.61% | -0.78% | 44% | -5.3 | works in reverse |
+| hammer | up | 4,806 | -0.48% | -0.61% | -0.77% | 44% | -5.3 | works in reverse |
 | dragonfly doji | up | 2,550 | -0.48% | -0.66% | -0.77% | 42% | -5.3 | works in reverse |
 | morning star | up | 457 | -0.65% | -1.21% | -0.78% | 36% | -3.1 | works in reverse |
 | three white soldiers | up | 77 | -1.62% | -1.66% | -1.96% | 30% | -2.3 | works in reverse |
 | gravestone doji | down | 1,413 | +0.40% | +0.71% | +1.12% | 52% | +3.0 | works in reverse |
 | evening star | down | 473 | +0.44% | +0.48% | +0.67% | 46% | +1.2 | no reliable edge |
-| rsi overbought exit | down | 4,158 | +0.20% | +0.47% | +0.84% | 52% | +1.2 | no reliable edge |
-| bearish marubozu | down | 9,977 | +0.32% | +0.32% | +0.28% | 49% | +4.6 | works in reverse |
-| shooting star | down | 3,824 | +0.22% | +0.30% | +0.56% | 52% | +1.0 | no reliable edge |
-| volume surge down | down | 5,706 | +0.33% | +0.21% | +0.29% | 49% | -0.5 | no reliable edge |
-| bearish engulfing | down | 6,765 | +0.10% | +0.16% | +0.12% | 52% | +1.1 | no reliable edge |
-| macd cross down | down | 9,248 | +0.04% | +0.11% | +0.03% | 51% | +1.6 | no reliable edge |
-| bearish harami | down | 3,456 | -0.04% | +0.04% | +0.02% | 54% | +0.1 | no reliable edge |
-| breakdown 52w low | down | 3,157 | -0.06% | +0.04% | +0.22% | 50% | +0.1 | no reliable edge |
+| rsi overbought exit | down | 4,158 | +0.20% | +0.48% | +0.84% | 52% | +1.2 | no reliable edge |
+| bearish marubozu | down | 9,980 | +0.32% | +0.32% | +0.28% | 49% | +4.6 | works in reverse |
+| shooting star | down | 3,825 | +0.22% | +0.30% | +0.56% | 52% | +1.0 | no reliable edge |
+| volume surge down | down | 5,707 | +0.33% | +0.21% | +0.29% | 49% | -0.4 | no reliable edge |
+| bearish engulfing | down | 6,766 | +0.10% | +0.16% | +0.12% | 52% | +1.1 | no reliable edge |
+| macd cross down | down | 9,250 | +0.04% | +0.12% | +0.03% | 51% | +1.6 | no reliable edge |
+| bearish harami | down | 3,457 | -0.04% | +0.04% | +0.02% | 54% | +0.1 | no reliable edge |
+| breakdown 52w low | down | 3,157 | -0.06% | +0.04% | +0.23% | 50% | +0.1 | no reliable edge |
 | death cross | down | 609 | -0.01% | -0.01% | -0.07% | 54% | -0.1 | no reliable edge |
-| dark cloud cover | down | 1,050 | +0.32% | -0.17% | -0.34% | 55% | -0.3 | no reliable edge |
-| hanging man | down | 6,014 | -0.36% | -0.25% | -0.12% | 56% | -3.3 | works as expected |
-| three black crows | down | 182 | +0.32% | -0.27% | +0.33% | 51% | -0.6 | no reliable edge |
+| dark cloud cover | down | 1,051 | +0.32% | -0.18% | -0.35% | 55% | -0.4 | no reliable edge |
+| hanging man | down | 6,015 | -0.35% | -0.25% | -0.12% | 56% | -3.3 | works as expected |
+| three black crows | down | 182 | +0.32% | -0.26% | +0.33% | 51% | -0.6 | no reliable edge |
 
 Past results do not guarantee future ones. Survivorship: stocks that were delisted are missing from the data, which flatters long-run returns a little.

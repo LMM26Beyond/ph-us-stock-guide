@@ -8,11 +8,11 @@ Costs per trade: 0.25% commission (min ₱20) + 12% VAT, 0.015% PSE and SCCP fee
 
 | Strategy | Yearly return | Total | Worst drop | Sharpe | Trades | Wins | Avg trade |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Current rules | +6.4% | +113.2% | -45.7% | 0.40 | 218 | 33% | +4.1% |
-| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.4% | -5.1% | -47.4% | 0.05 | 489 | 33% | -0.4% |
-| Current rules, smaller amounts in more volatile stocks | +4.6% | +73.4% | -33.9% | 0.36 | 221 | 35% | +4.0% |
-| Current rules, half as many stocks | -0.4% | -4.2% | -59.6% | 0.12 | 109 | 35% | +1.1% |
-| Hold the index | -1.9% | -21.0% | -47.9% | -0.03 | – | – | – |
+| Current rules | +6.4% | +111.4% | -45.7% | 0.39 | 218 | 33% | +4.1% |
+| Old rules (3 × ATR trailing stop, no buys in a downtrend, sell below 50, no range limit) | -0.4% | -4.9% | -47.4% | 0.05 | 489 | 33% | -0.4% |
+| Current rules, smaller amounts in more volatile stocks | +4.6% | +73.1% | -33.9% | 0.36 | 221 | 35% | +4.0% |
+| Current rules, half as many stocks | -0.4% | -4.7% | -59.6% | 0.12 | 109 | 35% | +1.1% |
+| Hold the index | -1.9% | -20.5% | -47.9% | -0.02 | – | – | – |
 
 "Hold the index" is the PSEi with no costs and no dividends; the stock prices also exclude dividends, so the comparison is like for like.
 
@@ -23,7 +23,7 @@ The rule settings were the best of those tried on data up to Dec 2022, and the s
 | Period | Current rules | PSEi |
 |---|---:|---:|
 | To Dec 2022 (tuned) | +5.0% a year | -1.8% a year |
-| From Jan 2023 (test) | +8.9% a year | -2.1% a year |
+| From Jan 2023 (test) | +8.6% a year | -1.9% a year |
 
 ## Position size
 
@@ -31,9 +31,9 @@ The current rules put an equal amount in each of up to 10 stocks. Two alternativ
 
 | Strategy | Yearly return | Worst drop | Tuned period | Test period |
 |---|---:|---:|---:|---:|
-| Current rules | +6.4% | -45.7% | +5.0% | +8.9% |
-| Current rules, smaller amounts in more volatile stocks | +4.6% | -33.9% | +3.1% | +7.8% |
-| Current rules, half as many stocks | -0.4% | -59.6% | -5.8% | +12.1% |
+| Current rules | +6.4% | -45.7% | +5.0% | +8.6% |
+| Current rules, smaller amounts in more volatile stocks | +4.6% | -33.9% | +3.1% | +7.7% |
+| Current rules, half as many stocks | -0.4% | -59.6% | -5.8% | +12.0% |
 
 "Smaller amounts in more volatile stocks" scales each stock's amount by 2% divided by its average daily range as a share of the price, from half to double the equal amount. It gives smaller drops for a lower return: a choice for a cautious investor, not a free improvement. Holding fewer stocks made the swings bigger without raising the return in the tuned period, so keep the full number of stocks.
 
@@ -53,7 +53,7 @@ The current rules put an equal amount in each of up to 10 stocks. Two alternativ
 | 2023 | -4.0% | +1.7% | -5.7% |
 | 2024 | +41.8% | +2.8% | +39.0% |
 | 2025 | +19.6% | -4.4% | +24.0% |
-| 2026 | -12.7% | -7.9% | -4.8% |
+| 2026 | -13.4% | -7.3% | -6.1% |
 
 ## Verdict
 

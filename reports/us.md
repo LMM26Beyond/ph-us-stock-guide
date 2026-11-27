@@ -1,6 +1,6 @@
 # United States — market guide
 
-Data up to **Wed 25 Nov 2026**. Generated 26 Nov 2026.
+Data up to **Wed 25 Nov 2026**. Generated 27 Nov 2026.
 
 > This is an automated technical analysis of past prices, not licensed financial advice. Signals are probabilities, not certainties. Check the company news and fundamentals and size every position so a stop-out is affordable.
 
