@@ -6,7 +6,7 @@ A signal is called *working* only if it appeared at least 30 times, its result i
 
 | Signal | Expects | Count | Excess 5d | Excess 10d | Excess 20d | Right way 10d | t | Verdict |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| breakout 52w high | up | 3,582 | +0.66% | +0.84% | +1.89% | 48% | +3.7 | works as expected |
+| breakout 52w high | up | 3,582 | +0.66% | +0.84% | +1.90% | 48% | +3.7 | works as expected |
 | golden cross | up | 744 | +0.32% | +0.22% | +0.06% | 48% | +0.7 | no reliable edge |
 | inverted hammer | up | 6,052 | +0.18% | +0.13% | +0.03% | 50% | +0.7 | no reliable edge |
 | volume surge up | up | 7,731 | -0.01% | +0.04% | +0.14% | 44% | -0.6 | no reliable edge |
@@ -15,14 +15,14 @@ A signal is called *working* only if it appeared at least 30 times, its result i
 | bullish marubozu | up | 8,007 | -0.26% | -0.22% | -0.13% | 43% | -2.3 | works in reverse |
 | bullish engulfing | up | 5,369 | -0.38% | -0.27% | -0.45% | 44% | -2.8 | works in reverse |
 | macd cross up | up | 8,714 | -0.18% | -0.27% | -0.28% | 44% | -4.2 | works in reverse |
-| piercing line | up | 530 | -0.18% | -0.34% | -0.55% | 47% | -2.0 | no reliable edge |
+| piercing line | up | 530 | -0.18% | -0.34% | -0.54% | 47% | -2.0 | no reliable edge |
 | hammer | up | 4,806 | -0.48% | -0.61% | -0.77% | 44% | -5.3 | works in reverse |
 | dragonfly doji | up | 2,550 | -0.48% | -0.66% | -0.77% | 42% | -5.3 | works in reverse |
-| morning star | up | 457 | -0.65% | -1.21% | -0.78% | 36% | -3.1 | works in reverse |
+| morning star | up | 457 | -0.65% | -1.21% | -0.77% | 36% | -3.1 | works in reverse |
 | three white soldiers | up | 77 | -1.62% | -1.66% | -1.96% | 30% | -2.3 | works in reverse |
 | gravestone doji | down | 1,413 | +0.40% | +0.71% | +1.12% | 52% | +3.0 | works in reverse |
 | evening star | down | 473 | +0.44% | +0.48% | +0.67% | 46% | +1.2 | no reliable edge |
-| rsi overbought exit | down | 4,158 | +0.20% | +0.48% | +0.84% | 52% | +1.2 | no reliable edge |
+| rsi overbought exit | down | 4,158 | +0.20% | +0.48% | +0.85% | 52% | +1.2 | no reliable edge |
 | bearish marubozu | down | 9,980 | +0.32% | +0.32% | +0.28% | 49% | +4.6 | works in reverse |
 | shooting star | down | 3,825 | +0.22% | +0.30% | +0.56% | 52% | +1.0 | no reliable edge |
 | volume surge down | down | 5,707 | +0.33% | +0.21% | +0.29% | 49% | -0.4 | no reliable edge |

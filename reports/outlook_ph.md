@@ -6,16 +6,16 @@ For each stock with a candle pattern in its last 3 candles, the chance it closes
 
 ## Did it work on new data?
 
-Track records built from data up to Dec 2022 only, then tested on 15,816 stock-days with a pattern from 2023-01-03 to 2026-11-12. On all of them, the stock was higher 10 days later 46% of the time.
+Track records built from data up to Dec 2022 only, then tested on 15,827 stock-days with a pattern from 2023-01-03 to 2026-11-13. On all of them, the stock was higher 10 days later 46% of the time.
 
 | Call | Cases | Expected to rise | Actually rose |
 |---|---:|---:|---:|
-| Leans up | 4,223 | 50% | 50% |
+| Leans up | 4,225 | 50% | 50% |
 | Leans down | 2,649 | 40% | 40% |
-| No clear edge | 8,944 | 46% | 46% |
+| No clear edge | 8,953 | 46% | 46% |
 
 ## Today
 
-Leans up: 32, Leans down: 18, No clear edge: 83 stocks.
+Leans up: 32, Leans down: 15, No clear edge: 94 stocks.
 
 Candle patterns are a weak signal on their own: most of them barely move the odds, and several work the opposite way from the textbook (see the signals report). Use the outlook as one input next to the trend score, not as a forecast.
